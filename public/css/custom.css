@@ -1,0 +1,47 @@
+body {
+	font-family: 'Roboto', sans-serif;
+	background:#fff !important;
+}
+.pahoda_header {
+	height:450px;
+}
+.pahoda_header.left {
+	background:#efefef;
+}
+.pahoda_header .pahoda_logo {
+	width:318px;
+	height:229px;
+	background:url('../img/pahoda_logo.png');
+}
+.pahoda_header .official_quote {
+	height:130px;
+	width:520px;
+	border-radius:3px;
+	border:1px dashed #b7b7b7;
+}
+.fa {
+	color:#51b2df;
+}
+.pahoda_header .quote_photo {
+	height:315px;
+	width:100%;
+	background:url('../img/quote_photo.png');	
+}
+
+
+
+/* Angular */
+
+.animate-show {
+  opacity: 1;
+}
+
+.animate-show.ng-hide-add, .animate-show.ng-hide-remove {
+  transition: all linear 0.5s;
+}
+
+.animate-show.ng-hide {
+  line-height: 0;
+  opacity: 0;
+  padding: 0 10px;
+}

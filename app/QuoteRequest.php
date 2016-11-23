@@ -19,6 +19,15 @@ class QuoteRequest extends Model
     ];
 
     /**
+     * The attributes that should be casted to native types.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'requested_devices_to_quote' => 'array'
+    ];
+
+    /**
      * Get the quote associated with this quote request.
      */
     public function quote()

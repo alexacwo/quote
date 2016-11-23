@@ -15,8 +15,6 @@ Route::get('/', 'Client\ClientController@index');
 
 Route::get('/quote-request', 'Client\ClientController@quote_request');
 
-//Route::get('/view-your-quote', 'Client\ClientController@view_your_quote');
-
 Route::post('/create-quote-request', 'Client\ClientController@create_quote_request');
 
 Auth::routes();

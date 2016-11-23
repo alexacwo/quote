@@ -2,7 +2,8 @@
 
 namespace App\Http\Controllers\Client;
 
-use App\Copier;
+use App\Device;
+use App\Accessory;
 use App\User;
 use App\QuoteRequest;
 use App\Quote;
@@ -18,18 +19,12 @@ class ClientController extends Controller
      */
     public function index(Request $request)
     {
-       /* $copier = new Copier;
-        $copier->make = 'Xerox';
-        $copier->model = 'Phaser 6600';
-        $copier->cost = 100;
-        $copier->price = 150;
-        $copier->speed = 22;
-        $copier->paper_size = 'letter/legal';
-        $copier->color_or_mono = 'mono';
-        $copier->device_type = 'printer';
-        $copier->image = 'http://www';
-        $copier->pdf = 'http://wwww';
-        $copier->save();*/
+        /*$accessory = new Accessory;
+        $accessory->title = 'WorkCentre 7855 Addl 21 M';
+        $accessory->part_number = 'E7855S2P';
+        $accessory->cost = 100;
+        $accessory->price = 150;
+        $accessory->save();*/
 
         return view('client.index', [
             'request' => $request
@@ -43,10 +38,10 @@ class ClientController extends Controller
      */
     public function quote_request()
     {
-        $copiers = Copier::orderBy('created_at', 'asc')->get();
+        $devices = Device::orderBy('created_at', 'asc')->get();
 
         return view('client.quote_request', [
-            'copiers' => $copiers
+            'devices' => $devices
         ]);
     }
 
@@ -57,12 +52,21 @@ class ClientController extends Controller
      */
     public function view_quote(Request $request, $quote_id)
     {
+        $accessories_for_devices = array();
+
         $quote = Quote::find($quote_id);
+        $quoted_devices = Device::find($quote->quoted_devices);
+        foreach ($quote->add_accessories as $device_id => $accessories) {
+            $where = array_values($quote->add_accessories[$device_id]);
+            $accessories_for_devices[$device_id] = Accessory::find($where);
+        }
 
         if ($quote && $quote->status == 'published') {
 
             return view('client.view_quote', [
-                'quote' => $quote
+                'quote' => $quote,
+                'quoted_devices' => $quoted_devices,
+                'accessories_for_devices' => $accessories_for_devices
             ]);
         }
     }
@@ -102,4 +106,3 @@ class ClientController extends Controller
     }
 
 }
-

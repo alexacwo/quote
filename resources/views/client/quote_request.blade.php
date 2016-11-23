@@ -13,11 +13,11 @@
                             {{ csrf_field() }}
 
                             <div class="form-group">
-                                <label for="sel1">Select copier:</label>
-                                @if (count($copiers) > 0)
-                                    <select class="form-control" name="devices_to_quote" id="sel1">
-                                        @foreach ($copiers as $copier)
-                                            <option value="{{ $copier->id }}">{{ $copier->model }}</option>
+                                <label for="sel1">Select a device:</label>
+                                @if (count($devices) > 0)
+                                    <select class="form-control" name="devices_to_quote[]" id="sel1" multiple>
+                                        @foreach ($devices as $device)
+                                            <option value="{{ $device->id }}">{{ $device->model }}</option>
                                         @endforeach
                                     </select>
                                 @endif

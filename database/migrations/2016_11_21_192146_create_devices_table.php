@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateCopiersTable extends Migration
+class CreateDevicesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateCopiersTable extends Migration
      */
     public function up()
     {
-        Schema::create('copiers', function (Blueprint $table) {
+        Schema::create('devices', function (Blueprint $table) {
             $table->increments('id');
             $table->string('make');
             $table->string('model');
@@ -36,7 +36,7 @@ class CreateCopiersTable extends Migration
      */
     public function down()
     {
-        Schema::table('copiers', function (Blueprint $table) {
+        Schema::table('devices', function (Blueprint $table) {
             //
         });
     }

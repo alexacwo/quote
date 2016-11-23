@@ -5,7 +5,12 @@
 <!-- CSRF Token -->
 <meta name="csrf-token" content="{{ csrf_token() }}">
 
-<title>{{ config('app.name', 'Laravel') }}</title>
+<title>Pahoda Image Products</title>
 
 <!-- Styles -->
 <link href="{{asset('css/app.css')}}" rel="stylesheet">
+<link href="{{asset('css/custom.css')}}" rel="stylesheet">
+<link href="{{asset('css/font-awesome.min.css')}}" rel="stylesheet">
+
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">

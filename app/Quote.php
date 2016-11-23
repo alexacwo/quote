@@ -14,7 +14,19 @@ class Quote extends Model
     protected $fillable = [
         'status',
         'user_id',
-        'quoted_devices'
+        'quoted_devices',
+        'devices_desc'
+    ];
+
+    /**
+     * The attributes that should be casted to native types.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'quoted_devices' => 'array',
+        'devices_desc' => 'array',
+        'add_accessories' => 'array',
     ];
 
     /**

@@ -5,7 +5,8 @@ namespace App\Http\Controllers\Admin;
 use App\User;
 use App\QuoteRequest;
 use App\Quote;
-use App\Copier;
+use App\Device;
+use App\Accessory;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -91,8 +92,8 @@ class AdminController extends Controller
     public function edit_quote(Request $request, $quote_id)
     {
         $quote = Quote::find($quote_id);
-
-        $copier = Copier::find($quote->quoted_devices);
+        $quoted_devices = Device::find($quote->quoted_devices);
+        $accessories = Accessory::orderBy('part_number', 'asc')->get();
 
         if ($quote) {
 
@@ -101,7 +102,8 @@ class AdminController extends Controller
 
             return view('admin.edit_quote', [
                 'quote' => $quote,
-                'copier' => $copier,
+                'quoted_devices' => $quoted_devices,
+                'accessories' => $accessories,
                 'quote_request_status_action' => $quote_request_status_action
             ]);
         }
@@ -119,18 +121,25 @@ class AdminController extends Controller
         $quote_request_status_action = $request->quote_request_status_action;
         $quote = Quote::find($request->quote_id);
 
+        // In case we publish the quote for the first time
          if ($quote_request_status_action == 'to_be_completed') {
-            $quote->status = 'published';
-            $quote->save();
+             $quote->status = 'published';
 
-            $quote_request = QuoteRequest::where('quote_id', $quote->id)->first();
-            $quote_request->status = 'completed';
-            $quote_request->save();
+             $quote_request = QuoteRequest::where('quote_id', $quote->id)->first();
+             $quote_request->status = 'completed';
+             $quote_request->save();
 
-            $user = User::where('quote_request_id', $quote_request->id)->first();
-            $user->quote_id = $quote->id;
-            $user->save();
+             $user = User::where('quote_request_id', $quote_request->id)->first();
+             $user->quote_id = $quote->id;
+             $user->save();
          }
+
+         // For saving quote
+        $quote->devices_desc = $request->devices_desc;
+        $quote->add_accessories = $request->add_accessories;
+        $quote->save();
+
+
 
         return view('admin.save_quote', [
             'quote_id' => $quote->id
