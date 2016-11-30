@@ -19,7 +19,7 @@
                                          heading="{{ device.model }}"
                                          is-open="deviceAccordionIsOpen[$index]"
                                     >												
-										<div class="alert alert-success device_updated animate-show" ng-show="deviceUpdated">
+										<div class="alert alert-success device_updated animate-show" ng-show="deviceUpdated[device.id]">
 											<strong>Device info updated!</strong>
 										</div>
 

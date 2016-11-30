@@ -10,7 +10,7 @@
                 templateUrl: 'templates/index.html'
             })
             .when('/devices', {
-                templateUrl: 'templates/devices.html'
+                templateUrl: 'templates/devices1.html'
             })
             .when('/users', {
                 templateUrl: 'templates/users.html'

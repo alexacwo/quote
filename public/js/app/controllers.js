@@ -121,7 +121,7 @@
         })
         .controller('DevicesController', function($scope, $http, $timeout, Device, Accessory){
 			
-			$scope.deviceUpdated = false;
+			$scope.deviceUpdated = {};
 
             $scope.chosenAccessoriesList = {};
             $scope.selectedAccessories = {};
@@ -172,9 +172,9 @@
                 Device
                     .update(deviceId, $scope.chosenAccessoriesList[deviceId])
                     .success(function(response) {
-                        $scope.deviceUpdated = true;
+                        $scope.deviceUpdated[deviceId] = true;
 						$timeout( function(){
-							$scope.deviceUpdated = false;
+							$scope.deviceUpdated[deviceId] = false;
 						}, 4000);
                     });
             }
