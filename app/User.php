@@ -15,7 +15,12 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'unencrypt', 'role'
+        'name',
+        'company',
+        'password',
+        'email',
+        'role',
+        'user_type'
     ];
 
     /**
@@ -24,14 +29,15 @@ class User extends Authenticatable
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token',
+        'password',
+        'remember_token',
     ];
 
     /**
-     * Get user's quote requests
+     * Get user's quotes
      */
-    public function quote_requests()
+    public function quotes()
     {
-        return $this->hasMany('App\QuoteRequest');
+        return $this->hasMany('App\Quote');
     }
 }

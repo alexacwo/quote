@@ -24,4 +24,12 @@ class Accessory extends Model
         'cost',
         'price'
     ];
+
+    /**
+     * Get device that have this accessory
+     */
+    public function devices()
+    {
+        return $this->belongsToMany('App\Device');
+    }
 }

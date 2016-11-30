@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Admin;
 
+use DB;
+
 use App\User;
 use App\QuoteRequest;
 use App\Quote;
@@ -9,6 +11,7 @@ use App\Device;
 use App\Accessory;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\Admin\CurlController;
 
 class AdminController extends Controller
 {
@@ -29,20 +32,30 @@ class AdminController extends Controller
      */
     public function index()
     {
-        return view('admin.index');
+		return view('admin.angular');
     }
 
     /**
-     * Show all quote requests
+     * Angular admin front-end
      *
      * @return \Illuminate\Http\Response
      */
-    public function quote_requests()
+    public function angular()
     {
-        $quote_requests = QuoteRequest::orderBy('created_at', 'asc')->get();
+        return view('admin.angular');
+    }
 
-        return view('admin.quote_requests', [
-            'quote_requests' => $quote_requests
+    /**
+     * Show all users for whom quotes were prepared
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function users()
+    {
+        $users = User::orderby('id')->where('role', '<>', 'admin')->get();
+
+        return view('admin.users', [
+            'users' => $users
         ]);
     }
 
@@ -61,26 +74,32 @@ class AdminController extends Controller
     }
 
     /**
+     * Generate a new string and check (though it is very unlikely) if it exists in the database
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function generate_guid_for_quote_link() {
+        $guid = str_random(20);
+        $quote = Quote::where('guid', $guid)->first();
+
+        return ($quote === null) ? $guid : $this->generate_guid();
+    }
+
+    /**
      * Create a new quote for a given quote request
      * @param  Request  $request
      * @return \Illuminate\Http\Response
      */
     public function create_quote(Request $request)
     {
-        $quote_request = QuoteRequest::find($request->quote_request_id);
-        $quote_request->status = 'pending';
-        $quote = $quote_request->quote()->create([
-            'status' => 'draft',
-            'user_id' => $quote_request->user_id,
-            'quoted_devices' => $quote_request->requested_devices_to_quote
-        ]);
-        $quote_request->quote_id = $quote->id;
-        $quote_request->save();
+        $guid = $this->generate_guid_for_quote_link();
 
-        return redirect()->action(
-            'Admin\AdminController@edit_quote', ['quote' => $quote->id]
-        );
-        //return view('admin.edit_quote');
+        $quote = new Quote;
+        $quote->guid = $guid;
+        $quote->status = 'draft';
+        $quote->save();
+
+        return redirect('/admin/quote/' . $quote->guid);
     }
 
     /**
@@ -89,24 +108,48 @@ class AdminController extends Controller
      * @param  string  $quote_id
      * @return \Illuminate\Http\Response
      */
-    public function edit_quote(Request $request, $quote_id)
+    public function edit_quote(Request $request, $quote_guid)
     {
-        $quote = Quote::find($quote_id);
-        $quoted_devices = Device::find($quote->quoted_devices);
+        $quote = Quote::where('guid', $quote_guid)->first();
+
+        $curl = new CurlController;
+        $url = "https://pahoda.capsulecrm.com/api/party";
+        $username = "108fa7bce4476acba87cd36f699b2df9";
+        $password = "x";
+        $json_response = $curl->get($url, $username, $password);
+        $response = json_decode($json_response);
+
+        $contacts = $response->parties->person;
+
         $accessories = Accessory::orderBy('part_number', 'asc')->get();
+ 
+        return view('admin.edit_quote', [
+            'quote' => $quote,
+            'contacts' => $contacts,
+            'accessories' => $accessories,
+        ]);
+    }
 
-        if ($quote) {
+    /**
+     * Get the list of devices for a quote
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function get_devices()
+    {
+        $devices_to_quote = Device::orderBy('created_at', 'asc')->get();
 
-            if ($quote->status == 'draft') $quote_request_status_action = 'to_be_completed';
-            else $quote_request_status_action = 'save';
+        $most_quoted_devices_ids = DB::table('device_quote')
+            ->select('device_id', DB::raw('count(*) as total'))
+            ->groupBy('device_id')
+            ->orderBy('total', 'desc')
+            ->take(3)
+            ->pluck('device_id');
 
-            return view('admin.edit_quote', [
-                'quote' => $quote,
-                'quoted_devices' => $quoted_devices,
-                'accessories' => $accessories,
-                'quote_request_status_action' => $quote_request_status_action
-            ]);
-        }
+        return response()->json([
+            'devices_to_quote' => $devices_to_quote,
+            'most_quoted_devices_ids' => $most_quoted_devices_ids
+        ]);
     }
 
     /**
@@ -118,31 +161,52 @@ class AdminController extends Controller
      */
     public function save_quote(Request $request)
     {
-        $quote_request_status_action = $request->quote_request_status_action;
+        $quote_status = $request->quote_status;
         $quote = Quote::find($request->quote_id);
 
         // In case we publish the quote for the first time
-         if ($quote_request_status_action == 'to_be_completed') {
+         if ($quote_status == 'draft') {
              $quote->status = 'published';
-
-             $quote_request = QuoteRequest::where('quote_id', $quote->id)->first();
-             $quote_request->status = 'completed';
-             $quote_request->save();
-
-             $user = User::where('quote_request_id', $quote_request->id)->first();
-             $user->quote_id = $quote->id;
-             $user->save();
          }
+             // Check if the user already exists
+             // If no, create a new user
+             // If yes, add the quote to the list of existing quotes and update username/company_name
+             $user = User::where('email', $request->client_email)->first();
 
-         // For saving quote
+             if ($user === null) {
+                 $user = new User;
+                 $user->role = 'client';
+                 $user->name = $request->client_username;
+                 $user->company = $request->client_company_name;
+                 $user->email = $request->client_email;
+                 $user->quotes()->save($quote);
+                 $user->save();
+             } else {
+                 $user->name = $request->client_username;
+                 $user->company = $request->client_company_name;
+                 $user->email = $request->client_email;
+                 $user->quotes()->save($quote);
+                 $user->save();
+             }
+
+       /* $user = new User;
+        $user->name = $request->client_username;
+        $user->company = $request->client_company_name;
+        $user->email = $request->client_email;
+        $user->quotes()->save($quote);
+        $user->save();*/
+
+        $quote->devices()->sync(json_decode($request->quoted_devices_hidden));
+
         $quote->devices_desc = $request->devices_desc;
-        $quote->add_accessories = $request->add_accessories;
+        $quote->added_accessories = $request->added_accessories;
+        $quote->prices = $request->prices;
+        $quote->user()->associate($user);
+
         $quote->save();
-
-
-
+		
         return view('admin.save_quote', [
-            'quote_id' => $quote->id
+            'quote_guid' => $quote->guid
         ]);
     }
 }

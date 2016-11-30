@@ -14,7 +14,7 @@
             <ul class="nav navbar-nav navbar-left">
                 <li class="dropdown">
                     <a href="{{url('/')}}" role="button">
-                        <b>Client side</b>
+                        <b>Go to client side</b>
                     </a>
                 </li>
             </ul>
@@ -22,17 +22,17 @@
             <ul class="nav navbar-nav navbar-right">
                 @if (!Auth::guest())
                     <li class="dropdown">
-                        <a href="{{url('/admin')}}" role="button">
-                            Dashboard home
+                        <a href="{{url('/adm/devices')}}" role="button">
+                            Devices
                         </a>
                     </li>
                     <li class="dropdown">
-                        <a href="{{url('/admin/quote-requests')}}" role="button">
-                            Quote Requests
+                        <a href="{{url('/adm/users')}}" role="button">
+                            Users
                         </a>
                     </li>
                     <li class="dropdown">
-                        <a href="{{url('/admin/quotes')}}" role="button">
+                        <a href="{{url('/adm/quotes')}}" role="button">
                             Quotes
                         </a>
                     </li>

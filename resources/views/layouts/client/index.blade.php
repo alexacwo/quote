@@ -11,5 +11,6 @@
 
 @include('client.includes.scripts')
 
+@yield('scripts')
 </body>
 </html>

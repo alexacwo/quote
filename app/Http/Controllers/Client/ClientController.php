@@ -48,29 +48,49 @@ class ClientController extends Controller
     /**
      * View published quote
      * @param  Request  $request
+     * @param  Quote Guid  $quote_guid
      * @return \Illuminate\Http\Response
      */
-    public function view_quote(Request $request, $quote_id)
+    public function view_quote(Request $request, $quote_guid)
     {
         $accessories_for_devices = array();
 
-        $quote = Quote::find($quote_id);
-        $quoted_devices = Device::find($quote->quoted_devices);
-        foreach ($quote->add_accessories as $device_id => $accessories) {
-            $where = array_values($quote->add_accessories[$device_id]);
+        $quote = Quote::where([
+                ['guid', '=', $quote_guid],
+               /* ['status', '=', 'published'],*/
+            ])->first();
+
+       $quoted_devices = Device::find($quote->devices);
+
+        foreach ($quote->added_accessories as $device_id => $accessories) {
+            $where = array_values($accessories);
             $accessories_for_devices[$device_id] = Accessory::find($where);
         }
 
-        if ($quote && $quote->status == 'published') {
+        if ($quote) {
 
             return view('client.view_quote', [
-                'quote' => $quote,
-                'quoted_devices' => $quoted_devices,
+                'quote' => $quote ,
+                'quoted_devices' => $quote->devices,
                 'accessories_for_devices' => $accessories_for_devices
             ]);
         }
     }
 
+    /**
+     * Saving client's choices of accessories
+     * @param  Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function save_calculation(Request $request, $quote_id)
+    {
+		var_dump($quote_id);
+		var_dump($request->selected_accessories);
+        $quote = Quote::find($quote_id)->first();
+		$quote->selected_accessories = $request->selected_accessories;
+		$quote->save();
+	}
+	
     /**
      * Create a new quote request.
      * @param  Request  $request

@@ -12,10 +12,12 @@ class Quote extends Model
      * @var array
      */
     protected $fillable = [
+        'link_guid',
         'status',
         'user_id',
-        'quoted_devices',
-        'devices_desc'
+        'devices',
+        'devices_desc',
+        'prices'
     ];
 
     /**
@@ -24,16 +26,27 @@ class Quote extends Model
      * @var array
      */
     protected $casts = [
-        'quoted_devices' => 'array',
+        'devices' => 'array',
         'devices_desc' => 'array',
-        'add_accessories' => 'array',
+        'added_accessories' => 'array',
+        'selected_accessories' => 'array',
+        'prices' => 'array',
     ];
 
     /**
-     * Get the quote request for this quote
+     * Get the user for whom this quote was prepared
      */
-    public function quote_request()
+    public function user()
     {
-        return $this->belongsTo('App\QuoteRequest');
+        return $this->belongsTo('App\User');
+    }
+
+    /**
+     * Get the quoted devices
+     */
+    public function devices()
+    {
+        return $this->belongsToMany('App\Device');
     }
 }
+

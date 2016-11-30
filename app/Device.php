@@ -15,13 +15,32 @@ class Device extends Model
         'make',
         'model',
         'cost',
-        'price',
+        'base',
         'speed',
         'paper_size',
         'color_or_mono',
         'device_type',
+        'maintenance',
+        'cost_per_color_page',
+        'cost_per_mono_page',
+        'rebates',
         'image',
         'pdf'
     ];
 
+    /**
+     * Get quotes which included this device
+     */
+    public function quotes()
+    {
+        return $this->belongsToMany('App\Quote');
+    }
+
+    /**
+     * Get accessories that are assigned to this device
+     */
+    public function accessories()
+    {
+        return $this->belongsToMany('App\Accessory');
+    }
 }

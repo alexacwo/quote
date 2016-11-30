@@ -26,7 +26,11 @@
                                     @foreach ($quote_requests as $quote_request)
                                         <tr>
                                             <td class="table-text">
-                                                <div>{{ var_dump($quote_request->requested_devices_to_quote) }}</div>
+                                                <div>
+													@foreach ($quote_request->requested_devices_to_quote as $device)
+														{{ $device }}, 
+													@endforeach												
+												</div>
                                             </td>
                                             <td class="table-text">
                                                 <div>{{ $quote_request->email }}</div>

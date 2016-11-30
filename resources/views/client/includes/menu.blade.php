@@ -1,4 +1,4 @@
-<nav class="navbar navbar-default navbar-static-top">
+<nav class="navbar navbar-inverse navbar-static-top">
     <div class="container">
         <div class="navbar-header">
             <!-- Collapsed Hamburger -->
@@ -14,8 +14,8 @@
             @if (( Auth::user() && Auth::user()->role == 'admin' ))
                 <ul class="nav navbar-nav navbar-left">
                     <li class="dropdown">
-                        <a href="{{url('/admin')}}" role="button">
-                            <b>Admin panel</b>
+                        <a href="{{url('/adm')}}" role="button">
+                            <b>Go to admin panel</b>
                         </a>
                     </li>
                 </ul>
@@ -29,11 +29,6 @@
                     </a>
                 </li>
                 @if (Auth::guest())
-                    <li class="dropdown">
-                        <a href="{{url('/quote-request')}}" role="button">
-                            Request a quote
-                        </a>
-                    </li>
                     <li class="dropdown">
                         <a href="{{url('/login')}}" role="button">
                             Login

@@ -1,0 +1,247 @@
+<div class="container" ng-controller="QuoteController">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-default dashboard_edit_quote">
+                <div class="panel-heading">
+                    Edit quote #{{ quote.id }}
+                </div>
+
+                <div class="panel-body">
+					<div class="panel panel-info">
+						<div class="panel-heading">
+							Add user
+						</div>
+
+						<div class="panel-body">
+							<div class="col-md-6">
+								<div class="form-group">
+									<select class="form-control" ng-model="quoteData[quote.id].user_type" id="user_type">
+										<option value="new" ng-selected="quote.user.user_type == 'new'">New User</option>
+										<option value="capsule" ng-selected="quote.user.user_type == 'capsule'">CapsuleCRM User</option>
+									</select>
+									<br>
+									Username:
+									<input type="text"
+										   class="form-control"
+										   ng-model="quoteData[quote.id].client_username"
+									/>
+									<br>
+									Company name (if specified):
+									<input type="text"
+										   class="form-control"
+										   ng-model="quoteData[quote.id].client_company"
+									/>
+									<br>
+									E-mail (if specified):
+									<input type="text"
+										   class="form-control"
+										   ng-model="quoteData[quote.id].client_email"
+									/>
+								</div>
+							</div>
+							<div class="col-md-6">
+								<div class="clients_list_container">
+									<div id="clients_list">
+										@include('admin.includes.edit_quote.edit_user.capsule_list')
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="panel panel-warning">
+						<div class="panel-heading">
+							Device list
+						</div>
+
+						<div class="panel-body">
+						
+							<div class="col-md-12">
+								Choose a device from a form below and press the button (max 4 allowed for now):<br>
+								<div class="btn btn-danger" id="add_device" ng-click="addDeviceToQuote()">Add Device</div>
+							</div>
+
+							<div class="col-md-6">
+								<div class="form-group">
+									<strong>3 most common quoted devices:</strong>
+									<div id="most_quoted">
+										<div class="quoted_device_block"
+											 ng-repeat="deviceId in mostQuotedDevicesIds"
+											 ng-click="selectDevice(deviceId)"
+											 ng-class="{'ui-selected': selectedDevice == deviceId}"
+										>
+											<div class="device_params">
+												<h4 id="device_title">
+													{{ devices[deviceId - 1].model }}
+												</h4>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-6">
+								<div class="form-group">
+									<strong>Choose from a list below:</strong>
+									<div class="devices_list_container">
+										<div id="devices_list">
+											<div class="quoted_device_block"
+												 ng-repeat="device in devices"
+												 ng-click="selectDevice(device.id)"
+												 ng-class="{'ui-selected': selectedDevice == device.id}"
+											>
+												<div class="device_image">
+													<img ng-src="img/devices/{{ device.image }}" />
+												</div>
+												<div class="device_params">
+													<h4 id="device_title">
+														{{ device.model }}
+													</h4>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<script>
+								jQuery(function(){
+									jQuery('#devices_list').slimScroll({
+										height: '280px'
+									});
+								});
+							</script>
+						</div>
+					</div>
+
+					<uib-accordion close-others="oneAtATime">
+						<div class="device_accordion_wrapper" ng-repeat="deviceOptions in addedDevices">
+							<div uib-accordion-group
+								 class="panel-info"
+								 heading="{{ deviceOptions.model }}"
+								 is-open="deviceAccordionIsOpen[$index]"
+							>
+								<div class="col-md-12 accessories_block quoted_devices_form" style="margin-bottom: 20px;">
+									<div class="col-md-12">
+										<div class="col-md-9">
+											<div class="well well-sm">														
+												<h4>Add accessories:</h4> 
+												<div class="form-group" ng-repeat="accessory in deviceOptions.accessories">
+													<div class="checkbox">
+														<input type="checkbox"
+																ng-model="quoteData[quote.id].added_accessories[deviceOptions.id][accessory.id]"
+																ng-checked="quoteData[quote.id].added_accessories[deviceOptions.id][accessory.id]"
+																value="{{ accessory.id }}"
+															/>
+														<strong>{{ accessory.part_number }}</a>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="col-md-3">
+										</div>
+									</div>
+									<br>
+									<div class="col-md-12">
+										<div class="col-md-9">
+											<div class="well well-sm">
+												<h4>Display descriptions:</h4>
+												<div class="form-group">
+													<div class="checkbox">
+														 <br>
+														<input type="checkbox"
+																ng-model="quoteData[quote.id].devices_desc[deviceOptions.id].pdf"
+																ng-true-value="'{{deviceOptions.pdf}}'"
+																ng-false-value="null"
+																ng-checked="quoteData[quote.id].devices_desc[deviceOptions.id].pdf != null"
+														/>
+														<strong>Display PDF?</strong> <a href="{{ deviceOptions.pdf }}">PDF link</a>
+													</div>
+												</div>
+												<div class="form-group">
+													<div class="form-group">
+														<div class="checkbox">
+															<input type="checkbox"
+																ng-model="quoteData[quote.id].devices_desc[deviceOptions.id].color_or_mono"
+																ng-true-value="'{{deviceOptions.color_or_mono}}'"
+																ng-false-value="null"
+																ng-checked="quoteData[quote.id].devices_desc[deviceOptions.id].color_or_mono != null"
+															/>
+															<strong>Color/mono:</strong> {{ deviceOptions.color_or_mono }}
+														</div>
+													</div>
+												</div>
+												<div class="form-group">
+													<div class="form-group">
+														<div class="checkbox">
+															<input type="checkbox"
+																ng-model="quoteData[quote.id].devices_desc[deviceOptions.id].paper_size"
+																ng-true-value="'{{deviceOptions.paper_size}}'"
+																ng-false-value="null"
+																ng-checked="quoteData[quote.id].devices_desc[deviceOptions.id].paper_size != null"
+															/>
+															<strong>Paper size:</strong> {{ deviceOptions.paper_size }}
+														</div>
+													</div>
+												</div>
+												<div class="form-group">
+													<div class="form-group">
+														<div class="checkbox">
+															<input type="checkbox"
+																ng-model="quoteData[quote.id].devices_desc[deviceOptions.id].speed"
+																ng-true-value="'{{deviceOptions.speed}}'"
+																ng-false-value="null"
+																ng-checked="quoteData[quote.id].devices_desc[deviceOptions.id].speed != null"
+															/>
+															<strong>Speed:</strong> {{ deviceOptions.speed }}
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="col-md-3">
+										</div>
+									</div>
+
+									<div class="col-md-12">
+										<div class="col-md-6">
+											<h4>Base:</h4>
+											<div class="form-group">
+												<div class="col-md-6">
+													<label>Cost:</label>	
+													<input type="text" class="form-control" disabled value="{{ deviceOptions.cost }}">
+												</div>
+												<div class="col-md-6">
+													<label>Price:</label>
+													<input type="text" class="form-control" ng-model="quoteData[quote.id].prices[deviceOptions.id].base">
+												</div>
+											</div>
+										</div>
+										<div class="col-md-6">
+											<h4>Additional printed pages cost:</h4>
+											<div class="form-group">
+												<div class="col-md-6">
+													<label>Color:</label>
+													<input type="text" class="form-control" disabled value="{{ deviceOptions.cost_per_color_page }}">
+													<br><input type="text" class="form-control" ng-model="quoteData[quote.id].prices[deviceOptions.id].cost_per_color_page">
+												</div>
+												<div class="col-md-6">
+													<label>B&W:</label>
+													<input type="text" class="form-control" disabled value="{{ deviceOptions.cost_per_mono_page }}">
+													<br><input type="text" class="form-control" ng-model="quoteData[quote.id].prices[deviceOptions.id].cost_per_mono_page">
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</uib-accordion>
+
+					<br>
+					<button ng-click="saveQuote(quote)" class="btn btn-primary">
+						Save Quote
+					</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

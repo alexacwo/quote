@@ -14,7 +14,9 @@
         @include('admin.includes.menu')
         @yield('content')
     </div>
+	
+	@include('admin.includes.scripts')
 
-    @include('admin.includes.scripts')
+	@yield('scripts')
 </body>
 </html>

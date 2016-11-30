@@ -1,0 +1,60 @@
+<div class="container" ng-controller="QuotesController">
+	<div class="row">
+		<div class="col-md-8 col-md-offset-2">
+			<div class="panel panel-default">
+
+				<div class="panel-body">
+					<button type="submit" class="btn btn-warning" ng-click="prepareQuote()">Prepare a new quote</button>
+					<br> <br>
+					<div class="panel panel-info">
+						<div class="panel-heading">
+							Quotes
+						</div>
+						<div class="panel-body">
+							<table class="table table-striped task-table">
+
+								<thead>
+									<th>Id</th>
+									<th>Status</th>
+									<th>User email</th>
+									<th>Link</th>
+								</thead>
+
+								<tbody>
+									<tr ng-repeat="quote in quotes">
+										<td class="table-text">
+											<div>
+												{{ quote.id }}
+											</div>
+										</td>
+										<td class="table-text">
+											<div>
+												{{ quote.status }}
+											</div>
+										</td>
+										<td class="table-text">
+											<div>
+												<span ng-if="quote.user.email">{{ quote.user.email }}</span>
+											</div>
+										</td>
+										<td class="table-text">
+											<a href="edit_quote/{{ quote.guid }}">
+												Edit quote
+											</a>
+											<span ng-if="quote.status != 'draft'">
+												/
+												<a href="../quote/{{ quote.guid }}">
+													Client view
+												</a>
+											</span>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

@@ -8,9 +8,9 @@
 <title>Pahoda Image Products</title>
 
 <!-- Styles -->
-<link href="{{asset('css/app.css')}}" rel="stylesheet">
-<link href="{{asset('css/custom.css')}}" rel="stylesheet">
-<link href="{{asset('css/font-awesome.min.css')}}" rel="stylesheet">
+<link href="{{asset('public/css/app.css')}}" rel="stylesheet">
+<link href="{{asset('public/css/custom.css')}}" rel="stylesheet">
+<link href="{{asset('public/css/font-awesome.min.css')}}" rel="stylesheet">
 
 <!-- Fonts -->
 <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
