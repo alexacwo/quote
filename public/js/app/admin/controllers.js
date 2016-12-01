@@ -79,7 +79,6 @@
 					client_username: $scope.quoteData[$scope.quote.id].client_username,
 					client_company: $scope.quoteData[$scope.quote.id].client_company,
 					client_email: $scope.quoteData[$scope.quote.id].client_email,
-					client_email: $scope.quoteData[$scope.quote.id].client_email,
 					added_devices: Object.keys($scope.addedDevices),
 					devices_desc: $scope.quoteData[$scope.quote.id].devices_desc,
 					added_accessories: $scope.quoteData[$scope.quote.id].added_accessories,

@@ -9,7 +9,6 @@
 
     <div id="app">
         @include('admin.includes.menu')
-        @yield('content')
 		
 		<ng-view></ng-view>	
     </div>
@@ -20,14 +19,14 @@
         ]); ?>
     </script>
 
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+	<script src="{{asset('public/js/assets/jquery.min.js')}}"></script>
 	<script src="{{asset('public/js/assets/jquery-ui.min.js')}}"></script>
 	<script src="{{asset('public/js/assets/bootstrap.min.js')}}"></script>
 	<script src="{{asset('public/js/assets/angular.min.js')}}"></script>
 	<script src="{{asset('public/js/assets/angular-route.js')}}"></script>
 	<script src="{{asset('public/js/assets/angular-touch.min.js')}}"></script>
 	<script src="{{asset('public/js/assets/angular-animate.min.js')}}"></script>
-	<script src="{{asset('public/js/assets/angular-animate.min.js')}}"></script>
+
 	<script src="{{asset('public/js/assets/ui-bootstrap.js')}}"></script>
 	<script src="{{asset('public/js/assets/slimscroll.min.js')}}"></script>
 
@@ -116,9 +115,9 @@
 			});
 		});
 	</script>
-	<script src="{{asset('public/js/app/services.js')}}"></script>
-	<script src="{{asset('public/js/app/controllers.js')}}"></script>
-	<script src="{{asset('public/js/app/main.js')}}"></script>
+	<script src="{{asset('public/js/app/admin/services.js')}}"></script>
+	<script src="{{asset('public/js/app/admin/controllers.js')}}"></script>
+	<script src="{{asset('public/js/app/admin/main.js')}}"></script>
 
 </body>
 </html>

@@ -10,13 +10,21 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
-
+/*
 Route::get('/', 'Client\ClientController@index');
 
 Route::post('/save-calculation/{quote_id}', 'Client\ClientController@save_calculation');
 
 Route::get('/quote/{quote_guid}', 'Client\ClientController@view_quote');
 
+*/
+Route::group(array('prefix' => 'api'), function() {
+
+	Route::resource('quotes', 'Api\Client\ViewQuoteApiController',
+			array('only' => array('index', 'show', 'update')));
+	
+});
+	
 Auth::routes();
 /*
 Route::group(['middleware' =>  'auth' ], function () {
@@ -44,19 +52,19 @@ Route::group(['middleware' =>  'auth' ], function () {
 
 Route::group(['middleware' =>  'auth' ], function () {
 
-	Route::group(array('prefix' => 'adm/api'), function() {
+	 Route::group(array('prefix' => 'adm/api'), function() {
 		
-		Route::resource('quotes', 'Admin\QuoteApiController');
+		Route::resource('quotes', 'Api\Admin\QuoteApiController');
 
-		Route::resource('users', 'Admin\UsersApiController',
+		Route::resource('users', 'Api\Admin\UsersApiController',
 				array('only' => array('index', 'store', 'destroy')));
 
-		Route::get('devices/qet-most-quoted', 'Admin\DevicesApiController@get_most_quoted_devices');
+		Route::get('devices/qet-most-quoted', 'Api\Admin\DevicesApiController@get_most_quoted_devices');
 
-		Route::resource('devices', 'Admin\DevicesApiController',
+		Route::resource('devices', 'Api\Admin\DevicesApiController',
 				array('only' => array('index', 'store', 'update', 'destroy')));
 
-		Route::resource('accessories', 'Admin\AccessoriesApiController',
+		Route::resource('accessories', 'Api\Admin\AccessoriesApiController',
 				array('only' => array('index', 'store', 'update', 'destroy')));
 
 	});
@@ -64,7 +72,11 @@ Route::group(['middleware' =>  'auth' ], function () {
 	Route::get('adm/', function () {
 		return view('admin.angular');
 	});
-	Route::get( '{all}', function () {
+	Route::get( 'adm/{all}', function () {
 		return view('admin.angular');
-	})->where('all', '.*');;
+	})->where('all', '.*');; 
 });
+
+Route::get( '{all}', function () {
+	return view('client.angular');
+})->where('all', '.*');;

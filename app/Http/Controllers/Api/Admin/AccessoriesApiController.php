@@ -1,8 +1,6 @@
 <?php
 
-	namespace App\Http\Controllers\Admin;
-
-	use DB;
+	namespace App\Http\Controllers\Api\Admin;
 
 	use App\User;
 	use App\QuoteRequest;
@@ -12,7 +10,6 @@
 	use Illuminate\Http\Request;
 	use Illuminate\Http\Response;
 	use App\Http\Controllers\Controller;
-	use App\Http\Controllers\Admin\CurlController;
 
 	class AccessoriesApiController extends Controller
 	{
