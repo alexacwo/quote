@@ -49,7 +49,6 @@
                         $scope.prevOutrightPrices = $scope.outrightPrices;
                     });
 
-
                     angular.forEach($scope.selectedAccessoriesWithPrices, function(selectedAccessoriesWithPrices, deviceId) {
                         angular.forEach(selectedAccessoriesWithPrices, function(accessoryPrice, accessoryId) {
                             if (accessoryPrice == 0) {
@@ -110,18 +109,12 @@
                             };
                         }
                         $scope.countRates(deviceId);
-                    });
+                    });  
 
-                    console.log( $scope.selectedAccessoriesWithPrices);
-                    console.log( $scope.outrightPrices);
-
-                    $scope.recalculatePrice = function(deviceId) {
+                    $scope.recalculatePrice = function(deviceId) { 
                         if (typeof $scope.selectedAccessoriesWithPrices[deviceId] == 'undefined') $scope.selectedAccessoriesWithPrices[deviceId] = {};
-                        console.log(deviceId);
-
-                        angular.forEach($scope.quote.prices, function (prices, priceDeviceId) {
-                            $scope.outrightPrices[deviceId] = parseInt(prices.base);
-                        });
+						 
+                        $scope.outrightPrices[deviceId] = parseInt($scope.quote.prices[deviceId].base);
 
                         angular.forEach($scope.selectedAccessoriesWithPrices[deviceId], function(accessoryPrice, accessoryId) {
                             if (accessoryPrice == 0) {
@@ -130,18 +123,10 @@
                             $scope.outrightPrices[deviceId] += accessoryPrice;
 
                             $scope.countRates(deviceId);
-                        });
-                        /*$timeout(function() {
-                            $scope.prevOutrightPrices = $scope.outrightPrices;
-                        }, 700);*/
-                        console.log($scope.outrightPrices[deviceId]);
+                        }); 
                     }
 
-
                 });
-
-
-
         });
 
 })();

@@ -8,7 +8,9 @@
 <body ng-app="clientSide">
 
 	<div id="app">
-		@include('client.includes.menu')
+		@if (( Auth::user() && Auth::user()->role == 'admin' ))
+			@include('client.includes.menu')
+		@endif
 
 		<ng-view></ng-view>
 	</div>
@@ -29,10 +31,10 @@
 	<script src="{{asset('public/js/assets/angular.count-to.js')}}"></script>
 	<script src="{{asset('public/js/assets/ui-bootstrap.js')}}"></script>
 
-	<!-- <script src="{{asset('public/js/assets/jquery.min.js')}}"></script>
+	<script src="{{asset('public/js/assets/jquery.min.js')}}"></script>
 	<script src="{{asset('public/js/assets/jquery-ui.min.js')}}"></script>
 	<script src="{{asset('public/js/assets/bootstrap.min.js')}}"></script>
-	<script src="{{asset('public/js/assets/slimscroll.min.js')}}"></script>-->
+	<script src="{{asset('public/js/assets/slimscroll.min.js')}}"></script>
 
 	<script src="{{asset('public/js/app/client/services.js')}}"></script>
 	<script src="{{asset('public/js/app/client/controllers.js')}}"></script>

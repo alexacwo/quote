@@ -22,13 +22,14 @@
 	<script src="{{asset('public/js/assets/jquery.min.js')}}"></script>
 	<script src="{{asset('public/js/assets/jquery-ui.min.js')}}"></script>
 	<script src="{{asset('public/js/assets/bootstrap.min.js')}}"></script>
+	<script src="{{asset('public/js/assets/slimscroll.min.js')}}"></script>
 	<script src="{{asset('public/js/assets/angular.min.js')}}"></script>
 	<script src="{{asset('public/js/assets/angular-route.js')}}"></script>
 	<script src="{{asset('public/js/assets/angular-touch.min.js')}}"></script>
 	<script src="{{asset('public/js/assets/angular-animate.min.js')}}"></script>
+	<script src="{{asset('public/js/assets/angular-slimscroll.js')}}"></script>
 
 	<script src="{{asset('public/js/assets/ui-bootstrap.js')}}"></script>
-	<script src="{{asset('public/js/assets/slimscroll.min.js')}}"></script>
 
 	<script>
 		jQuery(function(){
@@ -92,14 +93,11 @@
 			
 				
 			/* SlimScroll */
-			jQuery('#clients_list').slimScroll({
+			/*jQuery('#clients_list').slimScroll({
 				height: '280px'
-			});
+			});*/
 			jQuery('#devices_list').slimScroll({
-				height: '280px'
-			});
-			jQuery('.accessories_list').slimScroll({
-				height: '250px'
+				height: '400px'
 			});
 			jQuery('.chosen_accessories_list').slimScroll({
 				height: '250px'

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\Api\Admin;
 
 use App\Http\Controllers\Controller;
 
@@ -26,7 +26,7 @@ class CurlController extends Controller
 
         $ch = curl_init();
 
-        curl_setopt($ch, CURLOPT_URL, $url . '?start=0&limit=50');
+        curl_setopt($ch, CURLOPT_URL, $url . '?start=0&limit=100');
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_HTTPHEADER, array('Accept: application/json'));
         curl_setopt($ch, CURLOPT_USERPWD, $username . ":" . $password);
