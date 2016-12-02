@@ -4,7 +4,7 @@
     </IfModule>
 
     RewriteEngine On
-	RewriteBase /step/pahoda/quote/
+	RewriteBase /step/tasks/pahoda/quote/
 
     # Redirect Trailing Slashes If Not A Folder...
     RewriteCond %{REQUEST_FILENAME} !-d

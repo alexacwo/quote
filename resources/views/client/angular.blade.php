@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<base href="/step/pahoda/quote/" />
+	<base href="/step/tasks/pahoda/quote/" />
 	@include('client.includes.head')
 </head>
 

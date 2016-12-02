@@ -1,6 +1,6 @@
 <div class="container" ng-controller="ClientController">
     <div class="row">
-        <div class="quote_main_page animate-show" ng-show="showQuoteMainPage">
+        <div class="quote_main_page animate-show" ng-show="showQuoteMainPage1">
 
             <div class="header">
                 <div class="col-md-6 pahoda_header left" style="display: none;">
@@ -86,7 +86,7 @@
         <!-- Quoted Devices -->
 
         <div ng-repeat="quotedDevice in quote.devices">
-            <div class="detailed_device_block animate-show" ng-show="showQuotedDeviceBlock && deviceToShow[quotedDevice.id]" style="margin-bottom:500px;">
+            <div class="detailed_device_block animate-show" ng-show="true" style="margin-bottom:500px;">
                 <div id="device_{{ quotedDevice.id }}">
                     <h2 style="text-align: center; font-weight:bold; text-transform: uppercase;">
                         YOUR QUOTE OF {{ quotedDevice.model }} - ID: {{ quotedDevice.id }}
@@ -163,8 +163,10 @@
                                 <div class="price_and_pdf">
                                     <div class="outright_price">
                                         <span ng-if="outrightPrices[quotedDevice.id] > 0">
-                                            Outright Purchase Price: ${{ outrightPrices[quotedDevice.id] }}
-                                    <!-- <span count-to="{{ outrightPrices[quotedDevice.id] }}" value="{{ prevOutrightPrices[quotedDevice.id] }}" duration="1"></span> -->
+                                            Outright Purchase Price: $
+                                            <br>new {{ outrightPrices[quotedDevice.id] }}
+                                            <br>old {{ prevOutrightPrices[quotedDevice.id] }}
+                                            <br><span count-to="{{ outrightPrices[quotedDevice.id] }}" value="{{ prevOutrightPrices[quotedDevice.id] }}" duration="2"></span>
                                         </span>
                                     </div>
                                     <a href="#" class="view_pdf" ng-if="quote.devices_desc[quotedDevice.id].pdf != null">

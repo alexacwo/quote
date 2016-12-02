@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<base href="/step/pahoda/quote/adm/" />
+	<base href="/step/tasks/pahoda/quote/adm/" />
     @include('admin.includes.head')
 </head>
 

@@ -38,7 +38,7 @@
             ClientQuote
                 .get($routeParams.quote)
                 .success(function(response) {
-                    console.log(response);
+                    //console.log(response);
                     $scope.quote = response;
 
                     $scope.selectedAccessoriesWithPrices = $scope.quote.selected_accessories != null ? $scope.quote.selected_accessories : {};
@@ -46,9 +46,8 @@
                     $scope.outrightPrices = {};
                     angular.forEach($scope.quote.prices, function (prices, deviceId) {
                         $scope.outrightPrices[deviceId] = parseInt(prices.base);
-                        $scope.prevOutrightPrices = $scope.outrightPrices;
                     });
-
+                    $scope.prevOutrightPrices = $scope.outrightPrices;
 
                     angular.forEach($scope.selectedAccessoriesWithPrices, function(selectedAccessoriesWithPrices, deviceId) {
                         angular.forEach(selectedAccessoriesWithPrices, function(accessoryPrice, accessoryId) {
@@ -58,6 +57,7 @@
                             $scope.outrightPrices[deviceId] += parseInt(accessoryPrice);
                         });
                     });
+
 
                     $scope.rates = {
                         fmv: {
@@ -111,13 +111,11 @@
                         }
                         $scope.countRates(deviceId);
                     });
-
-                    console.log( $scope.selectedAccessoriesWithPrices);
-                    console.log( $scope.outrightPrices);
-
                     $scope.recalculatePrice = function(deviceId) {
+                        $scope.prevOutrightPrices[deviceId] = $scope.outrightPrices[deviceId];
+                        console.log($scope.prevOutrightPrices[deviceId]);
                         if (typeof $scope.selectedAccessoriesWithPrices[deviceId] == 'undefined') $scope.selectedAccessoriesWithPrices[deviceId] = {};
-                        console.log(deviceId);
+
 
                         angular.forEach($scope.quote.prices, function (prices, priceDeviceId) {
                             $scope.outrightPrices[deviceId] = parseInt(prices.base);
@@ -129,12 +127,12 @@
                             }
                             $scope.outrightPrices[deviceId] += accessoryPrice;
 
-                            $scope.countRates(deviceId);
                         });
-                        /*$timeout(function() {
-                            $scope.prevOutrightPrices = $scope.outrightPrices;
-                        }, 700);*/
-                        console.log($scope.outrightPrices[deviceId]);
+                        $scope.countRates(deviceId);
+                        $timeout(function() {
+                           $scope.prevOutrightPrices[deviceId] = $scope.outrightPrices[deviceId];
+                        }, 500);
+                        console.log($scope.prevOutrightPrices[deviceId]);
                     }
 
 
