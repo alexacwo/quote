@@ -5,6 +5,9 @@
 /tests
 /vendor
 /.idea
+/resources/views/admin/angular.blade.php
+/resources/views/client/angular.blade.php
 Homestead.json
 Homestead.yaml
 .env
+.htaccess
