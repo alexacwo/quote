@@ -10,23 +10,16 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
+
 /*
+
+//OLD ROUTES
 Route::get('/', 'Client\ClientController@index');
 
 Route::post('/save-calculation/{quote_id}', 'Client\ClientController@save_calculation');
 
 Route::get('/quote/{quote_guid}', 'Client\ClientController@view_quote');
-
-*/
-Route::group(array('prefix' => 'api'), function() {
-
-	Route::resource('quotes', 'Api\Client\ViewQuoteApiController',
-			array('only' => array('index', 'show', 'update')));
-	
-});
-	
-Auth::routes();
-/*
+ 
 Route::group(['middleware' =>  'auth' ], function () {
     Route::group(['middleware' =>  'roles:admin' ], function () {
         Route::get('/admin', 'Admin\AdminController@index');
@@ -45,14 +38,22 @@ Route::group(['middleware' =>  'auth' ], function () {
         Route::post('/admin/save-quote', 'Admin\AdminController@save_quote');
 
     });
-});
+}); 
 */
+Route::group(array('prefix' => 'api'), function() {
+	Route::resource('quotes', 'Api\Client\ViewQuoteApiController',
+			array('only' => array('index', 'show', 'update')));	
+});
+	
+Auth::routes();
 
 /* Angular routing for admin dashboard */
 
 Route::group(['middleware' =>  'auth' ], function () {
 
 	 Route::group(array('prefix' => 'adm/api'), function() {
+		 
+		Route::get('quotes/get-capsule-users', 'Api\Admin\QuoteApiController@get_capsule_users_list');
 		
 		Route::resource('quotes', 'Api\Admin\QuoteApiController');
 

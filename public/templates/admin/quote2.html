@@ -2,6 +2,7 @@
     <div class="row">
         <div class="col-md-12">
             <div class="panel panel-default dashboard_edit_quote">
+				<a id="top"></a>
                 <div class="panel-heading">
                     Edit quote #{{ quote.id }}
                 </div>
@@ -11,38 +12,123 @@
 						<div class="panel-heading">
 							Add user
 						</div>
+ 
 
 						<div class="panel-body">
 							<div class="col-md-6">
-								<div class="form-group">
-									<select class="form-control" ng-model="quoteData[quote.id].user_type" id="user_type">
+								<div class="form-group user_form">
+									<select class="form-control" id="user_type"
+											ng-model="quoteData[quote.id].user_type" 
+											ng-change="changedUserType(quoteData[quote.id].user_type)"
+									>
 										<option value="new" ng-selected="quote.user.user_type == 'new'">New User</option>
 										<option value="capsule" ng-selected="quote.user.user_type == 'capsule'">CapsuleCRM User</option>
 									</select>
 									<br>
-									Username:
+									<div class="alert alert-danger"
+										ng-show="quoteData[quote.id].client_email == '' && userInputError && quoteData[quote.id].user_type == 'capsule'">
+										<strong>Choose Capsule CRM User!</strong>
+									</div>
+									Username (*):
 									<input type="text"
 										   class="form-control"
 										   ng-model="quoteData[quote.id].client_username"
+										   ng-disabled="quoteData[quote.id].user_type == 'capsule'"
+										   ng-class="{error: (quoteData[quote.id].client_username == '' && userInputError)}"
+										   ng-change="checkForEmptyInput(quoteData[quote.id].client_username)"
 									/>
+									<span class="error_message"
+											ng-show="quoteData[quote.id].client_username == '' && userInputError && quoteData[quote.id].user_type == 'new'">
+										Please fill in this field
+										<br>
+									</span>
 									<br>
-									Company name (if specified):
+									Company name (if specified) (*):
 									<input type="text"
 										   class="form-control"
 										   ng-model="quoteData[quote.id].client_company"
+										   ng-disabled="quoteData[quote.id].user_type == 'capsule'"
+										   ng-class="{error: (quoteData[quote.id].client_company == '' && userInputError)}"
+										   ng-change="checkForEmptyInput(quoteData[quote.id].client_company)"
 									/>
+									<span class="error_message"
+											ng-show="quoteData[quote.id].client_company == '' && userInputError && quoteData[quote.id].user_type == 'new'">
+										Please fill in this field
+										<br>
+									</span>
 									<br>
-									E-mail (if specified):
+									E-mail (if specified) (*):
 									<input type="text"
 										   class="form-control"
 										   ng-model="quoteData[quote.id].client_email"
+										   ng-disabled="quoteData[quote.id].user_type == 'capsule'"
+										   ng-class="{error: (quoteData[quote.id].client_email == '' && userInputError)}"
+										   ng-change="checkForEmptyInput(quoteData[quote.id].client_email)"
 									/>
+									<span class="error_message"
+											ng-show="quoteData[quote.id].client_email == '' && userInputError && quoteData[quote.id].user_type == 'new'">
+										Please fill in this field
+										<br>
+									</span>
+									(*) - mandatory fields
 								</div>
 							</div>
 							<div class="col-md-6">
 								<div class="clients_list_container">
-									<div id="clients_list">
-										@include('admin.includes.edit_quote.edit_user.capsule_list')
+									<div class="col-md-12" style="margin-top:5px;">
+										<h5><strong>Search Capsule CRM user:</strong></h5>
+										<div class="col-md-6">
+											By firstname:
+											<input type="text"
+												   class="form-control"
+												   ng-model="searchUserByFirstname"
+											/>
+										</div>
+										<div class="col-md-6">
+											By lastname:
+											<input type="text"
+												   class="form-control"
+												   ng-model="searchUserByLastname"
+											/>
+										</div>
+										<div class="col-md-8">
+											By email:
+											<input type="text"
+												   class="form-control"
+												   ng-model="searchUserByEmail"
+											/>
+										</div>
+									</div>
+									<div class="col-md-12">
+										<div id="clients_list">										
+											<div class="form-group">
+												<div class="capsule_client_block"
+												ng-repeat="capsuleUser in capsuleUsers.contacts |
+												filter: { contacts: {email: {emailAddress: searchUserByEmail}}, firstName: searchUserByFirstname, lastName: searchUserByLastname}"												
+												 ng-click="selectCapsuleUser(capsuleUser)"
+												 ng-class="{'ui-selected': selectedCapsuleUser == capsuleUser.id}"
+												>
+													<div class="client_image">
+														<img ng-src=" {{ capsuleUser.pictureURL }} " />
+													</div>
+													<div class="client_contacts">													
+														<h5 class="capsule_username" ng-if="capsuleUser.firstName">Firstname: <span>{{ capsuleUser.firstName }}</span></h5>
+														<h5 class="capsule_username" ng-if="capsuleUser.lastName">Lastname: <span>{{ capsuleUser.lastName }}</span></h5>														
+														<div class="contact" ng-if="capsuleUser.organisationName">Company:
+															<span>
+																{{ capsuleUser.organisationName }}
+															</span>
+														</div>
+														<div class="contact" ng-if="capsuleUser.contacts.email.emailAddress">Email:
+															<span>
+																{{ capsuleUser.contacts.email.emailAddress }}
+															</span>
+														</div>
+														<span class="contact details"></span>
+													</div>
+												</div>
+											</div>
+										</div>
 									</div>
 								</div>
 							</div>
@@ -90,7 +176,7 @@
 												 ng-class="{'ui-selected': selectedDevice == device.id}"
 											>
 												<div class="device_image">
-													<img ng-src="img/devices/{{ device.image }}" />
+													<img ng-src="../public/img/devices/{{ device.image }}" />
 												</div>
 												<div class="device_params">
 													<h4 id="device_title">
@@ -237,7 +323,7 @@
 					</uib-accordion>
 
 					<br>
-					<button ng-click="saveQuote(quote)" class="btn btn-primary">
+					<button ng-click="saveQuote()" class="btn btn-primary">
 						Save Quote
 					</button>
 				</div>

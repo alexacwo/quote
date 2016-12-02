@@ -12,7 +12,7 @@
 	use Illuminate\Http\Request;
 	use Illuminate\Http\Response;
 	use App\Http\Controllers\Controller;
-	use App\Http\Controllers\Admin\CurlController;
+	use App\Http\Controllers\Api\Admin\CurlController;
 
 	class QuoteApiController extends Controller {
 
@@ -116,16 +116,36 @@
 		}
 		
 		/**
+		 * Get Capsule CRM users
+		 *
+		 * @param  int $id
+		 * @return Response
+		 */
+		public function get_capsule_users_list() {
+		
+			$curl = new CurlController;
+			$url = "https://pahoda.capsulecrm.com/api/party";
+			$username = "108fa7bce4476acba87cd36f699b2df9";
+			$password = "x";
+			$json_response = $curl->get($url, $username, $password);
+			$response = json_decode($json_response); 
+
+			$contacts = $response->parties->person;
+						
+			return response()->json(array('contacts' => $contacts));
+		}
+		
+		/**
 		 * Remove the specified quote from storage
 		 *
 		 * @param  int  $id
 		 * @return Response
 		 */
-		public function destroy($id)
+		/*public function destroy($id)
 		{
 			Quote::destroy($id);
 
 			return response()->json(array('success' => true));
-		}
+		}*/
 
 	}

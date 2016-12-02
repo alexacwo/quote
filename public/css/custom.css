@@ -3,29 +3,116 @@ body {
 	background:#fff !important;
 }
 .pahoda_header {
-	height:450px;
+	height:430px;
 }
-.pahoda_header.left {
+.quote_main_page .pahoda_header.left {
 	background:#efefef;
+	border:1px solid #e6e6e6;
 }
-.pahoda_header .pahoda_logo {
-	width:318px;
-	height:229px;
-	background:url('../img/pahoda_logo.png');
+.pahoda_header.right {
+	padding-left:30px;
+	padding-right:0px;
+}
+.quote_main_page .pahoda_header .pahoda_logo,
+.detailed_device_page_header .pahoda_header .pahoda_logo {
+    width: 318px;
+    display: block;
+    height: 280px;
+    margin: auto;
+}
+.quote_main_page .pahoda_header .pahoda_logo {
+    background: url(../img/pahoda_logo.png) no-repeat center;
+}
+.detailed_device_page_header {
+	padding-top:50px;
+}
+.detailed_device_page_header .pahoda_header .pahoda_logo {
+    background: url(../img/pahoda_logo_white.png) no-repeat center;
 }
 .pahoda_header .official_quote {
-	height:130px;
-	width:520px;
-	border-radius:3px;
-	border:1px dashed #b7b7b7;
+    line-height: 120px;
+    font-size: 22px;
+    text-align: center;
+    height: 120px;
+    width: 520px;
+    border-radius: 3px;
+    margin: auto;
 }
-.header .fa {
+.quote_main_page .pahoda_header .official_quote {
+    border: 1px dashed #b7b7b7;
+}
+.detailed_device_page_header .pahoda_header .official_quote {
+    border: 1px dashed #fff;
+	background:rgba(255,255,255,0.1);
+	color: #fff;
+}
+.quote_main_page .quote_editor,
+.quote_main_page .quote_contact_email {
+	font-size:20px;
+    height: 40px;
+}
+.quote_main_page .quote_contact_phone {
+	font-size:20px;
+    height: 35px;
+}
+.detailed_device_page_header .quote_editor,
+.detailed_device_page_header .quote_contact_email,
+.detailed_device_page_header .quote_contact_phone {
+	color:#fff;
+	font-size:14px;
+	margin-bottom:10px;
+}
+.detailed_device_page_header a,
+.detailed_device_page_header a:hover,
+.detailed_device_page_header a:focus,
+.detailed_device_page_header a:active {
+	color:#fff;
+}
+.quote_main_page .quote_photo {
+	height:375px;
+}
+.quote_editor .fa,
+.quote_contact_email .fa,
+.quote_contact_phone .fa {
+	margin-right:10px;
+}
+.quote_main_page .page_header .fa {
 	color:#51b2df;
 }
-.pahoda_header .quote_photo {
+.quote_main_page .pahoda_header .quote_photo {
 	height:315px;
 	width:100%;
-	background:url('../img/quote_photo.png');	
+    background: url(../img/quote_photo.png) no-repeat left;
+    background-size: cover;
+}
+.detailed_device_page_header .pahoda_header.right > .contacts {
+	padding-top:150px;
+}
+.detailed_device_page_header .pahoda_header .quote_photo {
+	min-height:400px;
+	width:100%;
+    background: url(../img/quote_photo_detailed_page.png) no-repeat center;	
+	box-shadow: 0 2px 5px rgba(0,0,0,.3);
+	border:2px solid #fff;
+    background-size: cover;
+}
+.page_header {
+	width:100%;
+	margin-top:40px;
+}
+.content {
+	margin-top:50px;
+}
+.content h2 {
+	margin-top:20px;
+}
+.content,
+.bottom-menu {
+	float:left;
+	width:100%;
+}
+.bottom-menu {
+	margin-top:50px;
 }
 
 /* Main quote page */
@@ -48,6 +135,23 @@ body {
 
 /* Detailed device page -- Description */
 
+#quoted_devices_list .device_title > div {
+	padding-bottom:5px;
+	font-size: 24px;
+}
+.detailed_device_page_header {
+	height:500px;
+	width:100%;
+    background: url(../img/header_background.png) no-repeat center;	
+    background-size: cover;
+}
+	
+.detailed_device_header_block .header {
+	padding-bottom:5px;
+	font-size: 18px;
+	color: #51b2df;
+	font-weight: bold;	
+}
 .detailed_device_header_block .device_parameters {
 	height:300px;
 	margin-bottom: 40px;
@@ -90,6 +194,16 @@ body {
 	display: block;
 	width: 200px;
 	height: 200px; 
+	margin-top: -100px;
+	margin-left: -100px;
+	position: absolute;
+	left: 50%;
+	top: 50%;
+}
+#quoted_devices_list .device_photo img {
+	display: block;
+	width: 200px;
+	height: 200px;
 	margin-top: -100px;
 	margin-left: -100px;
 	position: absolute;
@@ -261,7 +375,6 @@ body {
 .clients_list_container,
 .devices_list_container {
     overflow: hidden;
-    height: 280px;
     background: #eee;
     border-radius: 3px;
     border: 1px solid #ddd;
@@ -269,10 +382,28 @@ body {
     -moz-box-box-shadow: inset 1px 1px rgba(128,128,128,.05);
     box-shadow: inset 1px 1px rgba(128,128,128,.05);
 }
-.clients_list_container .slimScrollDiv,
+.clients_list_container {
+    height: 500px;
+}
+.devices_list_container {
+    height: 300px;
+	padding-left:15px;
+	padding-right:15px;
+}
+.clients_list_container .slimScrollDiv {
+	padding-left:20px;
+	padding-right:20px;
+    margin-top: 15px;
+    border: 1px solid #ddd;
+}
 .devices_list_container .slimScrollDiv {
 	padding-left:20px;
 	padding-right:20px;
+    margin-top: 15px;
+    border: 1px solid #ddd;
+}
+.clients_list_container .form-control {
+	margin-bottom:8px;
 }
 .capsule_client_block,
 #devices_list .quoted_device_block {
@@ -343,6 +474,29 @@ body {
 .capsule_client_block .client_contacts .details {
     font-weight:bold;
 }
+.capsule_username {
+    white-space: nowrap;
+    margin: 0;
+    margin-bottom: 5px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.capsule_username span {
+	font-weight:bold;
+}
+.capsule_client_block .contact {
+	white-space: nowrap;
+	margin:0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-right:5px;
+}
+.capsule_client_block .contact span {
+	font-weight:bold;
+}
+	
+/* Admin -- Devices */
+
 .chosen_accessories_list,
 .accessories_list {
     padding:10px;
@@ -401,8 +555,12 @@ body {
 }
 	
 /* Helpers */
-#editQuote input.error {
-    background: #fff9ff;
+.user_form .error {
+    background:#fff6ff;
+}
+.user_form  .error_message {
+	font-weight: bold;
+	color: #d00;
 }
 .error {
     color:#f45;

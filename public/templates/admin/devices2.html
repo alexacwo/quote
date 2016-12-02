@@ -19,14 +19,14 @@
                                          heading="{{ device.model }}"
                                          is-open="deviceAccordionIsOpen[$index]"
                                     >												
-										<div class="alert alert-success device_updated animate-show" ng-show="deviceUpdated">
+										<div class="alert alert-success device_updated animate-show" ng-show="deviceUpdated[device.id]">
 											<strong>Device info updated!</strong>
 										</div>
 
                                         <div class="col-md-4">
                                             <h4>Add accessories:</h4>
                                             <div class="accessories_list_container">
-                                                <div class="accessories_list">
+                                                <div class="accessories_list" slimscroll="{height: 200}">
                                                     <div class="checkbox accessory_block" ng-repeat="accessory in accessories">
                                                         <input class="accessory" type="checkbox"
                                                                ng-model="selectedAccessories[device.id][accessory.id]"

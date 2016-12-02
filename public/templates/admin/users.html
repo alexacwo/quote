@@ -22,7 +22,7 @@
                                 </thead>
 
                                 <tbody>
-                                <tr ng-repeat="user in users">
+                                <tr ng-repeat="user in users" ng-if="user.quotes.length">
                                     <td class="table-text">
                                         <div>
                                             {{ user.id }}
