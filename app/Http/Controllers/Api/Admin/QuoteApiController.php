@@ -23,8 +23,7 @@
 		 */
 		public function index()
 		{
-			return response()
-					->json(Quote::with('user')->get());
+			return response()->json(Quote::with('user')->get());
 		}
 
 		/**
@@ -128,13 +127,30 @@
 			$username = "108fa7bce4476acba87cd36f699b2df9";
 			$password = "x";
 			$json_response = $curl->get($url, $username, $password);
-			$response = json_decode($json_response); 
+			$response = json_decode($json_response);
+
 
 			$contacts = $response->parties->person;
 						
 			return response()->json(array('contacts' => $contacts));
 		}
-		
+
+		/**
+		 * Set the quote status to draft
+		 *
+		 * @param  Request $request
+		 * @return Response
+		 */
+		public function unpublish_quote(Request $request) {
+
+
+			/*$quote = Quote::find($request->quote_id);
+			$quote->status = 'draft';
+			$quote->save();*/
+
+			return response()->json(array('success' => $request->quote_id));
+		}
+
 		/**
 		 * Remove the specified quote from storage
 		 *

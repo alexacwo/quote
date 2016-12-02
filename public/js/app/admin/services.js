@@ -11,10 +11,20 @@
                     return $http.get('api/quotes');
                 },
 
-                save : function() {
+               /* save : function() {
                     return $http({
                         method: 'POST',
                         url: 'api/quotes'
+                    });
+                },*/
+
+                unpublish : function(quoteId) {
+                    return $http({
+                        method: 'POST',
+                        url: 'api/quotes/unpublish-quote',
+                        data:  {
+                            quote_id : quoteId
+                        }
                     });
                 },
 
@@ -32,8 +42,6 @@
                 },
 
                 update : function(quoteId, quoteData) {
-					console.log(quoteId);
-					console.log(quoteData);
                     return $http({
                         method: 'PUT',
                         url: 'api/quotes/' + quoteId,

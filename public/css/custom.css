@@ -500,11 +500,13 @@ body {
 .chosen_accessories_list,
 .accessories_list {
     padding:10px;
-	overflow: hidden;
+	/*overflow: hidden;*/
     width: 100%;
-    border: 1px solid #ccc;
     border-radius: 3px;
-    height: 200px;
+}
+.accessories_list_container,
+.chosen_accessories_list_container {
+	border: 1px solid #ccc;
 }
 .chosen_accessories_list_container .checkbox,
 .chosen_accessories_list_container .radio,

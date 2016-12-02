@@ -13,7 +13,7 @@ class Quote extends Model
      */
     protected $fillable = [
         'link_guid',
-        'status',
+        'publish_status',
         'user_id',
         'devices',
         'devices_desc',

@@ -21,8 +21,8 @@
 											ng-model="quoteData[quote.id].user_type" 
 											ng-change="changedUserType(quoteData[quote.id].user_type)"
 									>
-										<option value="new" ng-selected="quote.user.user_type == 'new'">New User</option>
-										<option value="capsule" ng-selected="quote.user.user_type == 'capsule'">CapsuleCRM User</option>
+										<option value="new" ng-selected="quoteData[quote.id].user_type == 'new' || quoteData[quote.id].user_type == ''">New User</option>
+										<option value="capsule" ng-selected="quoteData[quote.id].user_type == 'capsule'">CapsuleCRM User</option>
 									</select>
 									<br>
 									<div class="alert alert-danger"

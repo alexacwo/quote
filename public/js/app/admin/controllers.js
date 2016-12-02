@@ -8,46 +8,59 @@
             Quotes
                 .getAll()
                 .success(function(response) {
-                    $scope.quotes = response;
-                });
-			$scope.prepareQuote = function() {				
-				Quotes
-					.save()
-					.success(function(response) {
-						$window.location.href = 'edit_quote/' + response.guid;
-					});
-			}
+                   	$scope.quotes = response;
+					console.log(response);
+
+					$scope.prepareQuote = function() {
+						Quotes
+							.save()
+							.success(function(response) {
+								$window.location.href = 'edit_quote/' + response.guid;
+							});
+					}
+
+					$scope.unpublishQuote = function(quoteId) {
+						Quotes
+							.unpublish(quoteId)
+							.success(function(response) {
+								console.log(response);
+								//$window.location.href = 'quotes';
+							});
+					}
+
+				});
         })
         .controller('QuoteController', function($scope, $http, $window, $location, $routeParams, Quote, Device, anchorSmoothScroll){
             Quote
                 .get($routeParams.quote)
                 .success(function(response) {
-                    $scope.quote = response;
-					console.log(response);
-					
+
 					Quote
 						.getCapsuleUsers()
 						.success(function(response) {
 							$scope.capsuleUsers = response;
 							//console.log($scope.capsuleUsers);
-							
+
 							jQuery('#clients_list').slimScroll({
 								height: '280px'
 							});
-							
-							
+
 							$scope.selectCapsuleUser = function(capsuleUser) {
 								$scope.selectedCapsuleUser = capsuleUser.id;
-								console.log(capsuleUser);
-								if ($scope.quoteData[$scope.quote.id].user_type == 'capsule') {
-									$scope.quoteData[$scope.quote.id].client_username = typeof capsuleUser.firstName != 'undefined' ? capsuleUser.firstName + ' ' : '';
-									$scope.quoteData[$scope.quote.id].client_username += typeof capsuleUser.lastName != 'undefined' ? capsuleUser.lastName : '';
-									$scope.quoteData[$scope.quote.id].client_company = typeof capsuleUser.organisationName != 'undefined' ? capsuleUser.organisationName + ' ' : '';
-									$scope.quoteData[$scope.quote.id].client_email = typeof capsuleUser.contacts.email.emailAddress != 'undefined' ? capsuleUser.contacts.email.emailAddress + ' ' : '';
-								}
+
+								$scope.quoteData[$scope.quote.id].user_type = 'capsule';
+
+								$scope.quoteData[$scope.quote.id].client_username = typeof capsuleUser.firstName != 'undefined' ? capsuleUser.firstName + ' ' : '';
+								$scope.quoteData[$scope.quote.id].client_username += typeof capsuleUser.lastName != 'undefined' ? capsuleUser.lastName : '';
+								$scope.quoteData[$scope.quote.id].client_company = typeof capsuleUser.organisationName != 'undefined' ? capsuleUser.organisationName + ' ' : '';
+								$scope.quoteData[$scope.quote.id].client_email = typeof capsuleUser.contacts.email.emailAddress != 'undefined' ? capsuleUser.contacts.email.emailAddress + ' ' : '';
 							}
-			
+
 						});
+
+					$scope.quote = response;
+
+					console.log(response);
 					
 					$scope.addedDevices = {};
 					angular.forEach($scope.quote.devices, function(device, index) {
@@ -55,7 +68,9 @@
 					});
 					
 					//console.log($scope.addedDevices);
-					
+
+					$scope.quoteData = {};
+					if (typeof $scope.quoteData[$scope.quote.id] != 'undefined') $scope.quoteData[$scope.quote.id].user_type == quote.user.user_type;
 					$scope.updateDevicePrices = function() {
 						angular.forEach($scope.addedDevices, function(device, deviceId) {
 							
@@ -129,7 +144,7 @@
 					($scope.quoteData[$scope.quote.id].client_email != ''))
 				{
 					var data = {
-						status: $scope.quote.status,
+						publish_status: $scope.quote.publish_status,
 						user_type: $scope.quoteData[$scope.quote.id].user_type,
 						client_username: $scope.quoteData[$scope.quote.id].client_username,
 						client_company: $scope.quoteData[$scope.quote.id].client_company,
@@ -144,7 +159,8 @@
 						.success(function(response) { 
 						});
 				} else {
-					$window.scrollTo(0, 0);
+					//$window.scrollTo(0, 0);
+					anchorSmoothScroll.scrollTo('top');
 					$scope.userInputError = true;
 				}
 			}
@@ -220,10 +236,8 @@
             }            
 
             $scope.acessoryStateChanged = function (deviceId, accessoryId) {
-
                 if (typeof $scope.selectedAccessories[deviceId] == 'undefined') $scope.selectedAccessories[deviceId] = {};
                 $scope.moveAccessories(deviceId, accessoryId, $scope.selectedAccessories[deviceId][accessoryId]);
-
             };
 
             $scope.addAccessories= function(deviceId) {
