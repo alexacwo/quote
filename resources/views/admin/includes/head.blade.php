@@ -7,4 +7,4 @@
 <title>Pahoda Image Products</title>
 
 <link href="{{asset('public/css/custom.css')}}" rel="stylesheet">
-<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+<link href="{{asset('public/css/bootstrap-3.3.7.min.css')}}" rel="stylesheet">

@@ -11,6 +11,15 @@
                         </div>
 
                         <div class="panel-body">
+						
+							<ul uib-pagination
+								total-items="users.length"
+								items-per-page="usersNumPerPage"
+								ng-model="usersCurrentPage"
+								max-size="usersMaxSize"
+								class="pagination-sm"
+								boundary-links="true"></ul>						
+						
                             <table class="table table-striped task-table">
 
                                 <thead>
@@ -22,7 +31,7 @@
                                 </thead>
 
                                 <tbody>
-                                <tr ng-repeat="user in users" ng-if="user.quotes.length">
+                                <tr ng-repeat="user in filteredUsers"  >
                                     <td class="table-text">
                                         <div>
                                             {{ user.id }}
@@ -60,6 +69,15 @@
                                 </tr>
                                 </tbody>
                             </table>
+							
+							<ul uib-pagination
+								total-items="users.length"
+								items-per-page="usersNumPerPage"
+								ng-model="usersCurrentPage"
+								max-size="usersMaxSize"
+								class="pagination-sm"
+								boundary-links="true"></ul>								
+								
                         </div>
                     </div>
                 </div>

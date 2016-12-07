@@ -54,7 +54,9 @@ Route::group(['middleware' =>  'auth' ], function () {
 	 Route::group(array('prefix' => 'adm/api'), function() {
 		 
 		Route::get('quotes/get-capsule-users', 'Api\Admin\QuoteApiController@get_capsule_users_list');
-
+		
+		Route::post('quotes/duplicate', 'Api\Admin\QuoteApiController@duplicate');
+		
 		Route::post('quotes/unpublish-quote', 'Api\Admin\QuoteApiController@unpublish_quote');
 		
 		Route::resource('quotes', 'Api\Admin\QuoteApiController');
@@ -62,11 +64,15 @@ Route::group(['middleware' =>  'auth' ], function () {
 		Route::resource('users', 'Api\Admin\UsersApiController',
 				array('only' => array('index', 'store', 'destroy')));
 
+		Route::post('devices/upload-csv', 'Api\Admin\DevicesApiController@upload_csv');
+		
 		Route::get('devices/qet-most-quoted', 'Api\Admin\DevicesApiController@get_most_quoted_devices');
 
 		Route::resource('devices', 'Api\Admin\DevicesApiController',
 				array('only' => array('index', 'store', 'update', 'destroy')));
 
+		Route::post('accessories/upload-csv', 'Api\Admin\AccessoriesApiController@upload_csv');
+		
 		Route::resource('accessories', 'Api\Admin\AccessoriesApiController',
 				array('only' => array('index', 'store', 'update', 'destroy')));
 
@@ -77,9 +83,9 @@ Route::group(['middleware' =>  'auth' ], function () {
 	});
 	Route::get( 'adm/{all}', function () {
 		return view('admin.angular');
-	})->where('all', '.*');; 
+	})->where('all', '.*');
 });
 
 Route::get( '{all}', function () {
 	return view('client.angular');
-})->where('all', '.*');;
+})->where('all', '^((?!adm).)*$');

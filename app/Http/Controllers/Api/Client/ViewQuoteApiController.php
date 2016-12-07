@@ -82,13 +82,14 @@
 			$quote = Quote::where('guid', $quote_guid)->first();
 
 			$quote->selected_accessories = $request->selected_accessories;
+			$quote->selected_custom_accessories = $request->selected_custom_accessories;
 			
 			$quote->save();
 
 			return response()->json(
 					array(
 							'success' => $quote,
-							'222' => $quote_guid
+							'quote_guid' => $quote_guid
 					));
 		}
 

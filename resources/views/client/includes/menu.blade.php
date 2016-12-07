@@ -11,7 +11,7 @@
         </div>
 
         <div class="collapse navbar-collapse" id="app-navbar-collapse">
-            @if (( Auth::user() && Auth::user()->role == 'admin' ))
+            @if (( Auth::user() && Auth::user()->role == 'admin' ) && 1==0)
                 <ul class="nav navbar-nav navbar-left">
                     <li class="dropdown">
                         <a href="{{url('/adm')}}" role="button">

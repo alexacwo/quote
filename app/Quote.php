@@ -12,12 +12,15 @@ class Quote extends Model
      * @var array
      */
     protected $fillable = [
-        'link_guid',
-        'publish_status',
+        'guid',
+        'editor',
+        'status',
         'user_id',
         'devices',
         'devices_desc',
-        'prices'
+        'prices',
+        'custom_accessories',
+        'custom_descriptions'
     ];
 
     /**
@@ -31,6 +34,10 @@ class Quote extends Model
         'added_accessories' => 'array',
         'selected_accessories' => 'array',
         'prices' => 'array',
+        'custom_accessories' => 'array',
+        'custom_descriptions' => 'array',
+        'selected_custom_accessories' => 'array',
+        'included_pages' => 'array',
     ];
 
     /**

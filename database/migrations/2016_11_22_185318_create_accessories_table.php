@@ -17,8 +17,8 @@ class CreateAccessoriesTable extends Migration
             $table->increments('id');
             $table->string('part_number');
             $table->string('description');
-            $table->integer('cost');
-            $table->integer('price');
+            $table->float('cost', 11, 3);			
+            $table->float('price', 11, 3);
             $table->timestamps();
         });
     }

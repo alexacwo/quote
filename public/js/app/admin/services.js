@@ -11,12 +11,12 @@
                     return $http.get('api/quotes');
                 },
 
-               /* save : function() {
+				save : function() {
                     return $http({
                         method: 'POST',
                         url: 'api/quotes'
                     });
-                },*/
+                },
 
                 unpublish : function(quoteId) {
                     return $http({
@@ -35,6 +35,16 @@
             return {
                 get : function(quid) {
                     return $http.get('api/quotes/' + quid);
+                },
+				
+				duplicate : function(quoteToDuplicateId) {
+                    return $http({
+                        method: 'POST',
+                        url: 'api/quotes/duplicate',
+                        data:  {
+                            quote_to_duplicate_id : quoteToDuplicateId
+                        }  
+                    });
                 },
 				
                 getCapsuleUsers : function() {
@@ -61,7 +71,7 @@
                     return $http.get('api/users');
                 },
 
-                save : function(commentData) {
+               /* save : function(commentData) {
                     return $http({
                         method: 'POST',
                         url: 'api/users',
@@ -72,7 +82,7 @@
 
                 destroy : function(id) {
                     return $http.delete('api/users/' + id);
-                }
+                }*/
             }
         })
         .factory('Device', function($http) {
@@ -104,6 +114,16 @@
                         }
 
                     });
+                },
+				
+				uploadCsv : function(type, formData) {
+                    return $http({
+						method: "POST",
+						url: 'api/' + type + '/upload-csv',
+						dataType: 'json',
+						data: formData,
+						headers: {'Content-Type': undefined}
+					});
                 },
 
                 destroy : function(id) {

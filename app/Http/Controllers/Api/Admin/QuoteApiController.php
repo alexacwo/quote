@@ -50,11 +50,41 @@
 			$quote = new Quote;
 			$quote->guid = $guid;
 			$quote->status = 'draft';
+			$quote->editor = 'jesse';
 			$quote->save();
 			
 			return response()->json(array('guid' => $guid));
 		}
 
+		/**
+		 * Store a newly created resource in storage.
+		 * @param Request $request
+		 * @return Response
+		 */
+		public function duplicate(Request $request)			
+		{
+			$quote_to_duplicate = Quote::find($request->quote_to_duplicate_id)
+				->with('user', 'devices')->first();
+			
+			$guid = $this->generate_guid_for_quote_link();
+
+			$new_quote = new Quote;
+			$new_quote->guid = $guid;
+			$new_quote->status = 'draft';
+						
+			$new_quote->devices_desc = $quote_to_duplicate->devices_desc;
+			$new_quote->prices = $quote_to_duplicate->prices;
+			$new_quote->added_accessories = $quote_to_duplicate->added_accessories;
+			$new_quote->selected_accessories = $quote_to_duplicate->selected_accessories;
+			$new_quote->included_pages = $quote_to_duplicate->included_pages;
+			$new_quote->user()->associate($quote_to_duplicate->user);
+			$new_quote->save();
+			
+			$new_quote->devices()->attach($quote_to_duplicate->devices);
+			
+			return response()->json(array('guid' => $guid));
+		}
+		
 		/**
 		 * Show the specified quote
 		 *
@@ -81,33 +111,37 @@
 		{
 			$quote_status = $request->status;
 			$quote = Quote::find($quote_id);
- 
+ 			
 			// In case we publish the quote for the first time
-			 if ($quote_status == 'draft') {
-				 $quote->status = 'published';
-			 }
-             // Check if the user already exists
-             // If no, create a new user
-             // If yes, add the quote to the list of existing quotes and update username/company_name
-             $user = User::where('email', $request->client_email)->first();
+			if ($quote_status == 'draft') {
+				$quote->status = 'published';
+			}
+			// Check if the user already exists
+			// If no, create a new user
+			// If yes, add the quote to the list of existing quotes and update username/company_name
+			$user = User::where('email', $request->client_email)->first();
 
-             if ($user === null) {
-                 $user = new User;
-                 $user->role = 'client';
-             }			 
-			 $user->user_type = $request->user_type;
-			 $user->name = $request->client_username;
-			 $user->company = $request->client_company;
-			 $user->email = $request->client_email;
-			 $user->quotes()->save($quote);
-			 $user->save();
+			if ($user === null) {
+				$user = new User;
+				$user->role = 'client';
+			}			 
+			$user->user_type = $request->user_type;
+			$user->name = $request->client_username;
+			$user->company = $request->client_company;
+			$user->email = $request->client_email;
+			$user->quotes()->save($quote);
+			$user->save();
 
 			$quote->devices()->sync($request->added_devices);
 			$quote->prices = $request->prices;
 			$quote->user()->associate($user);
 
+			$quote->editor = $request->editor;
 			$quote->devices_desc = $request->devices_desc;
 			$quote->added_accessories = $request->added_accessories;
+			$quote->included_pages = $request->included_pages;
+			$quote->custom_accessories = $request->custom_accessories;
+			$quote->custom_descriptions = $request->custom_descriptions;
 
 			$quote->save();
 			
@@ -142,11 +176,9 @@
 		 * @return Response
 		 */
 		public function unpublish_quote(Request $request) {
-
-
-			/*$quote = Quote::find($request->quote_id);
+			$quote = Quote::find($request->quote_id);
 			$quote->status = 'draft';
-			$quote->save();*/
+			$quote->save(); 
 
 			return response()->json(array('success' => $request->quote_id));
 		}

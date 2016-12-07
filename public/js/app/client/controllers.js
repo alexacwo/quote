@@ -4,7 +4,7 @@
 
     angular
         .module('clientCtrl', [])
-        .controller('ClientController', function($scope, $http, $window, $timeout, $routeParams, ClientQuote){
+        .controller('ClientController', function($scope, $http, $window, $timeout, $routeParams, ClientQuote, anchorSmoothScroll){
 
             $scope.showQuoteMainPage = true;
             $scope.showQuotedDeviceBlock = false;
@@ -12,13 +12,14 @@
 
             $scope.saveCalculation = function (quoteGuid, deviceId) {
 
-                console.log(quoteGuid);
+                //console.log(quoteGuid);
                 ClientQuote
-                    .update(quoteGuid, $scope.selectedAccessoriesWithPrices)
+                    .update(quoteGuid, $scope.selectedAccessoriesWithPrices, $scope.selectedCustomAccessoriesWithPrices)
                     .success(function(response) {
-                        console.log(response);
+                        //console.log(response);
                         $scope.showQuotedDeviceBlock = false;
                         $scope.deviceToShow[deviceId] = false;
+						anchorSmoothScroll.scrollTo('top');
 
                         $timeout(function () {
                             $scope.showQuoteMainPage = true;
@@ -28,7 +29,8 @@
 
             $scope.showQuotedDevice = function (quotedDeviceId) {
                 $scope.showQuoteMainPage = false;
-
+				anchorSmoothScroll.scrollTo('top');
+				
                 $timeout(function () {
                     $scope.showQuotedDeviceBlock = true;
                     $scope.deviceToShow[quotedDeviceId] = true;
@@ -42,6 +44,8 @@
                     $scope.quote = response;
 
                     $scope.selectedAccessoriesWithPrices = $scope.quote.selected_accessories != null ? $scope.quote.selected_accessories : {};
+					$scope.selectedCustomAccessoriesWithPrices = $scope.quote.selected_custom_accessories != null ? $scope.quote.selected_custom_accessories : {};
+					console.log($scope.selectedCustomAccessoriesWithPrices);
 
                     $scope.outrightPrices = {};
                     angular.forEach($scope.quote.prices, function (prices, deviceId) {
@@ -58,6 +62,15 @@
                         });
                     });
 
+                    angular.forEach($scope.selectedCustomAccessoriesWithPrices, function(selectedCustomAccessoriesWithPrices, deviceId) {
+                        angular.forEach(selectedCustomAccessoriesWithPrices, function(accessoryPrice, accessoryId) {
+                            if (accessoryPrice == 0) {
+                                delete $scope.selectedCustomAccessoriesWithPrices[deviceId][accessoryId];
+                            }
+                            $scope.outrightPrices[deviceId] += parseInt(accessoryPrice);
+                        });
+                    });
+					
                     $scope.rates = {
                         fmv: {
                             3000: {
@@ -111,19 +124,27 @@
                         $scope.countRates(deviceId);
                     });  
 
-                    $scope.recalculatePrice = function(deviceId) { 
-                        if (typeof $scope.selectedAccessoriesWithPrices[deviceId] == 'undefined') $scope.selectedAccessoriesWithPrices[deviceId] = {};
+                    $scope.recalculatePrice = function(deviceId) {
+						if (typeof $scope.selectedAccessoriesWithPrices[deviceId] == 'undefined') $scope.selectedAccessoriesWithPrices[deviceId] = {};
 						 
-                        $scope.outrightPrices[deviceId] = parseInt($scope.quote.prices[deviceId].base);
+						$scope.outrightPrices[deviceId] = parseInt($scope.quote.prices[deviceId].base);
 
-                        angular.forEach($scope.selectedAccessoriesWithPrices[deviceId], function(accessoryPrice, accessoryId) {
-                            if (accessoryPrice == 0) {
-                                delete $scope.selectedAccessoriesWithPrices[deviceId][accessoryId];
-                            }
-                            $scope.outrightPrices[deviceId] += accessoryPrice;
+						angular.forEach($scope.selectedAccessoriesWithPrices[deviceId], function(accessoryPrice, accessoryId) {
+							if (accessoryPrice == 0) {
+								delete $scope.selectedAccessoriesWithPrices[deviceId][accessoryId];
+							}
+							$scope.outrightPrices[deviceId] += accessoryPrice;
 
-                            $scope.countRates(deviceId);
-                        }); 
+							$scope.countRates(deviceId);
+						});
+						angular.forEach($scope.selectedCustomAccessoriesWithPrices[deviceId], function(accessoryPrice, accessoryId) {
+							if (accessoryPrice == 0) {
+								delete $scope.selectedCustomAccessoriesWithPrices[deviceId][accessoryId];
+							}
+							$scope.outrightPrices[deviceId] += accessoryPrice;
+
+							$scope.countRates(deviceId);
+						});
                     }
 
                 });
