@@ -1,0 +1,109 @@
+<div class="container" ng-controller="devicesController">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-default">
+
+                <div class="panel-body">
+				 
+					<div class="col-md-12 animate-show" ng-show="showDevicesList">
+						<div class="col-md-6">  
+							<div class="animate-show" style="padding-top:0px;" ng-show="showCsvUploadSuccessMessage">				
+								<div class="alert alert-danger" style="margin-bottom:0px;">
+									<strong>Some error occured! Try once again.</strong>
+								</div>
+							</div>	
+						</div>
+						<div class="col-md-2">  
+						</div>
+						<div class="col-md-2">
+							<div class="form-group" style="float:right;">
+								<div style="margin-bottom:5px;"><strong>Upload CSV sheet with devices info:</strong></div>
+								<label class="btn btn-success btn-file">
+									Browse
+									<input type="file" style="display: none;" data-file="uploadedCsvFile" name="file" />
+								</label>
+								<button type="submit" class="btn btn-default"
+									ng-show="!disableCsvUploadButton" 
+									ng-click="uploadCsv('devices', uploadedCsvFile)">
+									Upload
+								</button>
+								<br><strong>{{uploadedCsvFile.name}}</strong>
+							</div> 
+						</div>
+						<div class="col-md-2" >  
+							<div> 
+								<div style="margin-bottom:5px; float:right; text-align: right;"><strong>Add new device manually:</strong></div>
+								<button class="btn btn-warning" style="float:right;"
+									ng-click="addDevice()"
+								>
+									Add
+								</button>  
+								<div class="clearfix"> </div> 
+							</div> 
+						</div>
+					</div> 	
+					
+					<div class="animate-show" ng-show="loadingError">
+						<div class="col-md-6 animate-show" style="padding-top:0px;">					
+							<div class="alert alert-danger" style="margin-bottom:0px;">
+								<strong>Some error occured! Try to refresh the page.</strong>
+							</div>
+						</div>		
+					</div>
+					
+					<div class="col-md-12 animate-show" ng-show="showDevicesList">					
+						<div class="panel panel-warning">
+							<div class="panel-heading">
+								Devices
+							</div>
+
+							<div class="panel-body">
+							
+								<ul uib-pagination
+								total-items="devices.length"
+								items-per-page="devicesNumPerPage"
+								ng-model="devicesCurrentPage"
+								max-size="devicesMaxSize"
+								class="pagination-sm"
+								boundary-links="true"></ul>
+								
+								<uib-accordion close-others="oneAtATime">
+									
+									<div class="device_accordion_wrapper" ng-repeat="device in filteredDevices">
+										<div uib-accordion-group
+											class="panel-default"
+											ng-class="{
+												'panel-success': device.created_by == 'user',
+												'panel-info': device.created_by == 'csv_upload'
+											}"
+											 heading="{{ device.model }} (created by: {{ device.created_by | removeUnderscores }})"
+											 is-open="deviceAccordionIsOpen[$index]"
+										>		
+											<a href="edit-device/{{ device.id }}" class="btn btn-info" style="margin-bottom:20px;">
+												Edit device												 
+											</a>
+											<br>											
+											<button class="btn btn-danger" 
+												ng-click="removeDevice(device)">
+												Remove device
+											</button>	 
+										</div>
+									</div>
+								</uib-accordion>
+
+								<ul uib-pagination
+								total-items="devices.length"
+								items-per-page="devicesNumPerPage"
+								ng-model="devicesCurrentPage"
+								max-size="devicesMaxSize"
+								class="pagination-sm"
+								boundary-links="true"></ul>
+								
+							</div>
+						</div>
+					</div> 
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

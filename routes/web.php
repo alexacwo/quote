@@ -41,6 +41,9 @@ Route::group(['middleware' =>  'auth' ], function () {
 }); 
 */
 Route::group(array('prefix' => 'api'), function() {
+	
+	Route::post('send_mail', 'Api\Client\ViewQuoteApiController@send_mail');
+	
 	Route::resource('quotes', 'Api\Client\ViewQuoteApiController',
 			array('only' => array('index', 'show', 'update')));	
 });
@@ -64,13 +67,16 @@ Route::group(['middleware' =>  'auth' ], function () {
 		Route::resource('users', 'Api\Admin\UsersApiController',
 				array('only' => array('index', 'store', 'destroy')));
 
+		Route::post('devices/upload-file', 'Api\Admin\DevicesApiController@upload_file');
+		
 		Route::post('devices/upload-csv', 'Api\Admin\DevicesApiController@upload_csv');
 		
 		Route::get('devices/qet-most-quoted', 'Api\Admin\DevicesApiController@get_most_quoted_devices');
 
-		Route::resource('devices', 'Api\Admin\DevicesApiController',
-				array('only' => array('index', 'store', 'update', 'destroy')));
+		Route::resource('devices', 'Api\Admin\DevicesApiController');
 
+		Route::get('accessories/search-by-part-number/{part_number}', 'Api\Admin\AccessoriesApiController@search_by_part_number');
+		
 		Route::post('accessories/upload-csv', 'Api\Admin\AccessoriesApiController@upload_csv');
 		
 		Route::resource('accessories', 'Api\Admin\AccessoriesApiController',

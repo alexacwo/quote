@@ -1,0 +1,341 @@
+<div class="container" ng-controller="editDeviceController">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-default">
+
+                <div class="panel-body">
+				
+					<div class="animate-show" ng-show="loadingError">
+						<div class="col-md-6" style="padding-top:0px;">					
+							<div class="alert alert-danger" style="margin-bottom:0px;">
+								<strong>Some error occured! Try to refresh the page.</strong>
+							</div>
+						</div>		
+					</div>
+					
+					<div class="animate-show" ng-show="showDeviceForm">
+						<div class="col-md-6" style="margin-bottom:20px;">
+							<button ng-click="saveDevice(device, 'save')" class="btn btn-primary">
+								Save
+							</button>
+							<button ng-click="saveDevice(device, 'save-exit')" class="btn btn-primary">
+								Save and exit
+							</button>
+							<div class="clearfix"></div>
+						</div>					
+						
+						<div class="col-md-6 animate-show" ng-show="showDeviceSaveSuccessMessage" style="padding-top:0px;">					
+							<div class="alert alert-success" style="margin-bottom:0px;">
+								<strong>Device info saved!</strong>
+							</div>
+						</div>					
+						
+						<div class="col-md-6 animate-show" ng-show="showDeviceSaveErrorMessage" style="padding-top:0px;">					
+							<div class="alert alert-danger" style="margin-bottom:0px;">
+								<strong>Some error occured! Please try again.</strong>
+							</div>
+						</div>	
+						
+						<div class="col-md-12" style="margin-top:20px;">
+							<div class="panel panel-warning">
+							 
+								<div class="panel-heading">
+									Edit device # {{ device.id }}
+								</div>
+
+								<div class="panel-body">					
+									<div style="width:100%; float:left;">
+										<div class="col-md-3 form-group">
+											<label for="device_model">Device model:</label>
+											<input type="text" class="form-control" id="device_model" 
+												ng-model="device.model"
+												ng-class="{error: (modelFieldRequired)}"
+											/>
+											<span class="error_message"
+												ng-show="modelFieldRequired"
+											>
+												Please fill in this field
+											</span>
+										</div>
+										<div class="col-md-3 form-group">
+											<label for="device_make">Make:</label>
+											<input type="text" class="form-control" id="device_make"
+												ng-model="device.make"
+											/>
+										</div>
+										<div class="col-md-3 form-group">
+											<label for="device_type">Device type:</label>											
+											<select class="form-control" id="device_type"
+												ng-model="device.device_type">
+												<option
+													ng-selected="device.device_type == 'copier'"
+												>copier</option>
+												<option
+													ng-selected="device.device_type == 'printer'"
+												>printer</option>
+											</select>
+										</div>
+										<div class="col-md-3 form-group">
+											<div style="float:right;">
+												<button class="btn btn-success" style="margin-bottom:10px; width:100%;"
+													ng-click="addAccessory()">
+													Add accessory
+												</button>
+											</div>
+										</div>
+									</div>
+									
+									<div style="width:100%; float:left;">
+										<div class="col-md-3 form-group">
+											<label for="device_cost">Cost:</label>
+											<input type="number" class="form-control" id="device_cost"
+												ng-model="device.cost"
+											/>
+										</div>
+										<div class="col-md-3 form-group">
+											<label for="device_price">Price:</label>
+											<input type="number" class="form-control" id="device_price"
+												ng-model="device.price"
+											/>
+										</div>
+										<div class="col-md-3 form-group">
+											<div>
+												<div ng-if="device.pdf != null">
+													<a ng-if="device.created_by == 'user'" target="_self" href="../{{device.pdf}}">
+														PDF link
+													</a>
+													<a ng-if="device.created_by == 'csv_upload'" target="_self" href="{{device.pdf}}">
+														PDF link
+													</a>
+												</div>
+												<div style="margin-bottom:5px;"><strong>Upload new PDF:</strong></div>
+												<label class="btn btn-warning btn-file">
+													Browse
+													<input type="file" style="display: none;" data-file="uploadedDevicePdf" name="file" accept="application/pdf" />
+												</label>
+												<button type="submit" class="btn btn-default"
+													ng-show="!disableUploadButton['pdf']" 
+													ng-click="uploadFile('pdf', uploadedDevicePdf)">
+													Upload
+												</button>
+												<br><strong>{{uploadedDevicePdf.name}}</strong>
+											</div> 
+										</div>
+										<div class="col-md-3 form-group">
+											<div>
+												<div ng-if="device.image != null">
+													<a ng-if="device.created_by == 'user'" target="_self" href="../{{device.image}}">
+														Image link
+													</a>
+													<a ng-if="device.created_by == 'csv_upload'" target="_self" href="{{device.image}}">
+														Image link
+													</a>
+												</div>
+												<div style="margin-bottom:5px;"><strong>Upload new image:</strong></div>												
+												<label class="btn btn-warning btn-file">
+													Browse
+													<input type="file" style="display: none;" data-file="uploadedDeviceImage" name="file" accept="image/*" />
+												</label>
+												<button type="submit" class="btn btn-default"
+													ng-show="!disableUploadButton['image']" 
+													ng-click="uploadFile('image', uploadedDeviceImage)">
+													Upload
+												</button>
+												<br><strong>{{uploadedDeviceImage.name}}</strong>
+											</div> 
+										</div>
+									</div>
+									
+									<div style="width:100%; float:left;">
+										<div class="col-md-3 form-group">
+											<label for="color_or_mono">Color/mono:</label>
+											<select class="form-control" id="color_or_mono"
+												ng-model="device.color_or_mono">
+												<option
+													ng-selected="device.color_or_mono == 'mono'"
+												>mono</option>
+												<option
+													ng-selected="device.color_or_mono == 'color'"
+												>color</option>
+											</select>
+										</div>
+										<div class="col-md-3 form-group">
+											<label for="device_speed">Speed:</label>
+											<input type="number" class="form-control" id="device_speed"
+												ng-model="device.speed"
+											/>
+										</div>
+										<div class="col-md-3 form-group">
+											<label for="paper_size">Paper size:</label>
+											<select class="form-control" id="paper_size"
+												ng-model="device.paper_size">
+												<option
+													ng-selected="device.paper_size == 'letter/legal'"
+												>letter/legal</option>
+												<option
+													ng-selected="device.paper_size == 'letter/legal/11x17'"
+												>letter/legal/11x17</option>
+											</select>
+										</div>
+										<div class="col-md-3 form-group">
+										</div>
+									</div>
+									
+									<div style="width:100%; float:left;">
+										<div class="col-md-3 form-group">
+											<label for="device_maintenance_cost">Maintenance cost:</label>
+											<input type="number" class="form-control" id="device_maintenance_cost"
+												ng-model="device.maintenance_cost"
+											/>
+										</div>
+										<div class="col-md-3 form-group">
+											<label for="device_maintenance_price">Maintenance price:</label>
+											<input type="number" class="form-control" id="device_maintenance_price"
+												ng-model="device.maintenance_price"
+											/>
+										</div>
+										<div class="col-md-3 form-group">
+											<label for="device_rebates">Rebates:</label>
+											<input type="number" class="form-control" id="device_rebates"
+												ng-model="device.rebates"
+											/>
+										</div>
+									</div>
+									
+									<div style="width:100%; float:left;">
+										<div class="col-md-3 form-group">
+											<label for="cost_per_color_page">
+												Cost pre color page
+												<br>(* only for color devices):
+											</label>
+											<input type="number" class="form-control" id="cost_per_color_page"
+												ng-model="device.cost_per_color_page"
+											/>
+										</div>
+										<div class="col-md-3 form-group">
+											<label for="cost_per_mono_page">
+												Cost pre mono page:
+											</label>
+											<input type="number" class="form-control" id="cost_per_mono_page"
+												ng-model="device.cost_per_mono_page"
+											/>
+										</div>
+									</div>
+									
+									<div class="col-md-12">
+										<uib-accordion close-others="oneAtATime">
+											<div class="accessory_accordion_wrapper" ng-repeat="accessory in deviceAccessories">
+												<div uib-accordion-group 
+													 class="panel-success"
+													 heading="Accessory {{ accessory.id || '' }}"
+													 is-open="0"
+												>	
+													<div class="col-md-6 form-group">
+														<label for="accessory_desc_{{ $index + 1 }}">Enter part number:</label>
+														<input type="text" class="form-control" id="accessory_desc_{{ $index + 1 }}"
+															ng-model="accessory.part_number"
+															ng-change="partNumberChanged(accessory, '{{accessory.part_number}}')"
+														/> 
+														<div class="animate-show" ng-show="searchResultText[accessory.id] == 'found'">
+															There is an accessory with this part number in the database.
+															<br>Want to load its data?
+															<button class="btn btn-info" ng-click="loadAccessoryData(accessory, foundAccessory)">
+																Load
+															</button>
+														</div>
+														<div class="animate-show" ng-show="searchResultText[accessory.id] == 'notFound'">
+															No accessories with this part number found in the database.		
+														</div>
+								
+													</div>
+													<div class="col-md-6 form-group">
+														<div style="float:right;">
+															<button class="btn btn-primary" style="margin-bottom:10px; width:100%;"
+																ng-click="saveAccessory(accessory)">
+																Save accessory
+															</button>
+															<br>		
+															<button class="btn btn-danger" style="margin-bottom:10px; width:100%;"
+																ng-click="removeAccessory(accessory)">
+																Remove accessory
+															</button>
+														</div>
+													</div>
+													<div class="col-md-12 form-group">
+														<label for="accessory_desc_{{ $index + 1 }}">Add description:</label>
+														<textarea class="form-control" rows="3" id="accessory_desc_{{ $index + 1 }}"
+															ng-model="accessory.description"
+														></textarea>
+													</div>
+													<div class="col-md-6 form-group">
+														<label for="accessory_cost_{{ $index + 1 }}">Add cost:</label>
+														<input type="text" class="form-control" id="accessory_cost_{{ $index + 1 }}"
+															ng-model="accessory.cost"														
+														/>
+													</div>
+													<div class="col-md-6 form-group">
+														<label for="accessory_price_{{ $index + 1 }}">Add price:</label>
+														<input type="text" class="form-control" id="accessory_price_{{ $index + 1 }}"
+															ng-model="accessory.price"													
+														/>
+													</div>
+												</div>
+											</div>
+											
+											<div class="accessory_accordion_wrapper" ng-repeat="customAccessory in deviceCustomAccessories">
+												<div uib-accordion-group 
+													 class="panel-warning"
+													 heading="Custom Accessory # "
+													 is-open="0"
+												>	
+													<div class="col-md-6 form-group">
+														<label for="custom_accessory_part_number_{{ $index + 1 }}">Enter part number:</label>
+														<input type="text" class="form-control" id="custom_accessory_part_number_{{ $index + 1 }}" />
+													</div>
+													<div class="col-md-6 form-group">
+														<div style="float:right;">	
+															<button class="btn btn-danger" style="margin-bottom:10px; float:right;"
+																ng-click="removeCustomAccessory(customAccessory)">
+																Remove custom accessory
+															</button>
+														</div>
+													</div>
+													<div class="col-md-12 form-group">
+														<label for="custom_accessory_desc_{{ $index + 1 }}">Add description:</label>
+														<textarea class="form-control" rows="3" id="custom_accessory_desc_{{ $index + 1 }}"></textarea>
+													</div>
+													<div class="col-md-6 form-group">
+														<label for="custom_accessory_cost_{{ $index + 1 }}">Add cost:</label>
+														<input type="text" class="form-control" id="custom_accessory_cost_{{ $index + 1 }}" />
+													</div>
+													<div class="col-md-6 form-group">
+														<label for="custom_accessory_price_{{ $index + 1 }}">Add price:</label>
+														<input type="text" class="form-control" id="custom_accessory_price_{{ $index + 1 }}" />
+													</div>
+												</div>
+											</div>
+											
+										</uib-accordion>
+									</div>
+									
+									<div class="clearfix"></div>								
+								</div> 
+						
+							</div>
+						</div> 
+						
+						<div class="col-md-12">
+							<button ng-click="saveDevice(device, 'save')" class="btn btn-primary">
+								Save
+							</button>
+							<button ng-click="saveDevice(device, 'save-exit')" class="btn btn-primary">
+								Save and exit
+							</button>
+							<div class="clearfix"></div>
+						</div>
+					</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

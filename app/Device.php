@@ -15,7 +15,7 @@ class Device extends Model
         'make',
         'model',
         'cost',
-        'base',
+        'price',
         'speed',
         'paper_size',
         'color_or_mono',
@@ -25,7 +25,8 @@ class Device extends Model
         'cost_per_mono_page',
         'rebates',
         'image',
-        'pdf'
+        'pdf',
+        'created_by'
     ];
 
     /**

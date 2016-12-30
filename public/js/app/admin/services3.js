@@ -88,32 +88,44 @@
         .factory('Device', function($http) {
 
             return {
-                get : function() {					
+                getAll : function() {					
                     return $http.get('api/devices');
+                },
+				
+                get : function(id) {
+                    return $http.get('api/devices/' + id);
                 },
 				
                 getMostQuoted : function() {					
                     return $http.get('api/devices/qet-most-quoted');
                 },
 
-                save : function(commentData) {
+                save : function() {
                     return $http({
                         method: 'POST',
-                        url: 'api/devices',
-                        headers: { 'Content-Type' : 'application/x-www-form-urlencoded' },
-                        data: $.param(commentData)
+                        url: 'api/devices'
                     });
                 },
 
-                update : function(deviceId, deviceAccessories) {
-                    return $http({
+                update : function(device, deviceAccessories) {
+					return $http({
                         method: 'PUT',
-                        url: 'api/devices/' + deviceId,
+                        url: 'api/devices/' + device.id,
                         data:  {
+							device_data: device,
                             accessories: deviceAccessories
                         }
-
                     });
+                },
+				
+				uploadFile : function(type, formData) {
+                    return $http({
+						method: "POST",
+						url: 'api/devices/upload-file',
+						dataType: 'json',
+						data: formData,
+						headers: {'Content-Type': undefined}
+					});
                 },
 				
 				uploadCsv : function(type, formData) {
@@ -137,16 +149,37 @@
                 get : function() {
                     return $http.get('api/accessories');
                 },
+				
+                searchByPartNumber : function(valueToSearch) {
+					console.log(valueToSearch);
+                    return $http.get('api/accessories/search-by-part-number/' + valueToSearch);
+                },
 
-                save : function(commentData) {
+				save : function(accessory) {
                     return $http({
                         method: 'POST',
                         url: 'api/accessories', 
-                        data: $.param(commentData)
+                        data: accessory
                     });
-                },
+                },	
 
-                update : function(deviceAccessories) {
+                update : function(accessory) {
+                    return $http({
+                        method: 'PUT',
+                        url: 'api/accessories/' + accessory.id,
+                        data:  accessory
+                    });
+                },		
+
+                /*update : function(accessory) {
+                    return $http({
+                        method: 'PUT',
+                        url: 'api/accessories/' + accessory.id,
+                        data:  quoteData
+                    }); 
+                },*/
+
+              /*  update : function(deviceAccessories) {
                     return $http({
                         method: 'PUT',
                         url: 'api/accessories' + deviceId,
@@ -156,7 +189,7 @@
                         }
 
                     });
-                },
+                },*/
 
                 destroy : function(id) {
                     return $http.delete('api/accessories/' + id);

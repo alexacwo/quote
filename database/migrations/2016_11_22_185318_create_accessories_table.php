@@ -15,10 +15,10 @@ class CreateAccessoriesTable extends Migration
     {
         Schema::create('accessories', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('part_number');
-            $table->string('description');
-            $table->float('cost', 11, 3);			
-            $table->float('price', 11, 3);
+            $table->string('part_number')->nullable();
+            $table->string('description')->nullable();
+            $table->float('cost', 11, 3)->nullable();			
+            $table->float('price', 11, 3)->nullable();
             $table->timestamps();
         });
     }

@@ -14,7 +14,7 @@
 	use Illuminate\Http\Response;
 	use App\Http\Controllers\Controller;
 	use App\Http\Controllers\Admin\CurlController;
-	
+
 	class DevicesApiController extends Controller
 	{
 		/**
@@ -40,30 +40,39 @@
 				->orderBy('total', 'desc')
 				->take(3)
 				->pluck('device_id');
+			
+			$devices = Device::findMany($most_quoted_devices_ids);
 
-			return response()->json($most_quoted_devices_ids);
+			return response()->json($devices);
 		}
 		
 		/**
 		 * Store a newly created resource in storage.
-		 *
+		 * We assume that here the device was created by user, for CSV uploading check $this->upload_csv
 		 * @return Response
 		 */
 		public function store()
 		{
-			return response()->json(array('success' => true));
+			$device = new Device;
+			$device->created_by = 'user';
+			$device->save();
+			
+			return response()->json(array('id' => $device->id));
 		}
 		
 		/**
-		 * Show the specified user
+		 * Show the specified device
 		 *
-		 * @param  int  $user_id
+		 * @param  int  $device_id
 		 *
 		 * @return Response
 		 */
-		public function show($user_id)
+		public function show($device_id)
 		{
-			return response()->json(User::get($user_id));
+			return response()
+					->json(Device::where('id', $device_id)
+					->with('accessories')
+					->first());
 		}
 
 		/**
@@ -78,17 +87,53 @@
 			$accessories = $request->accessories;
  
 			$accessories_ids = [];
+			
 			foreach ($accessories as $accessory) {
-				$accessories_ids[] = $accessory['id'];
+				
+				if ($accessory['id'] == null) {
+					$accessory_model = new Accessory;
+				} else {					
+					$accessory_model = Accessory::find($accessory['id'])->first();	
+				}
+				$accessory_model->description = $accessory['description'];				
+				$accessory_model->part_number = $accessory['part_number'];
+				$accessory_model->cost = $accessory['cost'];
+				$accessory_model->price = $accessory['price'];
+				
+				$accessory_model->save();				
+				
+				if ($accessory['id'] == null) {
+					$accessories_ids[] = $accessory_model->id;
+				} else {	
+					$accessories_ids[] = $accessory['id'];
+				}
 			}
+			
 			$accessories_models = Accessory::find($accessories_ids);
 			
 			$device = Device::find($device_id);
+			$device->model = $request->device_data['model'];
+			$device->make = $request->device_data['make'];
+			$device->cost = $request->device_data['cost'];
+			$device->price = $request->device_data['price'];
+						
+			$device->speed = $request->device_data['speed'];
+			$device->paper_size = $request->device_data['paper_size'];
+			$device->color_or_mono = $request->device_data['color_or_mono'];
+			$device->device_type = $request->device_data['device_type'];
+			$device->maintenance_cost = $request->device_data['maintenance_cost'];
+			$device->maintenance_price = $request->device_data['maintenance_price'];
+			$device->cost_per_color_page = $request->device_data['cost_per_color_page'];
+			$device->cost_per_mono_page = $request->device_data['cost_per_mono_page'];
+			$device->rebates = $request->device_data['rebates'];
+			
+			$device->pdf = $request->device_data['pdf'];
+			$device->image = $request->device_data['image'];
+			
 			$device->accessories()->sync($accessories_models);
 			$device->save();
 
-			return response()->json(array('success' => true));
-
+			return response()->json(array('success' => $accessories_ids));
 		}
 		
 		/**
@@ -102,7 +147,7 @@
 			$handle = fopen($csv_file, "r");
 			
 			// Get all available devices list
-			$devices = DB::table('devices_copy')->pluck('id', 'model');
+			$devices = DB::table('devices')->pluck('id', 'model');
 			$i = 0;
 			$result = array();
 			$import_results = array();
@@ -124,24 +169,28 @@
 					
 					$device->make = $data[1];
 					$device->cost = $data[3];
-					$device->base = $data[4];
+					$device->price = $data[4];
 					$device->speed = $data[5];
 					$device->paper_size = $data[6];
 					$device->color_or_mono = $data[7];
 					$device->device_type = $data[8];
-					$device->maintenance = $data[9];
-					$device->cost_per_color_page = $data[10];
-					$device->cost_per_mono_page = $data[11];
+					$device->maintenance_price = $data[9];
+					$device->cost_per_color_page = str_replace(",",".",$data[10]);
+					$device->cost_per_mono_page = str_replace(",",".",$data[11]);
 					$device->rebates = $data[12];
 					$device->image = $data[13];
 					$device->pdf = $data[14];
-					//$device->save();
+					
+					$device->created_by = 'csv_upload';
+					
+					$device->save();
 						
 				}
 				$i++;
 			}
 
 			return $import_results;
+			//return $devices;
 		}
 		
 		/**
@@ -155,13 +204,9 @@
 
 				$file = Input::file('file');
 				$name = $file->getClientOriginalName();
-
-				//check out the edit content on bottom of my answer for details on $storage
 				$path = base_path().'/storage/files/devices_csv/';
-				// Moves file to folder on server
 				$file->move($path, $name);
 
-				// Import the moved file to DB and return OK if there were rows affected
 				$result = $this->import_csv( $path . $name );
 				$response = $result ? $result : 'No rows affected';
 				
@@ -169,6 +214,36 @@
 
 			} else {	 
 				return response()->json(array('error' => 'Something happened'));
+			}
+		}
+			
+		/**
+		 * Upload file
+		 * @param Request $request
+		 * @return \Illuminate\Http\Response
+		 */
+		public function upload_file(Request $request)
+		{
+			if (Input::hasFile('file')){
+				$file = Input::file('file');
+				$name = $file->getClientOriginalName();
+
+				$path = base_path().'/storage/files/';
+				
+				$file->move($path, $name);
+
+				return response()->json(
+					array(
+						'status' => 'success',
+						'path' => 'storage/files/' . $name
+					)
+				);
+			} else {	 
+				return response()->json(
+					array(
+						'status' => 'error'
+					)
+				);
 			}
 		}
 		
@@ -180,7 +255,7 @@
 		 */
 		public function destroy($id)
 		{
-			Quote::destroy($id);
+			Device::destroy($id);
 			
 			return response()->json(array('success' => true));
 		}

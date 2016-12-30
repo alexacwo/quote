@@ -16,17 +16,31 @@
                         method: 'POST',
                         url: 'api/quotes'
                     });
+					
+					
                 },*/
 
-                update : function(quoteGuid, selectedAccessories, selectedCustomAccessories) {
+                update : function(quoteGuid, selectedAccessories, selectedCustomAccessories, howDidWeDo) {
                     return $http({
                         method: 'PUT',
                         url: 'api/quotes/' + quoteGuid,
                         data:  {
                             selected_accessories: selectedAccessories,
-							selected_custom_accessories: selectedCustomAccessories
+							selected_custom_accessories: selectedCustomAccessories,
+							how_did_we_do: howDidWeDo
                         }
 
+                    });
+                },
+				
+                sendMail : function(clientPhoneNumber, recipientEditor) {
+                    return $http({
+                        method: 'POST',
+                        url: 'api/send_mail',
+                        data: {
+							phone_number: clientPhoneNumber,
+							recipient: recipientEditor
+						}
                     });
                 },
 

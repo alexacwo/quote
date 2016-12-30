@@ -12,6 +12,9 @@
 	use Illuminate\Http\Request;
 	use Illuminate\Http\Response;
 	use App\Http\Controllers\Controller;
+	
+	use App\Mail\sendMail;
+	use Illuminate\Support\Facades\Mail;
 
 	class ViewQuoteApiController extends Controller {
 
@@ -65,7 +68,10 @@
 		public function show($quote_guid)
 		{
 			return response()
-					->json(Quote::where('guid', $quote_guid)
+					->json(Quote::where([
+							['guid', '=', $quote_guid],
+							['status', '=', 'published']
+							])
 							->with('user', 'devices.accessories')
 							->first());
 		}
@@ -83,6 +89,7 @@
 
 			$quote->selected_accessories = $request->selected_accessories;
 			$quote->selected_custom_accessories = $request->selected_custom_accessories;
+			$quote->how_did_we_do = $request->how_did_we_do;
 			
 			$quote->save();
 
@@ -93,6 +100,33 @@
 					));
 		}
 
+		/**
+		 * Send mail to the administrator
+		 * @param Request $request
+		 *
+		 * @return Response
+		 */
+		public function send_mail(Request $request)
+		{	
+			$phone_number = $request->phone_number;
+			$recipient = $request->recipient;
+			
+			switch ($recipient) {
+				case "jesse":
+					$mail = 'jesse@pahoda.com';
+					break;
+				case "laine":
+					$mail = 'laine@pahoda.com';
+					break;
+				case "greg":
+					$mail = 'greg@pahoda.com';
+					break;
+			}
+			
+			Mail::to($mail)->send(new sendMail($phone_number));			
+			return response()->json(array('message' => 'Message sent to ' . $recipient . ' successfully'));
+		}
+		
 		/**
 		 * Remove the specified quote from storage
 		 *

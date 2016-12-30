@@ -17,7 +17,7 @@
 	class AccessoriesApiController extends Controller
 	{
 		/**
-		 * Send information about devices as JSON
+		 * Get information about accessories as JSON
 		 *
 		 * @return Response
 		 */
@@ -27,25 +27,63 @@
 		}
 
 		/**
-		 * Store a newly created resource in storage.
-		 *
+		 * Search if accessory with a given part number exists
+		 * @param Request $request
 		 * @return Response
 		 */
-		public function store()
+		public function search_by_part_number($part_number)
 		{
-			return response()->json(array('success' => true));
+			//$accessory = Accessory::where('part_number', $request)->first();
+			
+			return response()
+					->json(Accessory::where('part_number', $part_number)
+					->first());
+			/*if ($accessory != null) {
+				return response()->json(array('id' => $request));				 
+			} else {
+				return null;
+			}	*/		
+		}
+		
+		/**
+		 * Store a newly created resource in storage.
+		 * @param Request $request
+		 * @return Response
+		 */
+		public function store(Request $request)
+		{
+			$accessory = new Accessory;
+			
+			$accessory->part_number = $request->part_number;
+			$accessory->description = $request->description;
+			$accessory->cost = $request->cost;
+			$accessory->price = $request->price;
+			
+			$accessory->save();
+			$accessory->devices()->attach($request->device_id);
+			
+			return response()->json(array('id' => $accessory->id));
 		}
 
 		/**
 		 * Update the specified accessory
-		 *
+		 * @param Request $request
 		 * @param  int  $accessory_id
 		 *
 		 * @return Response
 		 */
-		public function update($user_id)
+		public function update(Request $request)
 		{
-			return response()->json(Accessory::get($user_id));
+			$accessory = Accessory::find($request->id);
+			
+			$accessory->part_number = $request->part_number;
+			$accessory->description = $request->description;
+			$accessory->cost = $request->cost;
+			$accessory->price = $request->price;
+			
+			$accessory->save();
+			
+			return response()->json(array('Updating accessory #' . $accessory->id => true));
 		}
 		
 		/**

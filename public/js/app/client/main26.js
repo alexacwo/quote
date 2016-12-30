@@ -4,6 +4,7 @@
 
     var clientApp = angular.module('clientSide',
 		[
+			'ui.mask',
 			'ngRoute',
 			'ngAnimate',
 			'countTo',
@@ -27,10 +28,10 @@
     clientApp.config(function($routeProvider, $locationProvider) {
         $routeProvider
             .when('/', {
-                templateUrl: 'public/templates/client/index1.html'
+                templateUrl: 'public/templates/client/index25.html'
             })
             .when('/quote/:quote', {
-                templateUrl: 'public/templates/client/view_quote1.html'
+                templateUrl: 'public/templates/client/view_quote26.html'
             })
             .when('/404', {
                 templateUrl: 'public/templates/client/404.html'

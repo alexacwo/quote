@@ -23,7 +23,7 @@
 		 */
 		public function index()
 		{
-			return response()->json(Quote::with('user')->get());
+			return response()->json(Quote::with('user', 'devices')->get());
 		}
 
 		/**
@@ -72,11 +72,16 @@
 			$new_quote->guid = $guid;
 			$new_quote->status = 'draft';
 						
+			$new_quote->editor = $quote_to_duplicate->editor;
 			$new_quote->devices_desc = $quote_to_duplicate->devices_desc;
 			$new_quote->prices = $quote_to_duplicate->prices;
 			$new_quote->added_accessories = $quote_to_duplicate->added_accessories;
 			$new_quote->selected_accessories = $quote_to_duplicate->selected_accessories;
 			$new_quote->included_pages = $quote_to_duplicate->included_pages;
+			$new_quote->sum_up = $quote_to_duplicate->sum_up;
+			$new_quote->rates_options = $quote_to_duplicate->rates_options;
+			
+			
 			$new_quote->user()->associate($quote_to_duplicate->user);
 			$new_quote->save();
 			
@@ -95,9 +100,11 @@
 		public function show($quote_guid)
 		{
 			return response()
-					->json(Quote::where('guid', $quote_guid)
-					->with('user', 'devices.accessories')
-					->first());
+					->json(
+						Quote::where('guid', $quote_guid)
+						->with('user', 'devices.accessories')
+						->first()
+					);
 		}
 
 		/**
@@ -137,11 +144,15 @@
 			$quote->user()->associate($user);
 
 			$quote->editor = $request->editor;
-			$quote->devices_desc = $request->devices_desc;
 			$quote->added_accessories = $request->added_accessories;
+			
+			$quote->devices_desc = $request->devices_desc;
 			$quote->included_pages = $request->included_pages;
 			$quote->custom_accessories = $request->custom_accessories;
 			$quote->custom_descriptions = $request->custom_descriptions;
+			
+			$quote->sum_up = $request->sum_up;
+			$quote->rates_options = $request->rates_options;
 
 			$quote->save();
 			
