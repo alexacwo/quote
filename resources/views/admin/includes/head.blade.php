@@ -6,5 +6,6 @@
 
 <title>Pahoda Image Products</title>
 
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.0/themes/smoothness/jquery-ui.css">
 <link href="{{asset('public/css/custom.css')}}" rel="stylesheet">
 <link href="{{asset('public/css/bootstrap-3.3.7.min.css')}}" rel="stylesheet">

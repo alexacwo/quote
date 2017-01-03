@@ -216,13 +216,19 @@
 
 	<div class="detailed_device_page_header" ng-show="showQuotedDeviceBlock">				 
 	
+		<div id="popup_wrapper" class="animate-show" ng-show="showPopupAfterSavingQuote" ng-click="check()"></div>
+		<div id="popUpDiv" ng-show="showPopupAfterSavingQuote">
+			We would like to say thank you for your feedback.
+			<br>We will work on a new clip for you!
+		</div>
+
 		<div class="container">
 			<div class="row">
 				<div class="col-md-6 pahoda_header left">
 					<div class="pahoda_logo">
 					</div>
 					<div class="official_quote">
-						Official Quote
+						Official Quote for {{ quote.user.company }}
 					</div>
 				</div>
 
@@ -380,6 +386,12 @@
 											</span>
 										</div>
 										<div class="pdf_link_wrapper">
+											<a target="_self" href="{{quote.devices_desc[quotedDevice.id].ced}}" class="view_pdf" ng-if="quote.devices_desc[quotedDevice.id].ced != null">
+												<i class="fa fa-arrow-circle-o-down" aria-hidden="true"></i>
+												View CED
+											</a>
+										</div>
+										<div class="pdf_link_wrapper">
 											<a target="_self" href="{{quote.devices_desc[quotedDevice.id].pdf}}" class="view_pdf" ng-if="quote.devices_desc[quotedDevice.id].pdf != null">
 												<i class="fa fa-arrow-circle-o-down" aria-hidden="true"></i>
 												View PDF
@@ -397,24 +409,25 @@
 									Purchase and Lease Options for {{ quotedDevice.model }}
 								</h4>
 
-								<strong ng-if="outrightPrices[quotedDevice.id] > 0">
+								<strong ng-if="outrightPrices[quotedDevice.id] > 0" style="margin-bottom: 20px; display: block;">
 									Outright Purchase Price: ${{ outrightPrices[quotedDevice.id] }}
-								</strong>
-								<br>
-								<br>
+								</strong> 
+								
+								
 								<div ng-repeat="accessory in quotedDevice.accessories">
-									<div class="accessories_for_devices_block">
+									
+									<div class="accessories_for_devices_block" ng-if="quote.added_accessories[quotedDevice.id][accessory.id] != 0">
 										<input type="checkbox"
 											   class="accessories_for_devices checkbox"
 											   id="accessory_{{ quotedDevice.id }}_{{ accessory.id }}"
-											   ng-checked="selectedAccessoriesWithPrices[quotedDevice.id][accessory.id] != null"
-											   ng-model="selectedAccessoriesWithPrices[quotedDevice.id][accessory.id]"
-											   ng-true-value="{{accessory.price}}"
-											   ng-false-value="0"
+											   ng-checked="selectedAccessoriesWithPrices[quotedDevice.id][accessory.id].status == 2"
+											   ng-model="selectedAccessoriesWithPrices[quotedDevice.id][accessory.id].status"
+											   ng-true-value="2"
+											   ng-false-value="1"
 											   ng-click="recalculatePrice(quotedDevice.id)"
 										/>
 										<label for="accessory_{{ quotedDevice.id }}_{{ accessory.id }}">
-											{{ accessory.description }} | Price: ${{ accessory.price }}
+											{{ accessory.description }} | Price: ${{ selectedAccessoriesWithPrices[quotedDevice.id][accessory.id].price }}
 										</label>
 									</div>
 								</div>
@@ -558,7 +571,7 @@
 									<div class="button" ng-if="1==0">
 										Re-Calculate
 									</div>
-									<div class="button" ng-if="quote.devices.length > 1" ng-click="saveCalculation(quote.guid, quotedDevice.id)">
+									<div class="button" ng-click="saveCalculation(quote.guid, quotedDevice.id)">
 										Accept Proposal
 									</div>
 								</div>

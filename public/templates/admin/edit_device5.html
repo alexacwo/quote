@@ -98,7 +98,7 @@
 												ng-model="device.price"
 											/>
 										</div>
-										<div class="col-md-3 form-group">
+										<div class="col-md-2 form-group">
 											<div>
 												<div ng-if="device.pdf != null">
 													<a ng-if="device.created_by == 'user'" target="_self" href="../{{device.pdf}}">
@@ -113,6 +113,7 @@
 													Browse
 													<input type="file" style="display: none;" data-file="uploadedDevicePdf" name="file" accept="application/pdf" />
 												</label>
+												<br>
 												<button type="submit" class="btn btn-default"
 													ng-show="!disableUploadButton['pdf']" 
 													ng-click="uploadFile('pdf', uploadedDevicePdf)">
@@ -121,7 +122,28 @@
 												<br><strong>{{uploadedDevicePdf.name}}</strong>
 											</div> 
 										</div>
-										<div class="col-md-3 form-group">
+										<div class="col-md-2 form-group">
+											<div>
+												<div ng-if="device.ced != null">
+													<a target="_self" href="{{device.ced}}">
+														CED link
+													</a>
+												</div>
+												<div style="margin-bottom:5px;"><strong>Upload new CED:</strong></div>
+												<label class="btn btn-warning btn-file">
+													Browse
+													<input type="file" style="display: none;" data-file="uploadedDeviceCed" name="file" accept="application/pdf" />
+												</label>
+												<br>
+												<button type="submit" class="btn btn-default"
+													ng-show="!disableUploadButton['ced']" 
+													ng-click="uploadFile('ced', uploadedDeviceCed)">
+													Upload
+												</button>
+												<br><strong>{{uploadedDeviceCed.name}}</strong>
+											</div> 
+										</div>
+										<div class="col-md-2 form-group">
 											<div>
 												<div ng-if="device.image != null">
 													<a ng-if="device.created_by == 'user'" target="_self" href="../{{device.image}}">
@@ -136,6 +158,7 @@
 													Browse
 													<input type="file" style="display: none;" data-file="uploadedDeviceImage" name="file" accept="image/*" />
 												</label>
+												<br>
 												<button type="submit" class="btn btn-default"
 													ng-show="!disableUploadButton['image']" 
 													ng-click="uploadFile('image', uploadedDeviceImage)">

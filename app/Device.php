@@ -26,6 +26,7 @@ class Device extends Model
         'rebates',
         'image',
         'pdf',
+        'ced',
         'created_by'
     ];
 

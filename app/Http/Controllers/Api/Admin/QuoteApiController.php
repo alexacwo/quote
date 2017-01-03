@@ -23,7 +23,11 @@
 		 */
 		public function index()
 		{
-			return response()->json(Quote::with('user', 'devices')->get());
+			return response()->json(
+						Quote::with('user', 'devices')
+							->orderBy('id', 'desc')
+							->get()
+					);
 		}
 
 		/**

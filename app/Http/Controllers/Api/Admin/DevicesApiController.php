@@ -34,21 +34,30 @@
 		 */
 		public function get_most_quoted_devices()
 		{
-			$most_quoted_devices_ids = DB::table('device_quote')
+			/*$most_quoted_devices_ids = DB::table('device_quote')
 				->select('device_id', DB::raw('count(*) as total'))
 				->groupBy('device_id')
 				->orderBy('total', 'desc')
-				->take(3)
+				->take(5)
 				->pluck('device_id');
 			
-			$devices = Device::findMany($most_quoted_devices_ids);
-
+			$devices = Device::findMany($most_quoted_devices_ids);*/
+			
+			//$devices = Device::findMany([244, 229, 230, 245, 256]);
+			$devices = Device::where(function ($query) {
+				$query->orWhere('model', '=', 'WorkCentre 7830i');
+				$query->orWhere('model', '=', 'WorkCentre 6655i');
+				$query->orWhere('model', '=', 'WorkCentre 4265');
+				$query->orWhere('model', '=', 'WorkCentre 7835i');
+				$query->orWhere('model', '=', 'WorkCentre 7970i');
+			})->get();
+			
 			return response()->json($devices);
 		}
 		
 		/**
 		 * Store a newly created resource in storage.
-		 * We assume that here the device was created by user, for CSV uploading check $this->upload_csv
+		 * We assume that with this method the device was created by user, for CSV uploading check $this->upload_csv
 		 * @return Response
 		 */
 		public function store()
@@ -128,6 +137,7 @@
 			$device->rebates = $request->device_data['rebates'];
 			
 			$device->pdf = $request->device_data['pdf'];
+			$device->ced = $request->device_data['ced'];
 			$device->image = $request->device_data['image'];
 			
 			$device->accessories()->sync($accessories_models);
