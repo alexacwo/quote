@@ -44,6 +44,8 @@ Route::group(array('prefix' => 'api'), function() {
 	
 	Route::post('send_mail', 'Api\Client\ViewQuoteApiController@send_mail');
 	
+	Route::post('quotes/update_views_counter/{quote_guid}', 'Api\Client\ViewQuoteApiController@update_views_counter');
+	
 	Route::resource('quotes', 'Api\Client\ViewQuoteApiController',
 			array('only' => array('index', 'show', 'update')));	
 });

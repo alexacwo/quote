@@ -30,7 +30,6 @@ class CreateDevicesTable extends Migration
             $table->double('rebates', 8, 4)->nullable();
             $table->string('image')->nullable();
             $table->string('pdf')->nullable();
-            $table->string('ced')->nullable();
             $table->string('created_by', 20);
             $table->timestamps();
         });

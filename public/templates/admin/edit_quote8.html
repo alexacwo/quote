@@ -44,6 +44,12 @@
 								<strong>Quote saved!</strong>
 							</div>
 						</div>
+						
+						<div class="col-md-12 animate-show" ng-show="showQuoteSaveErrorMessage">					
+							<div class="alert alert-danger">
+								<strong>Some error occured! Try once again.</strong>
+							</div>
+						</div>
 					
 						<div class="col-md-12">
 							<div class="panel panel-info">
@@ -271,9 +277,7 @@
 										</label>
 									</div>
 								</div>
-							</div> 
-							{{ check }}
-							
+							</div> 						
 							
 							<uib-accordion close-others="oneAtATime">
 								<div class="device_accordion_wrapper" ng-repeat="deviceOptions in addedDevices">
@@ -284,25 +288,80 @@
 									>
 										<div class="col-md-12 accessories_block quoted_devices_form" style="margin-bottom: 20px;">
 											<div class="col-md-12" style="margin-bottom: 20px;">
-												<div class="col-md-9">
-													Choose which rates to use for calculating the FMV and $1-Out costs: 
+												<div class="col-md-4">
+													<strong style="display: block;">
+														Which type of purchase is this?
+													</strong>
+													<br>
+													<div class="form-group">														
+														<input type="checkbox" class="checkbox"
+																id="allowed_prices_{{deviceOptions.id}}_purchase"
+																ng-model="quoteData[quote.id].allowed_prices[deviceOptions.id].purchase"
+														/>
+														<label for="allowed_prices_{{deviceOptions.id}}_purchase">
+															Allow Purchase Price
+														</label>
+													</div>
+													<div class="form-group">														
+														<input type="checkbox" class="checkbox"
+																id="allowed_prices_{{deviceOptions.id}}_fmv"
+																ng-model="quoteData[quote.id].allowed_prices[deviceOptions.id].fmv"
+														/>
+														<label for="allowed_prices_{{deviceOptions.id}}_fmv">
+															Allow FMV Lease Rates
+														</label>
+													</div>
+													<div class="form-group">														
+														<input type="checkbox" class="checkbox"
+																id="allowed_prices_{{deviceOptions.id}}_one_out"
+																ng-model="quoteData[quote.id].allowed_prices[deviceOptions.id].one_out"
+														/>
+														<label for="allowed_prices_{{deviceOptions.id}}_one_out">
+															Allow $1 Out Lease Rates
+														</label>
+													</div>
+												</div>
+												<div class="col-md-6">
+													<strong style="display: block;">
+														Choose which rates to use for calculating the FMV and $1-Out costs:
+													</strong>
+													<br>
 													<div class="form-group">
 														<select class="form-control" id="rates_options_{{deviceOptions.id}}"
 																ng-model="quoteData[quote.id].rates_options[deviceOptions.id]" 
 														>
 															<option value="basic" ng-selected="quoteData[quote.id].rates_options[deviceOptions.id] == 'basic' || quoteData[quote.id].rates_options[deviceOptions.id] == ''">Basic rates (from Copierleasecenter.com)</option>
 															<option value="marlin" ng-selected="quoteData[quote.id].rates_options[deviceOptions.id] == 'marlin'">Marlin sheet rates</option>
+															<option value="either" ng-selected="quoteData[quote.id].rates_options[deviceOptions.id] == 'either'">Either (Let the client choose)</option>
 														</select>
 													</div>
+												</div>
+												<div class="col-md-2">
+													<div style="float: right; text-align: right;">
+														<strong>
+															Remove this device:
+														</strong>
+													</div>
+													<br>
+													<div class="btn btn-danger"
+														 ng-click="removeDeviceFromQuote(deviceOptions.id)"
+														 style="float: right; margin-bottom: 20px;">
+														Remove
+													</div>													
 												</div>
 											</div>
 											<div class="col-md-12">
 												<div class="col-md-9">
 													<div class="well well-sm">
 														<h4>Add basic accessories:</h4>
-														Slider in the left position: don't display in the client view;
-														<br>Slider in the middle position: display, don't select by default;
-														<br>Slider in the right position: display, select by default.
+														<div ng-if="deviceOptions.accessories.length">
+															Slider in the left position: don't display in the client view;
+															<br>Slider in the middle position: display, don't select by default;
+															<br>Slider in the right position: display, select by default.
+														</div>
+														<div ng-if="!deviceOptions.accessories.length">
+															No accessories added in 'Device' edit form
+														</div>
 														<div>														
 															<table class="table table-bordered basic_accessories" ng-if="deviceOptions.accessories.length">
 																<thead>
@@ -358,19 +417,6 @@
 															
 													</div>
 												</div>
-												<div class="col-md-3">
-													<div style="float: right; text-align: right;">
-														<strong>
-															Remove this device:
-														</strong>
-													</div>
-													<br>
-													<div class="btn btn-danger"
-														 ng-click="removeDeviceFromQuote(deviceOptions.id)"
-														 style="float: right; margin-bottom: 20px;">
-														Remove
-													</div>													
-												</div>
 											</div>
 											<br>
 											<div class="col-md-12">
@@ -390,12 +436,12 @@
 																<div class="col-md-6" style="padding-left: 0px;">
 																	Part number:
 																	<input type="text" class="form-control"
-																		ng-model="quoteData[quote.id].custom_accessories[deviceOptions.id][$index + 1].part_number">
+																		ng-model="quoteData[quote.id].custom_accessories[deviceOptions.id][custom_accessory.id].part_number">
 																</div>
 																<div class="col-md-6" style="padding-left: 0px;">
 																	Price:
 																	<input type="text" class="form-control"
-																		ng-model="quoteData[quote.id].custom_accessories[deviceOptions.id][$index + 1].price">
+																		ng-model="quoteData[quote.id].custom_accessories[deviceOptions.id][custom_accessory.id].price">
 																</div>
 																<div class="clearfix"></div>
 															</div>
@@ -403,12 +449,22 @@
 																<div class="form-group">
 																	Description:
 																	<textarea class="form-control" rows="5"
-																		ng-model="quoteData[quote.id].custom_accessories[deviceOptions.id][$index + 1].description"></textarea>
+																		ng-model="quoteData[quote.id].custom_accessories[deviceOptions.id][custom_accessory.id].description"></textarea>
+																</div>
+															</div>
+															<div class="col-md-12">
+																<div class="form-group">
+																	Delete this accessory:																	
+																	<br>
+																	<div class="btn btn-danger"
+																		 ng-click="deleteCustomAccessory(quote.id, deviceOptions.id, custom_accessory.id)"
+																		 style="margin-bottom: 20px;">
+																		Delete
+																	</div>
 																</div>
 															</div>
 															<div class="clearfix"></div>																
-															<input type="hidden" ng-model="quoteData[quote.id].custom_accessories[deviceOptions.id][$index + 1].id"
-															ng-value="{{custom_accessory.id}}"> 
+															 
 														</div>
 													</div>
 													
@@ -508,22 +564,37 @@
 															</div>
 														</div>
 														<div class="form-group" ng-repeat="custom_description in deviceOptions.custom_descriptions">														
-																<div class="col-md-12">
-																	Description # {{ $index + 1 }}
-																	<br>
-																	<div class="col-md-3" style="padding-left: 0px;">
-																		Name:
-																		<input type="text" class="form-control"
-																			ng-model="quoteData[quote.id].custom_descriptions[deviceOptions.id][$index + 1].name">
-																	</div>
-																	<div class="col-md-12" style="padding-left: 0px;">
-																		Value:
-																		<input type="text" class="form-control"
-																			ng-model="quoteData[quote.id].custom_descriptions[deviceOptions.id][$index + 1].value">
-																	</div>
-																	<div class="clearfix"></div>
+															<div class="col-md-12">
+																Description # {{ $index + 1 }}
+																<br>
+																<div class="col-md-3" style="padding-left: 0px;">
+																	Name:
+																	<input type="text" class="form-control"
+																		ng-model="quoteData[quote.id].custom_descriptions[deviceOptions.id][custom_description.id].name">
+																</div>
+																<div class="col-md-12" style="padding-left: 0px;">
+																	Value:
+																	<input type="text" class="form-control"
+																		ng-model="quoteData[quote.id].custom_descriptions[deviceOptions.id][custom_description.id].value">
 																</div>
 																<div class="clearfix"></div>
+															</div>
+															<div class="col-md-12">
+																<div class="form-group">
+																	Delete this description:																	
+																	<br>
+																	<div class="btn btn-danger"
+																		 ng-click="deleteCustomDescription(quote.id, deviceOptions.id, custom_description.id)"
+																		 style="margin-bottom: 20px;">
+																		Delete
+																	</div>
+																</div>
+															</div>
+															<div class="clearfix"></div>																
+															<input type="hidden"
+																ng-model="quoteData[quote.id].custom_descriptions[deviceOptions.id][custom_description.id].id"
+																ng-value="{{custom_description.id}}"
+															> 
 														</div>
 													</div>
 													
@@ -577,7 +648,7 @@
 													</div>
 												</div>
 												<div class="col-md-6">
-													<h4>Additional printed pages cost ($):</h4>
+													<h4>Additional printed pages cost/price ($):</h4>
 													<div class="form-group">
 														<div class="col-md-6">
 															<label>Color:</label>

@@ -23,7 +23,10 @@ class Quote extends Model
         'custom_descriptions',
 		'how_did_we_do',
 		'sum_up',
-		'rates_options'
+		'rates_options',
+		'no_of_views',
+		'last_view',
+		'allowed_prices'
     ];
 
     /**
@@ -45,6 +48,7 @@ class Quote extends Model
         'selected_custom_accessories' => 'array',
         'how_did_we_do' => 'array',
         'rates_options' => 'array',
+        'allowed_prices' => 'array',
     ];
 
     /**

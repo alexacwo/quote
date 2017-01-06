@@ -39,6 +39,8 @@
 										<th>User email</th>
 										<th>Printer(s) quoted</th>
 										<th>Link</th>
+										<th>Number of views</th>
+										<th>Last view<br>(Denver, CO time)</th>
 										<th>&nbsp;</th>
 									</thead>
 									<tbody>
@@ -96,6 +98,16 @@
 															</span>
 													</label>
 												</div>
+											</td>
+											<td class="table-text">
+												<label for="radio_{{ quote.id }}">
+													{{ quote.no_of_views }}
+												</label>
+											</td>
+											<td class="table-text">
+												<label for="radio_{{ quote.id }}">
+													{{ quote.last_view }}
+												</label>
 											</td>
 											<td class="table-text">
 												<label for="radio_{{ quote.id }}">

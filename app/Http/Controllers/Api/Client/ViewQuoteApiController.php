@@ -101,6 +101,31 @@
 		}
 
 		/**
+		 * Update the specified quote
+		 * @param Request $request
+		 * @param int $quote_id
+		 *
+		 * @return Response
+		 */
+		public function update_views_counter(Request $request, $quote_guid)
+		{
+			$quote = Quote::where('guid', $quote_guid)->first();
+
+			$quote->no_of_views = $request->no_of_views;
+			$quote->last_view = $request->last_view;
+			
+			$quote->save();
+
+			die();
+			return response()->json(
+					array(
+							'success' => $quote,
+							'1' =>  $request->no_of_views,
+							'2' => $request->last_view
+					));
+		}
+		
+		/**
 		 * Send mail to the administrator
 		 * @param Request $request
 		 *

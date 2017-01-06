@@ -12,37 +12,71 @@
                 .get($routeParams.quote)
                 .success(function(response) {
 					
-                    //console.log(response);
+                    //console.log(response);                    
 					
 					if(Object.keys(response).length > 0) {
 					
+						$scope.seeAllRates = {}; 
+						
+						var offset = -7;
+						var currentDenverDateTime = new Date( new Date().getTime() + offset * 3600 * 1000);				
+						var formattedCurrentDenverDateTime =
+							currentDenverDateTime.getUTCFullYear()
+							+ "-"
+							+ ("0" + (currentDenverDateTime.getUTCMonth()+1)).slice(-2)
+							+ "-"
+							+ ("0" + currentDenverDateTime.getUTCDate()).slice(-2)
+							+ " "
+							+ ("0" + currentDenverDateTime.getUTCHours()).slice(-2)
+							+ ":"
+							+ ("0" + currentDenverDateTime.getUTCMinutes()).slice(-2)
+							+ ":"
+							+  ("0" + currentDenverDateTime.getUTCSeconds()).slice(-2);							
+						var incrementedNumberOfViews = parseInt(response.no_of_views) + 1;
+						
+						ClientQuote
+							.updateNumberOfViews($routeParams.quote, incrementedNumberOfViews, formattedCurrentDenverDateTime)
+							.success(function(response) {
+								//console.log(response);
+							});						
+					
 						// If there is just 1 device quoted, then go straight to the device specifications
 						// If there is more than 1 device, show the main page first
-						if (response.devices.length > 1) {
+						/*if (response.devices.length > 1) {*/
 							$scope.showQuoteMainPage = true;
 							$scope.showQuotedDeviceBlock = false;
 							$scope.deviceToShow = [];
-						} else {
+						/*} else {
 							$scope.showQuoteMainPage = false;
 							$scope.showQuotedDeviceBlock = true;
 							$scope.deviceToShow = [];
 							$scope.deviceToShow[response.devices[0].id] = true;
-						}
-						
+						}*/
 
 						$scope.quote = response; 
-			$scope.lowerCreditRating = $scope.quote.rates_options; 
+						$scope.lowerCreditRating = {};
+						angular.forEach($scope.quote.rates_options, function(option, deviceId) {
+							switch (option) { 
+								case 'marlin':
+									$scope.lowerCreditRating[deviceId] = 'marlin';
+									break;
+								case 'basic':
+								case 'either':
+								case '':
+									$scope.lowerCreditRating[deviceId] = 'basic';
+									break;
+							}							 
+						}); 
 			
-			
-					angular.forEach($scope.quote.devices, function(device, deviceIndex) {
-						 
+						console.log($scope.quote.rates_options);
+						console.log($scope.lowerCreditRating);
 						
-						if (typeof $scope.lowerCreditRating == 'undefined' || $scope.lowerCreditRating == null ) $scope.lowerCreditRating = {};
-						 if (typeof $scope.lowerCreditRating[device.id] == 'undefined') $scope.lowerCreditRating[device.id] = 'basic';
-					}); 
-					 
-						
-						
+						angular.forEach($scope.quote.devices, function(device, deviceIndex) {
+							 
+							
+							if (typeof $scope.lowerCreditRating == 'undefined' || $scope.lowerCreditRating == null ) $scope.lowerCreditRating = {};
+							 if (typeof $scope.lowerCreditRating[device.id] == 'undefined') $scope.lowerCreditRating[device.id] = 'basic';
+						}); 
 						
 						$scope.showQuotedDevice = function (quotedDeviceId) {
 							$scope.showQuoteMainPage = false;
@@ -54,8 +88,6 @@
 							}, 500);
 						}
 						
-						console.log($scope.quote.added_accessories);
-						console.log($scope.quote.selected_accessories);
 						if ($scope.quote.selected_accessories != null) {
 							if (typeof $scope.selectedAccessoriesWithPrices == 'undefined') $scope.selectedAccessoriesWithPrices = {};
 							angular.forEach($scope.quote.selected_accessories, function (accessories, deviceId) {
@@ -70,13 +102,7 @@
 						} else {
 							$scope.selectedAccessoriesWithPrices = $scope.quote.added_accessories;
 						}
-						
-						
-						console.log($scope.selectedAccessoriesWithPrices);
-						console.log($scope.quote.selected_accessories);
-						console.log($scope.quote.added_accessories);
-						console.log($scope.quote);
-						
+												
 						$scope.selectedCustomAccessoriesWithPrices = $scope.quote.selected_custom_accessories != null ? $scope.quote.selected_custom_accessories : {};
 
 						$scope.outrightPrices = {};
@@ -133,8 +159,7 @@
 									1: 0.0917, 2: 0.0487, 3: 0.0325, 4: 0.0257, 5: 0.0216
 								},
 							}
-						};
-						
+						};						
 						$scope.lowerRates = {
 							fmv: {
 								3000: {
@@ -161,8 +186,6 @@
 						};
 
 						$scope.countRates = function(deviceId) {
-							
-							 
 							$scope.totalRates = {
 								fmv: {
 									1: 0, 2: 0, 3: 0, 4: 0, 5: 0
@@ -195,7 +218,7 @@
 										});
 									break;
 								case  'basic':
-								case  '':
+								case  'either':
 									//Lower rates
 									if (isNaN($scope.outrightPrices[deviceId])) $scope.outrightPrices[deviceId] = 0;
 									if ($scope.outrightPrices[deviceId] < 3000) {
@@ -228,118 +251,86 @@
 							$scope.countRates(deviceId);
 						}); 
 						
-							$scope.findMinimumValue = function(object){
-								var pricesArray = Object.values(object);
-								var min = pricesArray[0];
+						$scope.findMinimumValue = function(object){
+							var pricesArray = Object.values(object);
+							var min = pricesArray[0];
 
-								for(var i=1;i<= pricesArray.length-1;i++){
+							for(var i=1;i<= pricesArray.length-1;i++){
 
-									if(parseInt(pricesArray[i]) < min){
-										min = pricesArray[i];
-									}
+								if(parseInt(pricesArray[i]) < min){
+									min = pricesArray[i];
 								}
-								return min;
 							}
- 
-							 $scope.assignValue = function(x) {var y = 0;
-								 $scope.$watch(x, function (newValue) {
-									var y = newValue;
-								});
- 
-								 console.log(y);
-								 console.log(x);
-								return y;
-							 }
-						  $scope.$watch('outrightPricesWithRates', function() {
+							return min;
+						}
+						
+						$scope.$watch('outrightPricesWithRates', function() {
 							$scope.totalRates = {
 								fmv: {
-									1: 0, 2: 0, 3: 0, 4: 0, 5: 0
+								1: 0, 2: 0, 3: 0, 4: 0, 5: 0
 								},
 								oneOut: {
-									1: 0, 2: 0, 3: 0, 4: 0, 5: 0
+								1: 0, 2: 0, 3: 0, 4: 0, 5: 0
 								}							
 							};
 							
-							
-							angular.forEach($scope.outrightPricesWithRates, function (rates, deviceId) { 
-							  
+							angular.forEach($scope.outrightPricesWithRates, function (rates, deviceId) {							  
 								var outrightPricesWithRatesArray = Object.values($scope.outrightPricesWithRates);
-								
-								
-								
-								 
-								
 							});
-							$scope.allValues = {
-									
-									fmv: {
-										1: [], 2: [], 3: [], 4: [], 5: []
-									},
-									oneOut: {
-										1: [], 2: [], 3: [], 4: [], 5: []
-									}	
-								};
-								$scope.minFmvPricesWithRates = {
-									1: 1111111111111111111111,
-									2: 1111111111111111111111,
-									3: 1111111111111111111111,
-									4: 1111111111111111111111,
-									5: 1111111111111111111111	
-								};
-								$scope.minOneoutPricesWithRates = {
-									1: 1111111111111111111111,
-									2: 1111111111111111111111,
-									3: 1111111111111111111111,
-									4: 1111111111111111111111,
-									5: 1111111111111111111111	
-								};
+							
+							$scope.allValues = {									
+								fmv: {
+									1: [], 2: [], 3: [], 4: [], 5: []
+								},
+								oneOut: {
+									1: [], 2: [], 3: [], 4: [], 5: []
+								}	
+							};
+							
+							$scope.minFmvPricesWithRates = {
+								1: 1111111111111111111111,
+								2: 1111111111111111111111,
+								3: 1111111111111111111111,
+								4: 1111111111111111111111,
+								5: 1111111111111111111111	
+							};
+							
+							$scope.minOneoutPricesWithRates = {
+								1: 1111111111111111111111,
+								2: 1111111111111111111111,
+								3: 1111111111111111111111,
+								4: 1111111111111111111111,
+								5: 1111111111111111111111	
+							};
 								
-								 angular.forEach($scope.outrightPricesWithRates, function (rates, deviceId) {
-									angular.forEach(rates.fmv, function (rate, numberOfYears) {
-									
-										
-										$scope.totalRates.fmv[numberOfYears] += rate;
-										 
-										
-										$scope.allValues.fmv[numberOfYears].push(rate);
-										 
-									});
-									 angular.forEach(rates.oneOut, function (rate, numberOfYears) {
-										$scope.totalRates.oneOut[numberOfYears] += rate;
-										
-										
-										$scope.allValues.oneOut[numberOfYears].push(rate);
-										
-										 
-									}); 
-								});   
+							angular.forEach($scope.outrightPricesWithRates, function (rates, deviceId) {
+								angular.forEach(rates.fmv, function (rate, numberOfYears) {
+									$scope.totalRates.fmv[numberOfYears] += rate;
+									$scope.allValues.fmv[numberOfYears].push(rate);
+								});
+								angular.forEach(rates.oneOut, function (rate, numberOfYears) {
+									$scope.totalRates.oneOut[numberOfYears] += rate;
+									$scope.allValues.oneOut[numberOfYears].push(rate);
+								}); 
+							});   
 								 
-									 angular.forEach($scope.allValues.fmv, function (rates, numberOfYears) {
-										 
-											for(var i=0;i<= rates.length-1;i++){
-
-												if (rates[i] < $scope.minFmvPricesWithRates[numberOfYears]) {
-													$scope.minFmvPricesWithRates[numberOfYears] = rates[i];
-												}
-											}
-									});
-									 angular.forEach($scope.allValues.oneOut, function (rates, numberOfYears) {
-										 
-											for(var i=0;i<= rates.length-1;i++){
-
-												if (rates[i] < $scope.minOneoutPricesWithRates[numberOfYears]) {
-													$scope.minOneoutPricesWithRates[numberOfYears] = rates[i];
-												}
-											}
-									});
-								
-						  
+							angular.forEach($scope.allValues.fmv, function (rates, numberOfYears) {
+								for(var i=0;i<= rates.length-1;i++){
+									if (rates[i] < $scope.minFmvPricesWithRates[numberOfYears]) {
+										$scope.minFmvPricesWithRates[numberOfYears] = rates[i];
+									}
+								}
+							});
+							angular.forEach($scope.allValues.oneOut, function (rates, numberOfYears) {
+								for(var i=0;i<= rates.length-1;i++){
+									if (rates[i] < $scope.minOneoutPricesWithRates[numberOfYears]) {
+										$scope.minOneoutPricesWithRates[numberOfYears] = rates[i];
+									}
+								}
+							});
+							
 							$scope.minOutrightPurchasePrice = $scope.findMinimumValue($scope.outrightPrices); 
 						}, true);
-						
-						
-									
-								
 						
 
 						$scope.recalculatePrice = function(deviceId) {
@@ -371,8 +362,7 @@
 							 
 						}
 						
-						/* Count the total values BEGIN */
-						
+						/* Count the total values BEGIN */						
 							
 						$scope.countMaintenancePrice = function() {	
 							$scope.totalMaintenancePrice = 0;	
@@ -400,7 +390,6 @@
 						}
 						
 						$scope.countMaintenancePrice();
-						
 					 
 						$scope.$watch('outrightPrices', function() {
 							$scope.countOutrightPrice();
@@ -408,9 +397,13 @@
 						/* Count the total values END */
 						
 						/* How Did We Do? BEGIN */
-						$scope.howDidWeDo = (typeof $scope.quote.how_did_we_do !== 'undefined') ? $scope.quote.how_did_we_do : {};
-						
-						
+						$scope.howDidWeDo = ((typeof $scope.quote.how_did_we_do !== 'undefined') && ($scope.quote.how_did_we_do !== null)) ? $scope.quote.how_did_we_do : {};						
+						console.log($scope.howDidWeDo);
+						$scope.clearHowDidWeDoOptions = function(deviceId) {
+							$scope.howDidWeDo[deviceId] = {
+								"improvement" : "perfect"
+							}
+						}
 						/* How Did We Do? END */
 						
 						$scope.showPopupAfterSavingQuote = false;
@@ -418,11 +411,8 @@
 							
 							if (clickedElement.id == 'popup_wrapper') {
 								$scope.showPopupAfterSavingQuote = false;
-								
-								console.log($scope.showPopupAfterSavingQuote);
 							}
 								$scope.showPopupAfterSavingQuote = false;
-								console.log(1111111);
 								$scope.apply;
 						}
 						$scope.saveCalculation = function (quoteGuid, deviceId) {
@@ -443,12 +433,9 @@
 										}, 500);
 									} else {
 										$scope.showPopupAfterSavingQuote = true; 
-										$scope.check = function () { 
-								console.log(1111111);
+										$scope.hidePopup = function () { 
 											$scope.showPopupAfterSavingQuote = false;	
 										}; 
-										 
-								console.log($scope.showPopupAfterSavingQuote);
 									}
 								});
 						}

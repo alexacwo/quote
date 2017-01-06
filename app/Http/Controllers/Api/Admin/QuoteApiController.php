@@ -84,6 +84,7 @@
 			$new_quote->included_pages = $quote_to_duplicate->included_pages;
 			$new_quote->sum_up = $quote_to_duplicate->sum_up;
 			$new_quote->rates_options = $quote_to_duplicate->rates_options;
+			$new_quote->allowed_prices = $quote_to_duplicate->allowed_prices;
 			
 			
 			$new_quote->user()->associate($quote_to_duplicate->user);
@@ -157,6 +158,7 @@
 			
 			$quote->sum_up = $request->sum_up;
 			$quote->rates_options = $request->rates_options;
+			$quote->allowed_prices = $request->allowed_prices;
 
 			$quote->save();
 			
@@ -178,10 +180,14 @@
 			$json_response = $curl->get($url, $username, $password);
 			$response = json_decode($json_response);
 
-
-			$contacts = $response->parties->person;
-						
-			return response()->json(array('contacts' => $contacts));
+			if (is_object($response)) {
+			
+				$contacts = $response->parties->person;
+							
+				return response()->json(array('contacts' => $contacts));
+			} else {
+				return response()->json(array('error' => $json_response));				
+			}
 		}
 
 		/**

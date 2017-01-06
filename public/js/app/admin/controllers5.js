@@ -86,6 +86,7 @@
 					Quote
 						.getCapsuleUsers()
 						.success(function(response) {
+							//console.log(response);
 							$scope.capsuleUsers = response;
 							
 							$scope.loadingCapsuleUsers = false;
@@ -130,8 +131,6 @@
 					$scope.quoteData[$scope.quote.id].sum_up = $scope.quote.sum_up;
 					$scope.quoteData[$scope.quote.id].rates_options = $scope.quote.rates_options;
 				 
-					console.log($scope.quoteData); 
-					console.log($scope.quoteData[$scope.quote.id].rates_options);
 					angular.forEach($scope.addedDevices, function(device, deviceId) {
 						if (typeof $scope.quoteData[$scope.quote.id].rates_options == 'undefined' || $scope.quoteData[$scope.quote.id].rates_options == null) $scope.quoteData[$scope.quote.id].rates_options = {};
 						
@@ -141,7 +140,6 @@
 					
 					$scope.updateDevicePrices = function() {
 						angular.forEach($scope.addedDevices, function(device, deviceId) {
-							console.log(device);
 							
                             if (typeof $scope.quoteData[$scope.quote.id].prices[deviceId] == 'undefined') $scope.quoteData[$scope.quote.id].prices[deviceId] = {};
 							  
@@ -222,6 +220,37 @@
 							}	
 						});
 						//console.log($scope.quoteData[$scope.quote.id].prices); 
+						
+						 
+						angular.forEach($scope.quoteData[$scope.quote.id].prices, function(prices, deviceId) {
+							
+							if (typeof $scope.quoteData[$scope.quote.id].added_accessories[deviceId] == 'undefined') $scope.quoteData[$scope.quote.id].added_accessories[deviceId] = {};
+									
+							angular.forEach(prices.accessories_prices, function(accessory, accessoryId) {
+								
+								if (typeof $scope.quote.added_accessories[deviceId] == 'undefined') {
+									$scope.quoteData[$scope.quote.id].added_accessories[deviceId][accessoryId] = {
+										'status' : 1,
+										'price' : accessory.price
+									};
+								} else {
+									if (typeof $scope.quote.added_accessories[deviceId][accessoryId] == 'undefined') {
+										$scope.quoteData[$scope.quote.id].added_accessories[deviceId][accessoryId] = {
+											'status' : 1,
+											'price' : accessory.price
+										};									
+									} else {
+										$scope.quoteData[$scope.quote.id].added_accessories[deviceId][accessoryId] = {
+											'status' : $scope.quote.added_accessories[deviceId][accessoryId].status,
+											'price' : accessory.price
+										};
+									}
+								}
+							});
+						});
+						
+						
+						
 					}
 					
 					/* Add device to a quote BEGIN */
@@ -256,7 +285,11 @@
 					$scope.quoteData[$scope.quote.id].client_company = $scope.quote.user != null ? $scope.quote.user.company : '';
 					$scope.quoteData[$scope.quote.id].client_email = $scope.quote.user != null ? $scope.quote.user.email : '';
 					
-					$scope.quoteData[$scope.quote.id].added_accessories = $scope.quote.added_accessories != null ? $scope.quote.added_accessories : {};
+					
+					$scope.quoteData[$scope.quote.id].added_accessories = {};
+					
+					
+					console.log($scope.quoteData[$scope.quote.id].added_accessories);
 					
 					// If these cells are empty in the database, the fetched instances are of type Array, not of Object. So second check is for that
 					$scope.quoteData[$scope.quote.id].devices_desc = ( ($scope.quote.devices_desc != null) && (!($scope.quote.devices_desc instanceof Array)) ) ? $scope.quote.devices_desc : {};
@@ -266,6 +299,9 @@
 					$scope.quoteData[$scope.quote.id].custom_accessories = ( ($scope.quote.custom_accessories != null) && (!($scope.quote.custom_accessories instanceof Array))) ? $scope.quote.custom_accessories : {};
 					
 					$scope.quoteData[$scope.quote.id].custom_descriptions = ( ($scope.quote.custom_descriptions != null) && (!($scope.quote.custom_descriptions instanceof Array)) ) ? $scope.quote.custom_descriptions : {};	
+					
+					$scope.quoteData[$scope.quote.id].allowed_prices = ( ($scope.quote.allowed_prices != null) && (!($scope.quote.allowed_prices instanceof Array)) ) ? $scope.quote.allowed_prices : {};	
+					
 					
 					// If there is user-corrected price for this device, get the price from the device parameters
 					$scope.quoteData[$scope.quote.id].prices = {};
@@ -305,57 +341,93 @@
 						$scope.addedDevices[index].custom_descriptions = ($scope.quote.custom_descriptions && $scope.quote.custom_descriptions[index]) ? $scope.quote.custom_descriptions[index] : {};
 					});
 					
-					$scope.addCustomAccessories = function(deviceId) {
-						console.log(1);
+					$scope.addCustomAccessories = function(deviceId) { 
+						
 						if (typeof $scope.addedDevices[deviceId].custom_accessories == 'undefined'
-							|| $scope.addedDevices[deviceId].custom_accessories == null
-						) $scope.addedDevices[deviceId].custom_accessories = {};
-						if (typeof customAccessoriesIndex[deviceId] == 'undefined') customAccessoriesIndex[deviceId] = 0;
-						 
-						if(customAccessoriesIndex[deviceId] < 4) {
-							$scope.addedDevices[deviceId].custom_accessories[customAccessoriesIndex[deviceId] + 1] = {
-										id: customAccessoriesIndex[deviceId] + 1,
+							|| Object.keys($scope.addedDevices[deviceId].custom_accessories).length < 1
+						) {
+							$scope.addedDevices[deviceId].custom_accessories = {};
+							
+						}
+						if (typeof $scope.quoteData[$scope.quote.id].custom_accessories[deviceId] == 'undefined'
+							|| Object.keys($scope.quoteData[$scope.quote.id].custom_accessories[deviceId]).length < 1
+						) {
+							$scope.quoteData[$scope.quote.id].custom_accessories[deviceId] = {};								
+						}
+						if(Object.keys($scope.addedDevices[deviceId].custom_accessories).length < 4) {
+							if (Object.keys($scope.addedDevices[deviceId].custom_accessories).length > 0)
+							{
+								var lastAccIndex = Object.values($scope.addedDevices[deviceId].custom_accessories)
+									[Object.keys($scope.addedDevices[deviceId].custom_accessories).length - 1].id;
+							} else {
+								var lastAccIndex = 0;
+							
+							}
+							$scope.addedDevices[deviceId].custom_accessories[lastAccIndex + 1] = {
+										id: lastAccIndex + 1,
 										part_number: '',
 										price: '',
 										description: ''
 							};
-							
-							
-						if (typeof $scope.quoteData[$scope.quote.id].custom_accessories[deviceId] == 'undefined') $scope.quoteData[$scope.quote.id].custom_accessories[deviceId] = {};
-						if (typeof $scope.quoteData[$scope.quote.id].custom_accessories[deviceId][customAccessoriesIndex[deviceId] + 1] == 'undefined') $scope.quoteData[$scope.quote.id].custom_accessories[deviceId][customAccessoriesIndex[deviceId] + 1] = {};
-						$scope.quoteData[$scope.quote.id].custom_accessories[deviceId][customAccessoriesIndex[deviceId] + 1].id 
-								= customAccessoriesIndex[deviceId] + 1;
-								
-							customAccessoriesIndex[deviceId]++;
+							$scope.quoteData[$scope.quote.id].custom_accessories[deviceId][lastAccIndex + 1] = {
+										id: lastAccIndex + 1,
+										part_number: '',
+										price: '',
+										description: ''
+							};
 						} 
 					}	
 					
 					$scope.addCustomDescriptions = function(deviceId) {
 						
-						if (typeof $scope.addedDevices[deviceId].custom_descriptions == 'undefined') $scope.addedDevices[deviceId].custom_descriptions = {};
-						if (typeof customDescriptionsIndex[deviceId] == 'undefined') customDescriptionsIndex[deviceId] = 0;
-						
-						if(customDescriptionsIndex[deviceId] < 4) {
+						if (typeof $scope.addedDevices[deviceId].custom_descriptions == 'undefined'
+							|| Object.keys($scope.addedDevices[deviceId].custom_descriptions).length < 1
+						) {
+							$scope.addedDevices[deviceId].custom_descriptions = {};
 							
-							$scope.addedDevices[deviceId].custom_descriptions[customDescriptionsIndex[deviceId] + 1] = {
-										id: customDescriptionsIndex[deviceId] + 1,
+						}
+						if (typeof $scope.quoteData[$scope.quote.id].custom_descriptions[deviceId] == 'undefined'
+							|| Object.keys($scope.quoteData[$scope.quote.id].custom_descriptions[deviceId]).length < 1
+						) {
+							$scope.quoteData[$scope.quote.id].custom_descriptions[deviceId] = {};								
+						}
+						if(Object.keys($scope.addedDevices[deviceId].custom_descriptions).length < 4) {
+							if (Object.keys($scope.addedDevices[deviceId].custom_descriptions).length > 0)
+							{
+								var lastDescIndex = Object.values($scope.addedDevices[deviceId].custom_descriptions)
+									[Object.keys($scope.addedDevices[deviceId].custom_descriptions).length - 1].id;
+							} else {
+								var lastDescIndex = 0;							
+							}
+							
+							$scope.addedDevices[deviceId].custom_descriptions[lastDescIndex + 1] = {
+										id: lastDescIndex + 1,
 										name: '',
 										value: ''
 							};
-							
-						if (typeof $scope.quoteData[$scope.quote.id].custom_descriptions[deviceId] == 'undefined') $scope.quoteData[$scope.quote.id].custom_descriptions[deviceId] = {};
-						if (typeof $scope.quoteData[$scope.quote.id].custom_descriptions[deviceId][customDescriptionsIndex[deviceId] + 1] == 'undefined') $scope.quoteData[$scope.quote.id].custom_descriptions[deviceId][customDescriptionsIndex[deviceId] + 1] = {};
-						$scope.quoteData[$scope.quote.id].custom_descriptions[deviceId][customDescriptionsIndex[deviceId] + 1].id 
-								= customDescriptionsIndex[deviceId] + 1;
-							
-							
-							customDescriptionsIndex[deviceId]++;
-						}
-					}	
+							$scope.quoteData[$scope.quote.id].custom_descriptions[deviceId][lastDescIndex + 1] = {
+										id: lastDescIndex + 1,
+										name: '',
+										value: ''
+							};
+						} 
+					}
+					
+					$scope.deleteCustomAccessory = function (quoteId, deviceId, index) {			
+						delete $scope.addedDevices[deviceId].custom_accessories[index];			
+						delete $scope.quoteData[quoteId].custom_accessories[deviceId][index];	
+						
+					}
+					
+					$scope.deleteCustomDescription = function (quoteId, deviceId, index) {
+						delete $scope.addedDevices[deviceId].custom_descriptions[index];			
+						delete $scope.quoteData[quoteId].custom_descriptions[deviceId][index];							
+					}
 					/* Custom descriptions and Custom accessories END */
 					
 					
 					$scope.showQuoteSaveSuccessMessage = false;
+					$scope.showQuoteSaveErrorMessage = false;
 					$scope.saveQuote = function(action) {
 						
 						if (($scope.quoteData[$scope.quote.id].client_username != '') &&
@@ -409,9 +481,10 @@
 								included_pages: $scope.quoteData[$scope.quote.id].included_pages,
 								prices: $scope.quoteData[$scope.quote.id].prices,
 								sum_up: $scope.quoteData[$scope.quote.id].sum_up,
-								rates_options: $scope.quoteData[$scope.quote.id].rates_options
+								rates_options: $scope.quoteData[$scope.quote.id].rates_options,
+								allowed_prices: $scope.quoteData[$scope.quote.id].allowed_prices
 							};
-							console.log($scope.quoteData[$scope.quote.id].custom_accessories);
+							console.log(data);
 							Quote
 								.update($scope.quote.id, data)
 								.success(function(response) { 
@@ -425,6 +498,13 @@
 									} else {
 										$window.location.href = 'quotes';
 									}
+								})
+								.error(function(response) {					
+									anchorSmoothScroll.scrollTo('top');
+									$scope.showQuoteSaveErrorMessage = true;
+									$timeout( function(){
+										$scope.showQuoteSaveErrorMessage = false;
+									}, 4000);
 								});
 						} else {
 							anchorSmoothScroll.scrollTo('user');
@@ -443,7 +523,7 @@
 						.getMostQuoted()
 						.success(function(response) {
 							$scope.mostQuotedDevices = response;
-							console.log(response);
+							//console.log(response);
 								
 						});
 						
@@ -472,7 +552,6 @@
 					$scope.showUsersList = true;
 					
                     $scope.users = response;
-					console.log(response);
 					
 					/* Pagination START */
 					$scope.filteredUsers = []
@@ -504,6 +583,7 @@
 			});
 			
 			$scope.showCsvUploadSuccessMessage = false;
+			$scope.showCsvUploadErrorMessage = false;
 			$scope.uploadCsv = function(type, uploadedFile) {
 				if (typeof uploadedFile != 'undefined') { 
 					
@@ -514,14 +594,19 @@
 						.uploadCsv(type, formData)
 						.success(function(response) {
 							console.log(response);
-							$scope.disableCsvUploadButton = true;						
-						})						
-						.error(function(response) {
-							$scope.disableCsvUploadButton = true;	
+							$scope.disableCsvUploadButton = true;		
 							
 							$scope.showCsvUploadSuccessMessage = true;
 							$timeout( function(){
 								$scope.showCsvUploadSuccessMessage = false;
+							}, 4000);						
+						})						
+						.error(function(response) {
+							$scope.disableCsvUploadButton = true;	
+							
+							$scope.showCsvUploadErrorMessage = true;
+							$timeout( function(){
+								$scope.showCsvUploadErrorMessage = false;
 							}, 4000);	
 						});
 				}
