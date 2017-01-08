@@ -123,12 +123,12 @@
 										<div class="clients_list_container">
 											<div class="col-md-12 animate-show" style="margin-top:5px;" ng-show="1==1 || !loadingCapsuleUsers">
 												<h5 style="margin-bottom:0px;"><strong>Search Capsule CRM user:</strong></h5>
+												<div style="margin-bottom:10px;">(nothing will appear if firstname is left blank)</div>
 												<div class="col-md-6">
 													By firstname:
 													<input type="text"
 														   class="form-control"
 														   ng-model="searchUserByFirstname"
-														   ng-change="getCapsuleUsers()"
 													/>
 												</div>
 												<div class="col-md-6">
@@ -136,7 +136,6 @@
 													<input type="text"
 														   class="form-control"
 														   ng-model="searchUserByLastname"
-														   ng-change="getCapsuleUsers()"
 													/>
 												</div>
 												<div class="col-md-8">
@@ -144,7 +143,6 @@
 													<input type="text"
 														   class="form-control"
 														   ng-model="searchUserByEmail"
-														   ng-change="getCapsuleUsers()"
 													/>
 												</div>
 											</div>
@@ -157,7 +155,14 @@
 												<div id="clients_list" slimscroll="{height: 280}">										
 													<div class="form-group">
 														<div class="capsule_client_block"
-														ng-repeat="capsuleUser in capsuleUsers.contacts"												
+														ng-repeat="capsuleUser in capsuleUsers.contacts |
+														filter: {
+																contacts:
+																	{email:
+																		{emailAddress: searchUserByEmail}},
+																firstName: searchUserByFirstname,
+																lastName: searchUserByLastname
+																} | showNothingIfQueryIsBlank: searchUserByFirstname"												
 														 ng-click="selectCapsuleUser(capsuleUser)"
 														 ng-class="{'ui-selected': selectedCapsuleUser == capsuleUser.id}"
 														>
@@ -172,25 +177,13 @@
 																		{{ capsuleUser.organisationName }}
 																	</span>
 																</div>
-																<div class="contact"
-																	ng-if="capsuleUser.contacts.email.emailAddress">
-																	Email:
+																<div class="contact" ng-if="capsuleUser.contacts.email.emailAddress">Email:
 																	<span>
 																		{{ capsuleUser.contacts.email.emailAddress }}
 																	</span>
 																</div>
-																<div class="contact"
-																	ng-if="capsuleUser.contacts.email[0].emailAddress">
-																	Email:
-																	<span>
-																		{{ capsuleUser.contacts.email[0].emailAddress }}
-																	</span>
-																</div>
 																<span class="contact details"></span>
 															</div>
-														</div>
-														<div ng-if="capsuleLoadingError" style="margin-top:10px;">
-															{{ capsuleLoadingError }}
 														</div>
 													</div>
 												</div>
@@ -199,215 +192,6 @@
 									</div>
 								</div>
 							</div>	
-
-							<div class="panel panel-warning add_devices_outright_price_wrapper">
-								<div class="panel-heading">
-									Options
-								</div>
-
-								<div class="panel-body">
-									<div class="col-md-12" style="margin-bottom: 20px;">										
-										<input type="checkbox"
-												class="checkbox"
-												id="add_devices_outright_price_slider"
-												ng-model="quoteData[quote.id].sum_up"
-												ng-checked="quoteData[quote.id].sum_up"
-											   ng-true-value="1"
-											   ng-false-value="0"
-											/>
-										<label for="add_devices_outright_price_slider">
-											Sum up devices outright purchase price in the client view
-										</label>
-									</div>
-									<div class="col-md-12" style="margin-bottom: 20px;">
-										<strong style="display: block;">
-											Which type of purchase is this?
-										</strong>
-										<br>
-										<div class="form-group">														
-											<input type="checkbox" class="checkbox"
-													id="allowed_prices_purchase"
-													ng-model="quoteData[quote.id].allowed_prices.purchase"
-											/>
-											<label for="allowed_prices_purchase">
-												Allow Purchase Price
-											</label>
-										</div>
-										<div class="form-group">														
-											<input type="checkbox" class="checkbox"
-													id="allowed_prices_fmv"
-													ng-model="quoteData[quote.id].allowed_prices.fmv"
-											/>
-											<label for="allowed_prices_fmv">
-												Allow FMV Lease Rates
-											</label>
-										</div>
-										<div class="form-group">														
-											<input type="checkbox" class="checkbox"
-													id="allowed_prices_one_out"
-													ng-model="quoteData[quote.id].allowed_prices.one_out"
-											/>
-											<label for="allowed_prices_one_out">
-												Allow $1 Out Lease Rates
-											</label>
-										</div>
-									</div>
-									<div class="col-md-12" style="margin-bottom: 20px;">
-										<strong style="display: block;">
-											Choose which rates to use for calculating the FMV and $1-Out costs:
-										</strong>
-										<br>
-										<div class="form-group">
-											<select class="form-control" id="rates_options"
-													ng-model="quoteData[quote.id].rates_options" 
-											>
-												<option value="basic" ng-selected="quoteData[quote.id].rates_options == 'basic' || quoteData[quote.id].rates_options == ''">Basic rates (from Copierleasecenter.com)</option>
-												<option value="marlin" ng-selected="quoteData[quote.id].rates_options == 'marlin'">Marlin sheet rates</option>
-												<option value="either" ng-selected="quoteData[quote.id].rates_options == 'either'">Either (Let the client choose)</option>
-											</select>
-										</div>
-									</div>
-									<div class="col-md-12" style="margin-bottom: 20px;">
-										<strong style="display: block;">
-											Default pricing:
-										</strong>
-										<br>
-										<div style="width:100%; margin-bottom: 10px;">											
-											<div class="edit_quote_pricing_option">	
-												<input type="radio"
-													   class="radio"
-													   id="display_price_outright"
-													   ng-model="quoteData[quote.id].displayed_price"
-														value="outright" 
-												/>
-												<label for="display_price_outright">
-													Outright Purchase
-												</label>
-											</div>
-										</div>
-										<div style="width:100%; margin-bottom: 10px;">	
-											<strong class="edit_quote_pricing_option_header">
-												FMV:<br>
-											</strong>
-											<div class="edit_quote_pricing_option">											
-												<input type="radio"
-													   class="radio"
-													   id="display_price_fmv_1"
-													   ng-model="quoteData[quote.id].displayed_price"
-														value="fmv1" 
-												/>
-												<label for="display_price_fmv_1">
-													1 Year
-												</label>
-											</div>
-											<div class="edit_quote_pricing_option">												
-												<input type="radio"
-													   class="radio"
-													   id="display_price_fmv_2"
-													   ng-model="quoteData[quote.id].displayed_price"
-														value="fmv2" 
-												/>
-												<label for="display_price_fmv_2">
-													2 Year
-												</label>
-											</div>
-											<div class="edit_quote_pricing_option">										
-												<input type="radio"
-													   class="radio"
-													   id="display_price_fmv_3"
-													   ng-model="quoteData[quote.id].displayed_price"
-														value="fmv3" 
-												/>
-												<label for="display_price_fmv_3">
-													3 Year
-												</label>
-											</div>
-											<div class="edit_quote_pricing_option">										
-												<input type="radio"
-													   class="radio"
-													   id="display_price_fmv_4"
-													   ng-model="quoteData[quote.id].displayed_price"
-														value="fmv4" 
-												/>
-												<label for="display_price_fmv_4">
-													4 Year
-												</label>
-											</div>
-											<div class="edit_quote_pricing_option">									
-												<input type="radio"
-													   class="radio"
-													   id="display_price_fmv_5"
-													   ng-model="quoteData[quote.id].displayed_price"
-														value="fmv5" 
-												/>
-												<label for="display_price_fmv_5">
-													5 Year
-												</label>
-											</div>	
-										</div>
-										<div style="width:100%; margin-bottom: 10px;">	
-											<strong class="edit_quote_pricing_option_header">
-												$1 Out Lease:<br>
-											</strong>
-											<div class="edit_quote_pricing_option">							
-												<input type="radio"
-													   class="radio"
-													   id="display_price_one_out_1"
-													   ng-model="quoteData[quote.id].displayed_price"
-														value="oneout1" 
-												/>
-												<label for="display_price_one_out_1">
-													1 Year
-												</label>
-											</div>
-											<div class="edit_quote_pricing_option">							
-												<input type="radio"
-													   class="radio"
-													   id="display_price_one_out_2"
-													   ng-model="quoteData[quote.id].displayed_price"
-														value="oneout2" 
-												/>
-												<label for="display_price_one_out_2">
-													2 Year
-												</label>
-											</div>
-											<div class="edit_quote_pricing_option">							
-												<input type="radio"
-													   class="radio"
-													   id="display_price_one_out_3"
-													   ng-model="quoteData[quote.id].displayed_price"
-														value="oneout3" 
-												/>
-												<label for="display_price_one_out_3">
-													3 Year
-												</label>
-											</div>	
-											<div class="edit_quote_pricing_option">							
-												<input type="radio"
-													   class="radio"
-													   id="display_price_one_out_4"
-													   ng-model="quoteData[quote.id].displayed_price"
-														value="oneout4" 
-												/>
-												<label for="display_price_one_out_4">
-													4 Year
-												</label>
-											</div>	
-											<div class="edit_quote_pricing_option">							
-												<input type="radio"
-													   class="radio"
-													   id="display_price_one_out_5"
-													   ng-model="quoteData[quote.id].displayed_price"
-														value="oneout5" 
-												/>
-												<label for="display_price_one_out_5">
-													5 Year
-												</label>
-											</div>		
-										</div>
-									</div>
-								</div>
-							</div> 	
 
 							<div class="panel panel-warning">
 								<div class="panel-heading">
@@ -471,7 +255,29 @@
 										</div>
 									</div>
 								</div>
-							</div>					
+							</div>
+
+							<div class="panel panel-warning add_devices_outright_price_wrapper">
+								<div class="panel-heading">
+									Total outright purchase price
+								</div>
+
+								<div class="panel-body">
+									<div class="col-md-12">											
+										<input type="checkbox"
+												class="checkbox"
+												id="add_devices_outright_price_slider"
+												ng-model="quoteData[quote.id].sum_up"
+												ng-checked="quoteData[quote.id].sum_up"
+											   ng-true-value="1"
+											   ng-false-value="0"
+											/>
+										<label for="add_devices_outright_price_slider">
+											Sum up devices outright purchase price in the client view
+										</label>
+									</div>
+								</div>
+							</div> 						
 							
 							<uib-accordion close-others="oneAtATime">
 								<div class="device_accordion_wrapper" ng-repeat="deviceOptions in addedDevices">
@@ -480,7 +286,70 @@
 										 heading="{{ deviceOptions.model }}"
 										 is-open="deviceAccordionIsOpen[$index]"
 									>
-										<div class="col-md-12 accessories_block quoted_devices_form" style="margin-bottom: 20px;">											
+										<div class="col-md-12 accessories_block quoted_devices_form" style="margin-bottom: 20px;">
+											<div class="col-md-12" style="margin-bottom: 20px;">
+												<div class="col-md-4">
+													<strong style="display: block;">
+														Which type of purchase is this?
+													</strong>
+													<br>
+													<div class="form-group">														
+														<input type="checkbox" class="checkbox"
+																id="allowed_prices_{{deviceOptions.id}}_purchase"
+																ng-model="quoteData[quote.id].allowed_prices[deviceOptions.id].purchase"
+														/>
+														<label for="allowed_prices_{{deviceOptions.id}}_purchase">
+															Allow Purchase Price
+														</label>
+													</div>
+													<div class="form-group">														
+														<input type="checkbox" class="checkbox"
+																id="allowed_prices_{{deviceOptions.id}}_fmv"
+																ng-model="quoteData[quote.id].allowed_prices[deviceOptions.id].fmv"
+														/>
+														<label for="allowed_prices_{{deviceOptions.id}}_fmv">
+															Allow FMV Lease Rates
+														</label>
+													</div>
+													<div class="form-group">														
+														<input type="checkbox" class="checkbox"
+																id="allowed_prices_{{deviceOptions.id}}_one_out"
+																ng-model="quoteData[quote.id].allowed_prices[deviceOptions.id].one_out"
+														/>
+														<label for="allowed_prices_{{deviceOptions.id}}_one_out">
+															Allow $1 Out Lease Rates
+														</label>
+													</div>
+												</div>
+												<div class="col-md-6">
+													<strong style="display: block;">
+														Choose which rates to use for calculating the FMV and $1-Out costs:
+													</strong>
+													<br>
+													<div class="form-group">
+														<select class="form-control" id="rates_options_{{deviceOptions.id}}"
+																ng-model="quoteData[quote.id].rates_options[deviceOptions.id]" 
+														>
+															<option value="basic" ng-selected="quoteData[quote.id].rates_options[deviceOptions.id] == 'basic' || quoteData[quote.id].rates_options[deviceOptions.id] == ''">Basic rates (from Copierleasecenter.com)</option>
+															<option value="marlin" ng-selected="quoteData[quote.id].rates_options[deviceOptions.id] == 'marlin'">Marlin sheet rates</option>
+															<option value="either" ng-selected="quoteData[quote.id].rates_options[deviceOptions.id] == 'either'">Either (Let the client choose)</option>
+														</select>
+													</div>
+												</div>
+												<div class="col-md-2">
+													<div style="float: right; text-align: right;">
+														<strong>
+															Remove this device:
+														</strong>
+													</div>
+													<br>
+													<div class="btn btn-danger"
+														 ng-click="removeDeviceFromQuote(deviceOptions.id)"
+														 style="float: right; margin-bottom: 20px;">
+														Remove
+													</div>													
+												</div>
+											</div>
 											<div class="col-md-12">
 												<div class="col-md-9">
 													<div class="well well-sm">
@@ -547,19 +416,6 @@
 														</div>
 															
 													</div>
-												</div>												
-												<div class="col-md-3">
-													<div style="float: right; text-align: right;">
-														<strong>
-															Remove this device:
-														</strong>
-													</div>
-													<br>
-													<div class="btn btn-danger"
-														 ng-click="removeDeviceFromQuote(deviceOptions.id)"
-														 style="float: right; margin-bottom: 20px;">
-														Remove
-													</div>													
 												</div>
 											</div>
 											<br>

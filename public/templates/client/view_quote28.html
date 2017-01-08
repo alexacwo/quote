@@ -93,8 +93,43 @@
 											<strong>{{ deviceCustomDescriptionOptions.name }}</strong> - {{ deviceCustomDescriptionOptions.value }}
 										</div>
 									 </div>
-									 <div ng-if="quote.prices[quotedDevice.id].price > 0">
-										<strong>Total outright price:</strong> ${{ outrightPrices[quotedDevice.id] }}
+									 <div>
+									 
+										<span ng-if="quote.displayed_price == 'outright'">
+											<strong>Outright Purchase Price:</strong> ${{ outrightPrices[quotedDevice.id] }}
+										</span>	
+										
+										<span ng-if="quote.displayed_price == 'fmv1'">
+											<strong>1 Year Lease Price:</strong> ${{ outrightPricesWithRates[quotedDevice.id].fmv[1] }}
+										</span>
+										<span ng-if="quote.displayed_price == 'fmv2'">
+											<strong>2 Year Lease Price:</strong> ${{ outrightPricesWithRates[quotedDevice.id].fmv[2] }}
+										</span>	
+										<span ng-if="quote.displayed_price == 'fmv3'">
+											<strong>3 Year Lease Price:</strong> ${{ outrightPricesWithRates[quotedDevice.id].fmv[3] }}
+										</span>	
+										<span ng-if="quote.displayed_price == 'fmv4'">
+											<strong>4 Year Lease Price:</strong> ${{ outrightPricesWithRates[quotedDevice.id].fmv[4] }}
+										</span>	
+										<span ng-if="quote.displayed_price == 'fmv5'">
+											<strong>5 Year Lease Price:</strong> ${{ outrightPricesWithRates[quotedDevice.id].fmv[5] }}
+										</span>	
+
+										<span ng-if="quote.displayed_price == 'oneout1'">
+											<strong>1 Year Lease Price:</strong> ${{ outrightPricesWithRates[quotedDevice.id].oneOut[1] }}
+										</span>	
+										<span ng-if="quote.displayed_price == 'oneout2'">
+											<strong>2 Year Lease Price:</strong> ${{ outrightPricesWithRates[quotedDevice.id].oneOut[2] }}
+										</span>	
+										<span ng-if="quote.displayed_price == 'oneout3'">
+											<strong>3 Year Lease Price:</strong> ${{ outrightPricesWithRates[quotedDevice.id].oneOut[3] }}
+										</span>	
+										<span ng-if="quote.displayed_price == 'oneout4'">
+											<strong>4 Year Lease Price:</strong> ${{ outrightPricesWithRates[quotedDevice.id].oneOut[4] }}
+										</span>	
+										<span ng-if="quote.displayed_price == 'oneout5'">
+											<strong>5 Year Lease Price:</strong> ${{ outrightPricesWithRates[quotedDevice.id].oneOut[5] }}
+										</span>
 									 </div>
 									 <div ng-if="quote.included_pages[quotedDevice.id].color > 0 || quote.included_pages[quotedDevice.id].mono > 0">
 										<strong>Includes:</strong>
@@ -109,7 +144,7 @@
 										</span>						
 									 </div>
 									 <div ng-if="quote.prices[quotedDevice.id].cost_per_color_page > 0 || quote.prices[quotedDevice.id].cost_per_mono_page > 0">
-										<strong>Additional prints:</strong>
+										<strong>Cost per print:</strong>
 										<span ng-if="quote.prices[quotedDevice.id].cost_per_color_page > 0">
 											<br>Color - ${{ quote.prices[quotedDevice.id].cost_per_color_page }} each
 										</span>
@@ -289,14 +324,16 @@
 									
 									<div class="parameters_block" >
 										<div class="parameter" ng-repeat="(deviceDescriptionName, deviceDescriptionValue) in quote.devices_desc[quotedDevice.id]">
-											<div class="col-xs-6 col-md-4 device_param_name" ng-if="deviceDescriptionValue != null">
+											<div class="col-xs-6 col-md-6 col-lg-4 device_param_name" 
+												ng-if="deviceDescriptionValue != null && deviceDescriptionName != 'pdf' && deviceDescriptionName != 'ced'">
 												<div ng-if="deviceDescriptionName == 'pdf'">Specification</div>
 												<div ng-if="deviceDescriptionName == 'ced'" style="height:80px;">Customer Expectation Document</div>
 												<div ng-if="deviceDescriptionName == 'color_or_mono'">Color or B&W?</div>
 												<div ng-if="deviceDescriptionName == 'paper_size'">Max Paper Size?</div>
 												<div ng-if="deviceDescriptionName == 'speed'">Speed</div>
 											</div>
-											<div class="col-xs-6 col-md-8 device_param_value" ng-if="deviceDescriptionValue != null">
+											<div class="col-xs-6 col-md-6 col-lg-8 device_param_value"
+												ng-if="deviceDescriptionValue != null && deviceDescriptionName != 'pdf' && deviceDescriptionName != 'ced'">
 												<div ng-if="deviceDescriptionName == 'pdf'">
 													<a target="_self" href="{{ deviceDescriptionValue }}">
 														LINK
@@ -321,76 +358,87 @@
 											</div>
 										</div> 
 										<div class="parameter" ng-repeat="(deviceDescriptionId, deviceDescriptions) in quote.custom_descriptions[quotedDevice.id]"> 
-												<div class="col-xs-6 col-md-4 device_param_name" ng-if="deviceDescriptions.value != null">
+												<div class="col-xs-6 col-md-6 col-lg-4 device_param_name" ng-if="deviceDescriptions.value != null">
 													{{ deviceDescriptions.name }}&nbsp;
 												</div>
-												<div class="col-xs-6 col-md-8 device_param_value"  ng-if="deviceDescriptions.value != null">
+												<div class="col-xs-6 col-md-6 col-lg-8 device_param_value"  ng-if="deviceDescriptions.value != null">
 													{{ deviceDescriptions.value }}&nbsp;
 												</div> 
 										</div>
 									</div> 
 									<div class="parameters_block">
 										<div class="parameter" ng-if="quote.prices[quotedDevice.id].maintenance_price > 0">
-											<div class="col-xs-6 col-md-4 device_param_name">
+											<div class="col-xs-6 col-md-6 col-lg-4 device_param_name">
 												Service Base Cost:
 											</div>
-											<div class="col-xs-6 col-md-8 device_param_value">
+											<div class="col-xs-6 col-md-6 col-lg-8 device_param_value">
 												{{ quote.prices[quotedDevice.id].maintenance_price }}
 												&nbsp;
 											</div>
 										</div>
+									</div>
+									<div class="parameters_block new">
 										<div class="parameter"
-											ng-if="quotedDevice.color_or_mono == 'color' && quote.included_pages[quotedDevice.id].color != null">
-											<div class="col-xs-6 col-md-4 device_param_name">
+											ng-if="quotedDevice.color_or_mono == 'color'
+											|| quote.included_pages[quotedDevice.id].color != null">
+										
+											<div class="col-xs-6 col-md-3 col-lg-3 device_param_name"
+												ng-if="quotedDevice.color_or_mono == 'color'"
+											>
 												Includes {} Color Pages
 											</div>
-											<div class="col-xs-6 col-md-8 device_param_value">
+											<div class="col-xs-6 col-md-3 col-lg-3 device_param_value"
+												ng-if="quotedDevice.color_or_mono == 'color'"
+											>
 												{{ quote.included_pages[quotedDevice.id].color }}
 												&nbsp;
 											</div>
+											<div class="col-xs-6 col-md-3 col-lg-3 device_param_name"
+												ng-if="quote.included_pages[quotedDevice.id].color != null"
+											>
+												Additional Color Prints
+											</div>
+											<div class="col-xs-6 col-md-3 col-lg-3 device_param_value"
+												ng-if="quote.included_pages[quotedDevice.id].color != null"
+											>											
+												{{ quote.prices[quotedDevice.id].cost_per_color_page * 100 | number:1 }} cents / page
+												&nbsp;
+											</div>											
 										</div>
 										<div class="parameter"
-											ng-if="quote.included_pages[quotedDevice.id].color != null">
-											<div class="col-xs-6 col-md-4 device_param_name">
+											ng-if="quote.prices[quotedDevice.id].cost_per_mono_page != null
+											|| quote.included_pages[quotedDevice.id].mono != null"
+										>
+											<div class="col-xs-6 col-md-3 col-lg-3 device_param_name"
+												ng-if="quote.included_pages[quotedDevice.id].mono != null"
+											>
 												Includes {} B&W Pages
 											</div>
-											<div class="col-xs-6 col-md-8 device_param_value">
+											<div class="col-xs-6 col-md-3 col-lg-3 device_param_value"
+												ng-if="quote.included_pages[quotedDevice.id].mono != null"
+											>
 												{{ quote.included_pages[quotedDevice.id].mono }}
 												&nbsp;
 											</div>
-										</div>
-									</div>
-									<div class="parameters_block">
-										<div class="parameter" ng-if="quotedDevice.color_or_mono == 'color'">
-											<div class="col-xs-6 col-md-4 device_param_name">
-												Additional Color Prints
-											</div>
-											<div class="col-xs-6 col-md-8 device_param_value">											
-												{{ quote.prices[quotedDevice.id].cost_per_color_page * 100 | number:1 }} cents/page
-												&nbsp;
-											</div>
-										</div>
-										<div class="parameter" ng-show="quote.prices[quotedDevice.id].cost_per_mono_page != null">
-											<div class="col-xs-6 col-md-4 device_param_name">
+											<div class="col-xs-6 col-md-3 col-lg-3 device_param_name"
+												ng-if="quote.prices[quotedDevice.id].cost_per_mono_page != null"
+											>
 												Additional B&W Prints
 											</div>
-											<div class="col-xs-6 col-md-8 device_param_value">
-												{{ quote.prices[quotedDevice.id].cost_per_mono_page * 100 | number:1   }} cents/page
+											<div class="col-xs-6 col-md-3 col-lg-3 device_param_value"
+												ng-if="quote.prices[quotedDevice.id].cost_per_mono_page != null"
+											>
+												{{ quote.prices[quotedDevice.id].cost_per_mono_page * 100 | number:1   }} cents / page
 												&nbsp;
 											</div>
 										</div>
 									</div>
 								</div>
-								<div class="col-md-6 device_photo" style="margin-bottom: 40px;" vertilize  >
+								<div class="col-md-6 device_photo" style="margin-bottom: 10px;" vertilize  >
 									<div class="image_block"> 
 										<img ng-src="{{ quotedDevice.image }}" />
 									</div>
 									<div class="price_and_pdf">
-										<div class="outright_price">										
-											<span ng-if="outrightPrices[quotedDevice.id] > 0 && quote.allowed_prices[quotedDevice.id].purchase" style="display:block;">
-												Outright Purchase Price: ${{ outrightPrices[quotedDevice.id] }} 
-											</span>
-										</div>
 										<div class="pdf_link_wrapper">
 											<a target="_self" href="{{quote.devices_desc[quotedDevice.id].ced}}" class="view_pdf" ng-if="quote.devices_desc[quotedDevice.id].ced != null">
 												<i class="fa fa-arrow-circle-o-down" aria-hidden="true"></i>
@@ -406,6 +454,47 @@
 										<div class="clearfix">
 										</div>
 									</div>
+									<div class="price_and_pdf">
+										<div class="outright_price">
+											<span ng-if="quote.displayed_price == 'outright'" style="display: block;">
+												Outright Purchase Price: ${{ outrightPrices[quotedDevice.id] }}
+											</span>	
+											
+											<span ng-if="quote.displayed_price == 'fmv1'" style="display: block;">
+												1 Year Lease Price: ${{ outrightPricesWithRates[quotedDevice.id].fmv[1] }}
+											</span>
+											<span ng-if="quote.displayed_price == 'fmv2'" style="display: block;">
+												2 Year Lease Price: ${{ outrightPricesWithRates[quotedDevice.id].fmv[2] }}
+											</span>	
+											<span ng-if="quote.displayed_price == 'fmv3'" style="display: block;">
+												3 Year Lease Price: ${{ outrightPricesWithRates[quotedDevice.id].fmv[3] }}
+											</span>	
+											<span ng-if="quote.displayed_price == 'fmv4'" style="display: block;">
+												4 Year Lease Price: ${{ outrightPricesWithRates[quotedDevice.id].fmv[4] }}
+											</span>	
+											<span ng-if="quote.displayed_price == 'fmv5'" style="display: block;">
+												5 Year Lease Price: ${{ outrightPricesWithRates[quotedDevice.id].fmv[5] }}
+											</span>	
+
+											<span ng-if="quote.displayed_price == 'oneout1'" style="display: block;">
+												1 Year Lease Price: ${{ outrightPricesWithRates[quotedDevice.id].oneOut[1] }}
+											</span>	
+											<span ng-if="quote.displayed_price == 'oneout2'" style="display: block;">
+												2 Year Lease Price: ${{ outrightPricesWithRates[quotedDevice.id].oneOut[2] }}
+											</span>	
+											<span ng-if="quote.displayed_price == 'oneout3'" style="display: block;">
+												3 Year Lease Price: ${{ outrightPricesWithRates[quotedDevice.id].oneOut[3] }}
+											</span>	
+											<span ng-if="quote.displayed_price == 'oneout4'" style="display: block;">
+												4 Year Lease Price: ${{ outrightPricesWithRates[quotedDevice.id].oneOut[4] }}
+											</span>	
+											<span ng-if="quote.displayed_price == 'oneout5'" style="display: block;">
+												5 Year Lease Price: ${{ outrightPricesWithRates[quotedDevice.id].oneOut[5] }}
+											</span>
+										</div>
+										<div class="clearfix">
+										</div>
+									</div>
 								</div>
 							</div>
 						</div>
@@ -415,9 +504,41 @@
 									Purchase and Lease Options for {{ quotedDevice.model }}
 								</h4>
 
-								<strong ng-if="outrightPrices[quotedDevice.id] > 0 && quote.allowed_prices[quotedDevice.id].purchase" style="margin-bottom: 20px; display: block;">
+								<strong ng-if="quote.displayed_price == 'outright' || quote.displayed_price == ''" style="margin-bottom: 20px; display: block;">
 									Outright Purchase Price: ${{ outrightPrices[quotedDevice.id] }}
-								</strong>								
+								</strong>	
+								
+								<strong ng-if="quote.displayed_price == 'fmv1'" style="margin-bottom: 20px; display: block;">
+									1 Year Lease Price: ${{ outrightPricesWithRates[quotedDevice.id].fmv[1] }}
+								</strong>
+								<strong ng-if="quote.displayed_price == 'fmv2'" style="margin-bottom: 20px; display: block;">
+									2 Year Lease Price: ${{ outrightPricesWithRates[quotedDevice.id].fmv[2] }}
+								</strong>	
+								<strong ng-if="quote.displayed_price == 'fmv3'" style="margin-bottom: 20px; display: block;">
+									3 Year Lease Price: ${{ outrightPricesWithRates[quotedDevice.id].fmv[3] }}
+								</strong>	
+								<strong ng-if="quote.displayed_price == 'fmv4'" style="margin-bottom: 20px; display: block;">
+									4 Year Lease Price: ${{ outrightPricesWithRates[quotedDevice.id].fmv[4] }}
+								</strong>	
+								<strong ng-if="quote.displayed_price == 'fmv5'" style="margin-bottom: 20px; display: block;">
+									5 Year Lease Price: ${{ outrightPricesWithRates[quotedDevice.id].fmv[5] }}
+								</strong>	
+
+								<strong ng-if="quote.displayed_price == 'oneout1'" style="margin-bottom: 20px; display: block;">
+									1 Year Lease Price: ${{ outrightPricesWithRates[quotedDevice.id].oneOut[1] }}
+								</strong>	
+								<strong ng-if="quote.displayed_price == 'oneout2'" style="margin-bottom: 20px; display: block;">
+									2 Year Lease Price: ${{ outrightPricesWithRates[quotedDevice.id].oneOut[2] }}
+								</strong>	
+								<strong ng-if="quote.displayed_price == 'oneout3'" style="margin-bottom: 20px; display: block;">
+									3 Year Lease Price: ${{ outrightPricesWithRates[quotedDevice.id].oneOut[3] }}
+								</strong>	
+								<strong ng-if="quote.displayed_price == 'oneout4'" style="margin-bottom: 20px; display: block;">
+									4 Year Lease Price: ${{ outrightPricesWithRates[quotedDevice.id].oneOut[4] }}
+								</strong>	
+								<strong ng-if="quote.displayed_price == 'oneout5'" style="margin-bottom: 20px; display: block;">
+									5 Year Lease Price: ${{ outrightPricesWithRates[quotedDevice.id].oneOut[5] }}
+								</strong>									
 								
 								<div ng-repeat="accessory in quotedDevice.accessories">
 									
@@ -454,18 +575,18 @@
 							</div>
 							<div class="col-md-6 detailed_device_calculation">
 								<div style="width:100%; margin-bottom: 25px;"
-									ng-if="quote.rates_options[quotedDevice.id] == 'either'"
+									ng-if="quote.rates_options == 'either'"
 								> 
 									<h4>
 										Choose preferred rates:
 									</h4>
-									<div>												
+									<div>					
 										<div style="width:100%;" class="how_did_we_do_buttons">
 											<div class="button_wrapper">
 												<input type="radio"
 													   class="radio"
 													   id="rates_{{ quotedDevice.id }}_basic"
-													   ng-model="lowerCreditRating[quotedDevice.id]"
+													   ng-model="lowerCreditRating.credit"
 													   ng-click="countRates(quotedDevice.id)"
 														value="basic"
 												/>
@@ -477,7 +598,7 @@
 												<input type="radio"
 													   class="radio"
 													   id="rates_{{ quotedDevice.id }}_marlin"
-													   ng-model="lowerCreditRating[quotedDevice.id]"
+													   ng-model="lowerCreditRating.credit"
 													   ng-click="countRates(quotedDevice.id)"
 														value="marlin" 
 												/>
@@ -491,20 +612,20 @@
 									</div> 								
 								</div>
 								<div style="width:100%; margin-bottom: 25px;"
-									ng-if="quote.allowed_prices[quotedDevice.id].fmv || quote.allowed_prices[quotedDevice.id].one_out"
+									ng-if="quote.allowed_prices.fmv || quote.allowed_prices.one_out"
 								>
 									<h4>									
 										See All Rates
 									</h4>
 									<input type="checkbox"
 										   class="checkbox"
-										   id="see_all_rates"
+										   id="see_all_rates_{{quotedDevice.id}}"
 										   ng-model="seeAllRates[quotedDevice.id]"
 									/>
-									<label for="see_all_rates">
+									<label for="see_all_rates_{{quotedDevice.id}}">
 									</label>
 								</div>
-								<div class="animate-show" ng-show="quote.allowed_prices[quotedDevice.id].fmv && seeAllRates[quotedDevice.id]">
+								<div class="animate-show" ng-show="quote.allowed_prices.fmv && seeAllRates[quotedDevice.id]">
 									<h4>
 										FMV (Lease to Return Rates)
 									</h4>
@@ -525,7 +646,7 @@
 										</div>
 									</div>
 								</div>
-								<div class="animate-show" ng-show="quote.allowed_prices[quotedDevice.id].one_out && seeAllRates[quotedDevice.id]">
+								<div class="animate-show" ng-show="quote.allowed_prices.one_out && seeAllRates[quotedDevice.id]">
 									<h4>
 										$1 Out Lease (Lease to Own)
 									</h4>
@@ -653,7 +774,7 @@
 									</div>
 								</div>
 
-								<div class="submit_buttons animate-show" style="padding:0px;" ng-show="howDidWeDo[quotedDevice.id].improvement == 'needs'">
+								<div class="submit_buttons animate-show" style="padding:0px; margin-top:10px;" ng-show="howDidWeDo[quotedDevice.id].improvement == 'needs'">
 									<div class="button" ng-click="saveCalculation(quote.guid, quotedDevice.id)" style="width: auto; padding: 0px 10px;">
 										Please Revise and Improve Our Quote!
 									</div>

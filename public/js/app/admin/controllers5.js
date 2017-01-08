@@ -83,31 +83,50 @@
 					
 					$scope.showQuoteForm = true;
 					
-					Quote
-						.getCapsuleUsers()
-						.success(function(response) {
-							//console.log(response);
-							$scope.capsuleUsers = response;
+					/*jQuery('#clients_list').slimScroll({
+						height: '280px'
+					});*/
+					
+					var capsuleSearchTimeout;
+					
+					$scope.getCapsuleUsers = function () {
+						
+							if (capsuleSearchTimeout) $timeout.cancel(capsuleSearchTimeout);
 							
-							$scope.loadingCapsuleUsers = false;
-							//console.log($scope.capsuleUsers);
+							capsuleSearchTimeout = $timeout( function(){								
+								Quote
+									.getCapsuleUsers(
+										$scope.searchUserByFirstname,
+										$scope.searchUserByLastname,
+										$scope.searchUserByEmail
+									)
+									.success(function(response) {
+										console.log(response);										
+										if (response.contacts) {
+											$scope.capsuleLoadingError = false;
+											$scope.capsuleUsers = response;
+											
+											$scope.selectCapsuleUser = function(capsuleUser) {
+												$scope.selectedCapsuleUser = capsuleUser.id;
 
-							jQuery('#clients_list').slimScroll({
-								height: '280px'
-							});
+												$scope.quoteData[$scope.quote.id].user_type = 'capsule';
 
-							$scope.selectCapsuleUser = function(capsuleUser) {
-								$scope.selectedCapsuleUser = capsuleUser.id;
-
-								$scope.quoteData[$scope.quote.id].user_type = 'capsule';
-
-								$scope.quoteData[$scope.quote.id].client_username = typeof capsuleUser.firstName != 'undefined' ? capsuleUser.firstName + ' ' : '';
-								$scope.quoteData[$scope.quote.id].client_username += typeof capsuleUser.lastName != 'undefined' ? capsuleUser.lastName : '';
-								$scope.quoteData[$scope.quote.id].client_company = typeof capsuleUser.organisationName != 'undefined' ? capsuleUser.organisationName + ' ' : '';
-								$scope.quoteData[$scope.quote.id].client_email = typeof capsuleUser.contacts.email.emailAddress != 'undefined' ? capsuleUser.contacts.email.emailAddress + ' ' : '';
-							}
-
-						});
+												$scope.quoteData[$scope.quote.id].client_username = typeof capsuleUser.firstName != 'undefined' ? capsuleUser.firstName + ' ' : '';
+												$scope.quoteData[$scope.quote.id].client_username += typeof capsuleUser.lastName != 'undefined' ? capsuleUser.lastName : '';
+												$scope.quoteData[$scope.quote.id].client_company = typeof capsuleUser.organisationName != 'undefined' ? capsuleUser.organisationName + ' ' : '';
+												$scope.quoteData[$scope.quote.id].client_email = typeof capsuleUser.contacts.email.emailAddress != 'undefined' ? capsuleUser.contacts.email.emailAddress + ' ' : '';
+											}
+										} else if(response.error) {
+											$scope.capsuleUsers = false;
+											$scope.capsuleLoadingError = response.error;
+										}
+											
+									})
+									.error(function(response) {
+										console.log(response);										
+									});
+							}, 1000);
+					}
 
 					$scope.quote = response;
 					
@@ -130,11 +149,10 @@
 					
 					$scope.quoteData[$scope.quote.id].sum_up = $scope.quote.sum_up;
 					$scope.quoteData[$scope.quote.id].rates_options = $scope.quote.rates_options;
+					$scope.quoteData[$scope.quote.id].displayed_price = $scope.quote.displayed_price;
 				 
 					angular.forEach($scope.addedDevices, function(device, deviceId) {
-						if (typeof $scope.quoteData[$scope.quote.id].rates_options == 'undefined' || $scope.quoteData[$scope.quote.id].rates_options == null) $scope.quoteData[$scope.quote.id].rates_options = {};
-						
-						if (typeof $scope.quoteData[$scope.quote.id].rates_options[deviceId] == 'undefined') $scope.quoteData[$scope.quote.id].rates_options[deviceId] = 'basic';
+						if (typeof $scope.quoteData[$scope.quote.id].rates_options == 'undefined' || $scope.quoteData[$scope.quote.id].rates_options == null) $scope.quoteData[$scope.quote.id].rates_options = 'basic';
 					});
 							
 					
@@ -236,7 +254,7 @@
 								} else {
 									if (typeof $scope.quote.added_accessories[deviceId][accessoryId] == 'undefined') {
 										$scope.quoteData[$scope.quote.id].added_accessories[deviceId][accessoryId] = {
-											'status' : 1,
+											'status' : 0,
 											'price' : accessory.price
 										};									
 									} else {
@@ -249,7 +267,7 @@
 							});
 						});
 						
-						
+						console.log(1);
 						
 					}
 					
@@ -482,7 +500,8 @@
 								prices: $scope.quoteData[$scope.quote.id].prices,
 								sum_up: $scope.quoteData[$scope.quote.id].sum_up,
 								rates_options: $scope.quoteData[$scope.quote.id].rates_options,
-								allowed_prices: $scope.quoteData[$scope.quote.id].allowed_prices
+								allowed_prices: $scope.quoteData[$scope.quote.id].allowed_prices,
+								displayed_price: $scope.quoteData[$scope.quote.id].displayed_price
 							};
 							console.log(data);
 							Quote

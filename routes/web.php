@@ -58,7 +58,7 @@ Route::group(['middleware' =>  'auth' ], function () {
 
 	 Route::group(array('prefix' => 'adm/api'), function() {
 		 
-		Route::get('quotes/get-capsule-users', 'Api\Admin\QuoteApiController@get_capsule_users_list');
+		Route::get('quotes/get-capsule-users/{first_name}/{last_name}/{email}', 'Api\Admin\QuoteApiController@get_capsule_users_list');
 		
 		Route::post('quotes/duplicate', 'Api\Admin\QuoteApiController@duplicate');
 		

@@ -159,6 +159,7 @@
 			$quote->sum_up = $request->sum_up;
 			$quote->rates_options = $request->rates_options;
 			$quote->allowed_prices = $request->allowed_prices;
+			$quote->displayed_price = $request->displayed_price;
 
 			$quote->save();
 			
@@ -168,25 +169,58 @@
 		/**
 		 * Get Capsule CRM users
 		 *
-		 * @param  int $id
+		 * @param  First name $first_name
+		 * @param  Last name $last_name
+		 * @param  Email $email
 		 * @return Response
 		 */
-		public function get_capsule_users_list() {
+		public function get_capsule_users_list($first_name, $last_name, $email) {
 		
-			$curl = new CurlController;
-			$url = "https://pahoda.capsulecrm.com/api/party";
-			$username = "108fa7bce4476acba87cd36f699b2df9";
-			$password = "x";
-			$json_response = $curl->get($url, $username, $password);
-			$response = json_decode($json_response);
+			if (
+				($first_name != 'undefined') 
+				||
+				($last_name != 'undefined')
+				||
+				($email != 'undefined')
+			) {
+				$curl = new CurlController;
+				
+				$url = "https://pahoda.capsulecrm.com/api/party?q=";				
+				if ($first_name != 'undefined') {
+					$url .= $first_name;
+				}
+				if ($first_name != 'undefined' && $last_name != 'undefined') {
+					$url .= '+';
+				}				
+				if ($last_name != 'undefined') {
+					$url .= $last_name;
+				}
+				if (($first_name != 'undefined' || $last_name != 'undefined') && $email != 'undefined') {
+					$url .= '&';
+				}			
+				if ($email != 'undefined') {
+					$url .= "email=" . $email;
+				}
+				
+				$username = "108fa7bce4476acba87cd36f699b2df9";
+				$password = "x";
+				$json_response = $curl->get($url, $username, $password);
+				$response = json_decode($json_response);
 
-			if (is_object($response)) {
-			
-				$contacts = $response->parties->person;
-							
-				return response()->json(array('contacts' => $contacts));
+				if (is_object($response)) {
+				
+					$contacts = $response->parties;
+								
+					if (property_exists($contacts,'person')) {
+						return response()->json(array('contacts' => $contacts->person));
+					} else {						
+						return response()->json(array('error' => 'Nothing is found'));
+					}
+				} else {
+					return response()->json(array('error' => $json_response));				
+				}
 			} else {
-				return response()->json(array('error' => $json_response));				
+				return response()->json(array('error' => 'No query variables set'));					
 			}
 		}
 

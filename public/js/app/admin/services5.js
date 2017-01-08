@@ -47,8 +47,8 @@
                     });
                 },
 				
-                getCapsuleUsers : function() {
-                    return $http.get('api/quotes/get-capsule-users');
+                getCapsuleUsers : function(firstName, lastName, email) {
+                    return $http.get('api/quotes/get-capsule-users/' + firstName + '/' + lastName + '/' + email);	
                 },
 
                 update : function(quoteId, quoteData) {

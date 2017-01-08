@@ -314,9 +314,13 @@ body {
 .detailed_device_header_block .description {
 	min-height:380px;
 }
-.quoted_devices_menu .device_parameters,
-.detailed_device_header_block .device_parameters {
+.quoted_devices_menu .device_parameters {
 	min-height:380px;
+	font-size: 14px;
+	line-height:30px;
+}
+.detailed_device_header_block .device_parameters {
+	min-height:300px;
 	font-size: 14px;
 	line-height:30px;
 }
@@ -366,11 +370,22 @@ body {
 	padding-left: 10px;
 	word-wrap:break-word;
 }
+.detailed_device_header_block .new .device_param_name,
+.detailed_device_header_block .new .device_param_value {
+	min-height: 80px;
+	line-height: 38px;	
+}
 .quoted_devices_menu .parameters_block,
 .detailed_device_header_block .parameters_block {
 	width:100%;
 	margin-bottom:20px;
     float: left;
+}
+@media (max-width:1200px) {
+	.quoted_devices_menu .parameters_block,
+	.detailed_device_header_block .parameters_block {
+		font-size:12px;
+	}
 }
 .detailed_device_header_block .parameters_block .parameter:last-child .device_param_name,
 .detailed_device_header_block .parameters_block .parameter:last-child .device_param_value {	
@@ -412,11 +427,12 @@ body {
 .detailed_device_header_block .device_photo .price_and_pdf {
 	width:100%;
 	font-weight:bold;
+	margin-bottom:20px;
 }
 .detailed_device_header_block .device_photo .outright_price {
 	float:left;
 	color:#51b2df;
-    font-size: 24px;
+    font-size: 28px;
 }
 .detailed_device_header_block .device_photo .view_pdf {
 	display:block;
@@ -427,16 +443,16 @@ body {
 	background:#51b2df;
 	color:#fff;
 	font-size:14px;
-    margin-left: 10px;
+    margin-right: 10px;
 }
 
 @media (min-width:768px) {
 	.quoted_devices_menu .device_parameters,
 	.detailed_device_header_block .device_parameters {
-		margin-bottom: 40px;
+		margin-bottom: 10px;
 	}
 	.detailed_device_header_block .device_photo .view_pdf {
-		float:right;
+		float:left;
 	}
 }
 @media (max-width:767px) {
@@ -523,6 +539,7 @@ body {
 	width:33.33%;
 	text-align:left;
 	min-height:30px;
+	margin-right:15px;
 }
 @media (min-width:768px) {	
 	.how_did_we_do_buttons > .button_wrapper {
@@ -1207,7 +1224,7 @@ transition: all .2s;
 .capsule_client_block,
 #devices_list .quoted_device_block {
     background:#fff;
-	min-height:100px;
+	min-height:110px;
     padding:10px;
     -webkit-box-shadow: 2px 2px 3px 1px rgba(0,0,0,0.2);
     -moz-box-shadow: 2px 2px 3px 1px rgba(0,0,0,0.2);
@@ -1523,6 +1540,20 @@ input[type=range]::-ms-thumb {
 }
 .task-table td:first-child {
 	text-align:left;
+}
+.edit_quote_pricing_option_header {
+	float: left;
+    display: block;
+    width: 100%;
+    margin-bottom: 10px;
+    border: 1px solid #888;
+    padding: 10px;
+    border-radius: 6px;
+}
+.edit_quote_pricing_option {
+	float:left;
+	width:18%;
+	height:50px;
 }
 	
 /* Helpers */

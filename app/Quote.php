@@ -26,7 +26,8 @@ class Quote extends Model
 		'rates_options',
 		'no_of_views',
 		'last_view',
-		'allowed_prices'
+		'allowed_prices',
+		'displayed_price'
     ];
 
     /**

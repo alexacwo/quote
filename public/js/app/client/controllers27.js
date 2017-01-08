@@ -54,31 +54,30 @@
 						}*/
 
 						$scope.quote = response; 
-						$scope.lowerCreditRating = {};
-						angular.forEach($scope.quote.rates_options, function(option, deviceId) {
-							switch (option) { 
-								case 'marlin':
-									$scope.lowerCreditRating[deviceId] = 'marlin';
-									break;
-								case 'basic':
-								case 'either':
-								case '':
-									$scope.lowerCreditRating[deviceId] = 'basic';
-									break;
-							}							 
-						}); 
+						$scope.lowerCreditRating = {}; 
+						
+						switch ($scope.quote.rates_options) { 
+							case 'marlin':
+								$scope.lowerCreditRating.credit = 'marlin';
+								break;
+							case 'basic':
+							case 'either':
+							case '':
+								$scope.lowerCreditRating.credit = 'basic';
+								break;
+						}	 
 			
 						console.log($scope.quote.rates_options);
-						console.log($scope.lowerCreditRating);
 						
-						angular.forEach($scope.quote.devices, function(device, deviceIndex) {
-							 
+						angular.forEach($scope.quote.devices, function(device, deviceIndex) {						 
 							
-							if (typeof $scope.lowerCreditRating == 'undefined' || $scope.lowerCreditRating == null ) $scope.lowerCreditRating = {};
-							 if (typeof $scope.lowerCreditRating[device.id] == 'undefined') $scope.lowerCreditRating[device.id] = 'basic';
+							if (typeof $scope.lowerCreditRating.credit == 'undefined' || $scope.lowerCreditRating.credit == null ) $scope.lowerCreditRating.credit = 'basic';
 						}); 
 						
 						$scope.showQuotedDevice = function (quotedDeviceId) {
+							
+							$scope.countRates(quotedDeviceId);
+							
 							$scope.showQuoteMainPage = false;
 							anchorSmoothScroll.scrollTo('top');
 							
@@ -186,6 +185,7 @@
 						};
 
 						$scope.countRates = function(deviceId) {
+						console.log($scope.lowerCreditRating.credit);
 							$scope.totalRates = {
 								fmv: {
 									1: 0, 2: 0, 3: 0, 4: 0, 5: 0
@@ -195,7 +195,7 @@
 								}							
 							};
 							
-							switch ($scope.lowerCreditRating[deviceId]) { 
+							switch ($scope.lowerCreditRating.credit) { 
 								case 'marlin':
 										//Higher rates
 										//if (isNaN($scope.outrightPrices[deviceId])) $scope.outrightPrices[deviceId] = 0;

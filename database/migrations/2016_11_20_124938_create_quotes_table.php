@@ -31,6 +31,7 @@ class CreateQuotesTable extends Migration
             $table->string('how_did_we_do', 1000)->nullable();
             $table->boolean('sum_up', 100)->nullable();
             $table->boolean('rates_options', 200)->nullable();
+            $table->string('displayed_price', 100)->nullable();
             $table->timestamps();
         });
     }

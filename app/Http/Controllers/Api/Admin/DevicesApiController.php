@@ -49,7 +49,7 @@
 				$query->orWhere('model', '=', 'WorkCentre 6655i');
 				$query->orWhere('model', '=', 'WorkCentre 4265');
 				$query->orWhere('model', '=', 'WorkCentre 7835i');
-				$query->orWhere('model', '=', 'WorkCentre 7970i');
+				$query->orWhere('model', '=', 'WorkCentre 7225i');
 			})->get();
 			
 			return response()->json($devices);
