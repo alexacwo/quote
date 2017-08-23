@@ -1,0 +1,82 @@
+<div class="panel panel-warning">
+	<div class="panel-heading">
+		Device list
+	</div>
+
+	<div class="panel-body">
+	
+		<div class="col-md-12">
+			Choose a device from a form below and press the button (max 4 allowed for now):<br>
+			<div class="btn btn-danger" id="add_device" ng-click="addDeviceToQuote()">Add Device</div>
+		</div>
+
+		<div class="col-md-12 animate-show" ng-show="showDeviceIsAlreadyAddedMessage">					
+			<div class="alert alert-warning">
+				<strong>This device is already in the list!</strong>
+			</div>
+		</div>
+		<div class="col-md-12 animate-show" ng-show="showSelectDeviceMessage">					
+			<div class="alert alert-warning">
+				<strong>Please select the device in the list below.</strong>
+			</div>
+		</div>
+		<div class="col-md-12 animate-show" ng-show="showNoMoreAllowedMessage">					
+			<div class="alert alert-warning">
+				<strong>No more devices allowed.</strong>
+			</div>
+		</div>
+		
+		<div class="col-md-6">
+			<div class="form-group">
+				<strong ng-if="mostQuotedDevices.length">Most common quoted devices (max 3 showing):</strong>
+				<div id="most_quoted">
+					<div class="quoted_device_block"
+						 ng-repeat="mostQuotedDevice in mostQuotedDevices"
+						 ng-click="selectDevice(mostQuotedDevice.id)"
+						 ng-class="{'ui-selected': selectedDevice == mostQuotedDevice.id}"
+					>
+						<div class="device_params" >
+						
+							<h4 id="device_title"> 
+								{{ mostQuotedDevice.model }}
+							</h4>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-6">
+			<div class="form-group">
+				<strong>Choose from a list below:</strong>
+				<div class="search">
+					<span class="fa fa-search"></span>
+					<input type="text"
+						   class="form-control"
+						   placeholder="Search device"
+						   ng-model="searchText.model"
+						/>
+				</div>
+				
+				<div class="devices_list_container">
+					<div id="devices_list" slimscroll="{height: 280, wheelStep: 5}">
+						<div class="quoted_device_block"
+							 ng-repeat="device in devices | filter:searchText"
+							 ng-click="selectDevice(device.id)"
+							 ng-class="{'ui-selected': selectedDevice == device.id}"
+						>
+							<div class="device_image">
+								<img ng-if="device.created_by == 'csv_upload'" ng-src="/{{ device.image }}" /> 
+								<img ng-if="device.created_by == 'user'" ng-src="../{{ device.image }}" /> 
+							</div>
+							<div class="device_params">
+								<h4 id="device_title">
+									{{ device.model }}
+								</h4>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>	

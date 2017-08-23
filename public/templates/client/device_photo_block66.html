@@ -1,0 +1,10 @@
+<img id="device_image_{{$parent.$parent.$index}}"
+	ng-src="{{ quote.devices[$parent.$parent.$index].image }}"
+/>
+<div class="device_best_choice" 
+	ng-if="quote.devices_desc[deviceId][$index].best_choice == true"
+>
+</div>
+<div class="magnify_glass">
+	<i class="fa fa-search-plus" aria-hidden="true"></i>
+</div>

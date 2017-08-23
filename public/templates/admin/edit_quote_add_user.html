@@ -1,0 +1,147 @@
+<div class="panel panel-info">
+	<div class="panel-heading">
+		Add user
+	</div>
+	
+	<div class="panel-body">
+		<div class="col-md-6">
+			<div class="form-group user_form">
+				<a id="user"></a>
+				<select class="form-control" id="user_type"
+						ng-model="quoteData[quote.id].user_type" 
+						ng-change="changedUserType(quoteData[quote.id].user_type)"
+				>
+					<option value="new" ng-selected="quoteData[quote.id].user_type == 'new' || quoteData[quote.id].user_type == ''">New User</option>
+					<option value="capsule" ng-selected="quoteData[quote.id].user_type == 'capsule'">CapsuleCRM User</option>
+				</select>
+				<br>
+				<div class="alert alert-danger"
+					ng-show="quoteData[quote.id].client_email == '' && userInputError && quoteData[quote.id].user_type == 'capsule'">
+					<strong>Choose Capsule CRM User!</strong>
+				</div>
+				Username (*):
+				<input type="text"
+					   class="form-control"
+					   ng-model="quoteData[quote.id].client_username"
+					   ng-disabled="quoteData[quote.id].user_type == 'capsule'"
+					   ng-class="{error: (quoteData[quote.id].client_username == '' && userInputError)}"
+					   ng-change="checkForEmptyInput(quoteData[quote.id].client_username)"
+				/>
+				<span class="error_message"
+						ng-show="quoteData[quote.id].client_username == '' && userInputError && quoteData[quote.id].user_type == 'new'">
+					Please fill in this field
+					<br>
+				</span>
+				<br>
+				Company name (if specified) (*):
+				<input type="text"
+					   class="form-control"
+					   ng-model="quoteData[quote.id].client_company"
+					   ng-disabled="quoteData[quote.id].user_type == 'capsule'"
+					   ng-class="{error: (quoteData[quote.id].client_company == '' && userInputError)}"
+					   ng-change="checkForEmptyInput(quoteData[quote.id].client_company)"
+				/>
+				<span class="error_message"
+					ng-show="quoteData[quote.id].client_company == '' && userInputError && quoteData[quote.id].user_type == 'new'"
+				>
+					Please fill in this field
+					<br>
+				</span>
+				<br>
+				E-mail (if specified) (*):
+				<input type="text"
+					   class="form-control"
+					   ng-model="quoteData[quote.id].client_email"
+					   ng-disabled="quoteData[quote.id].user_type == 'capsule'"
+					   ng-class="{error: (quoteData[quote.id].client_email == '' && userInputError)}"
+					   ng-change="checkForEmptyInput(quoteData[quote.id].client_email)"
+				/>
+				<span class="error_message"
+						ng-show="quoteData[quote.id].client_email == '' && userInputError && quoteData[quote.id].user_type == 'new'"
+				>
+					Please fill in this field
+					<br>
+				</span>
+				(*) - mandatory fields
+			</div>
+		</div>
+		<div class="col-md-6">
+			<div class="clients_list_container">
+				<div class="col-md-12 animate-show" style="margin-top:5px;" ng-show="1==1 || !loadingCapsuleUsers">
+					<h5 style="margin-bottom:0px;"><strong>Search Capsule CRM user:</strong></h5>
+					<div class="col-md-6">
+						By firstname:
+						<input type="text"
+							   class="form-control"
+							   ng-model="searchUserByFirstname"
+							   ng-change="getCapsuleUsers()"
+						/>
+					</div>
+					<div class="col-md-6">
+						By lastname:
+						<input type="text"
+							   class="form-control"
+							   ng-model="searchUserByLastname"
+							   ng-change="getCapsuleUsers()"
+						/>
+					</div>
+					<div class="col-md-8">
+						By email:
+						<input type="text"
+							   class="form-control"
+							   ng-model="searchUserByEmail"
+							   ng-change="getCapsuleUsers()"
+						/>
+					</div>
+				</div>
+				<div class="col-md-12 animate-show" ng-show="1==0 && loadingCapsuleUsers" style="text-align:center;">
+					Loading...
+					<br>
+					<img src="../public/img/loading.gif" />
+				</div>
+				<div class="col-md-12 animate-show" ng-show="1==1 || !loadingCapsuleUsers">
+					<div id="clients_list" slimscroll="{height: 280}">										
+						<div class="form-group">
+							<div class="capsule_client_block"
+							ng-repeat="capsuleUser in capsuleUsers.contacts"												
+							 ng-click="selectCapsuleUser(capsuleUser)"
+							 ng-class="{'ui-selected': selectedCapsuleUser == capsuleUser.id}"
+							>
+								<div class="client_image">
+									<img ng-src="{{ capsuleUser.pictureURL }}" />
+								</div>
+								<div class="client_contacts">													
+									<h5 class="capsule_username" ng-if="capsuleUser.firstName">Firstname: <span>{{ capsuleUser.firstName }}</span></h5>
+									<h5 class="capsule_username" ng-if="capsuleUser.lastName">Lastname: <span>{{ capsuleUser.lastName }}</span></h5>														
+									<div class="contact" ng-if="capsuleUser.organisationName">Company:
+										<span>
+											{{ capsuleUser.organisationName }}
+										</span>
+									</div>
+									<div class="contact"
+										ng-if="capsuleUser.contacts.email.emailAddress">
+										Email:
+										<span>
+											{{ capsuleUser.contacts.email.emailAddress }}
+										</span>
+									</div>
+									<div class="contact"
+										ng-if="capsuleUser.contacts.email[0].emailAddress">
+										Email:
+										<span>
+											{{ capsuleUser.contacts.email[0].emailAddress }}
+										</span>
+									</div>
+									<span class="contact details"></span>
+								</div>
+							</div>
+							<div ng-if="capsuleLoadingError" style="margin-top:10px;">
+								{{ capsuleLoadingError }}
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

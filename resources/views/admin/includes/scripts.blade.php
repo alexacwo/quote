@@ -1,8 +1,8 @@
 <!-- Scripts -->
 
-<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-<script src="{{asset('public/js/assets/jquery-ui.min.js')}}"></script>
-<script src="{{asset('public/js/assets/jquery.validate.min.js')}}"></script>
+<script src="{{asset('public/js/assets/jquery/jquery.min.js')}}"></script>
+<script src="{{asset('public/js/assets/jquery/jquery-ui.min.js')}}"></script>
+<script src="{{asset('public/js/assets/jquery/jquery.validate.min.js')}}"></script>
 <script src="{{asset('public/js/assets/slimscroll.min.js')}}"></script>
 <script src="{{asset('public/js/assets/bootstrap.min.js')}}"></script>
 

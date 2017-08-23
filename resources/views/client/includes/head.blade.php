@@ -4,10 +4,11 @@
 
 <meta name="csrf-token" content="{{ csrf_token() }}">
 
-<title>Pahoda Image Products</title>
+<title>Easy Quotes for Copier Dealers</title>
 
-<link href="{{asset('public/css/app.css')}}" rel="stylesheet">
-<link href="{{asset('public/css/custom.css')}}" rel="stylesheet">
-<link href="{{asset('public/css/font-awesome.min.css')}}" rel="stylesheet">
+<link href="{{url('public/css/app.css')}}" rel="stylesheet">
+<link href="{{url('public/css/custom_style66.css')}}" rel="stylesheet">
+<link href="{{url('public/css/font-awesome.min.css')}}" rel="stylesheet">
 
 <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+	

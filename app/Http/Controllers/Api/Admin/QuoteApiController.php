@@ -67,8 +67,7 @@
 		 */
 		public function duplicate(Request $request)			
 		{
-			$quote_to_duplicate = Quote::find($request->quote_to_duplicate_id)
-				->with('user', 'devices')->first();
+			$quote_to_duplicate = Quote::with('user', 'devices')->get()->find(intval($request->quote_to_duplicate_id));
 			
 			$guid = $this->generate_guid_for_quote_link();
 
@@ -76,18 +75,24 @@
 			$new_quote->guid = $guid;
 			$new_quote->status = 'draft';
 						
-			$new_quote->editor = $quote_to_duplicate->editor;
-			$new_quote->devices_desc = $quote_to_duplicate->devices_desc;
-			$new_quote->prices = $quote_to_duplicate->prices;
 			$new_quote->added_accessories = $quote_to_duplicate->added_accessories;
-			$new_quote->selected_accessories = $quote_to_duplicate->selected_accessories;
-			$new_quote->included_pages = $quote_to_duplicate->included_pages;
-			$new_quote->sum_up = $quote_to_duplicate->sum_up;
-			$new_quote->rates_options = $quote_to_duplicate->rates_options;
 			$new_quote->allowed_prices = $quote_to_duplicate->allowed_prices;
-			
+			$new_quote->custom_accessories = $quote_to_duplicate->custom_accessories;
+			$new_quote->custom_descriptions = $quote_to_duplicate->custom_descriptions;
+			$new_quote->editor = $quote_to_duplicate->editor;
+			$new_quote->cover_letter_position = $quote_to_duplicate->cover_letter_position;	
+			$new_quote->sales_rep_notes = $quote_to_duplicate->sales_rep_notes;		
+			$new_quote->devices_desc = $quote_to_duplicate->devices_desc;
+			$new_quote->displayed_price = $quote_to_duplicate->displayed_price;
+			$new_quote->included_pages = $quote_to_duplicate->included_pages;
+			$new_quote->quoted_devices = $quote_to_duplicate->quoted_devices;
+			$new_quote->prices = $quote_to_duplicate->prices;
+			$new_quote->rates_options = $quote_to_duplicate->rates_options;
+			//$new_quote->selected_accessories = $quote_to_duplicate->selected_accessories;
+			$new_quote->sum_up = $quote_to_duplicate->sum_up;
 			
 			$new_quote->user()->associate($quote_to_duplicate->user);
+			
 			$new_quote->save();
 			
 			$new_quote->devices()->attach($quote_to_duplicate->devices);
@@ -144,22 +149,22 @@
 			$user->quotes()->save($quote);
 			$user->save();
 
-			$quote->devices()->sync($request->added_devices);
-			$quote->prices = $request->prices;
-			$quote->user()->associate($user);
-
-			$quote->editor = $request->editor;
 			$quote->added_accessories = $request->added_accessories;
-			
-			$quote->devices_desc = $request->devices_desc;
-			$quote->included_pages = $request->included_pages;
+			$quote->allowed_prices = $request->allowed_prices;
 			$quote->custom_accessories = $request->custom_accessories;
 			$quote->custom_descriptions = $request->custom_descriptions;
-			
-			$quote->sum_up = $request->sum_up;
-			$quote->rates_options = $request->rates_options;
-			$quote->allowed_prices = $request->allowed_prices;
+			$quote->devices()->sync($request->added_devices);
+			$quote->devices_desc = $request->devices_desc;
 			$quote->displayed_price = $request->displayed_price;
+			$quote->editor = $request->editor;
+			$quote->cover_letter_position = $request->cover_letter_position;	
+			$quote->sales_rep_notes = $request->sales_rep_notes;
+			$quote->included_pages = $request->included_pages;
+			$quote->quoted_devices = $request->quoted_devices;			
+			$quote->prices = $request->prices;
+			$quote->rates_options = $request->rates_options;
+			$quote->sum_up = $request->sum_up;
+			$quote->user()->associate($user);
 
 			$quote->save();
 			

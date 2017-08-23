@@ -1,0 +1,59 @@
+<div class="accessories_header">
+	Accessories:
+</div>
+<div ng-repeat="accessory in quote.devices[$parent.$index].accessories | filterOnlyAddedAccessories: quote.added_accessories[deviceId][$index]" >
+	<div class="accessories_list_block"
+		ng-class="{
+			double_height: accessory.description.length > 27,
+			accessory_accept: selectedAccessoriesWithPrices[deviceId][$parent.$index][accessory.id].status == 2
+		}"
+		ng-click="toggleAccessoryStatus(deviceId, $parent.$index, accessory.id, status)"
+	>
+		<div class="accessory_cell index hide_if_not_accepted" ng-init="$parent.accessoriesCount = $index + 1">
+			<div class="opacity">
+				Option {{ $index + 1 }}
+			</div>
+		</div>
+		<div class="accessory_cell description hide_if_not_accepted">
+			<div class="opacity">
+				{{ accessory.description }} ({{ accessory.part_number }}) - ${{ selectedAccessoriesWithPrices[deviceId][$parent.$index][accessory.id].price * rateForCalculation[deviceId][$parent.$index] | number:1 }} 
+			</div>	
+		</div>		
+		<div class="accessory_cell accept hide_if_not_accepted"> 
+			<div class="accessory_checkbox"></div>
+		</div>		
+		<div class="accessory_cell remove"> 
+			<div class="accessory_checkbox"></div>
+		</div>
+		<div class="clearfix">
+		</div>
+	</div>	
+</div>
+<div ng-repeat="custom_accessory in quote.custom_accessories[deviceId][$index]"> 
+	<div class="accessories_list_block"
+		ng-class="{
+			double_height: custom_accessory.description.length > 40,
+			accessory_accept: selectedCustomAccessoriesWithPrices[deviceId][$parent.$index][custom_accessory.id] != null
+		}"
+		ng-click="toggleCustomAccessoryStatus(deviceId, $parent.$index, custom_accessory.id, custom_accessory.price)"
+	>
+		<div class="accessory_cell index hide_if_not_accepted"> 
+			<div class="opacity">
+				Option {{ $index + 1 + $parent.accessoriesCount }} 
+			</div>
+		</div>
+		<div class="accessory_cell description hide_if_not_accepted"> 
+			<div class="opacity">	
+				{{ custom_accessory.description }} ({{ custom_accessory.part_number }}) - ${{ custom_accessory.price * rateForCalculation[deviceId][$parent.$index] | number:1 }}
+			</div>
+		</div>		
+		<div class="accessory_cell accept hide_if_not_accepted"> 		
+			<div class="accessory_checkbox"></div>
+		</div>	
+		<div class="accessory_cell remove">	
+			<div class="accessory_checkbox"></div>
+		</div>
+		<div class="clearfix">
+		</div> 
+	</div>  
+</div>  

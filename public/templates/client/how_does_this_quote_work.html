@@ -1,0 +1,124 @@
+<div class="container">
+	<div class="row">
+		<div class="quote_review_block">
+			<h4>
+				How Does This Quote Work For You?
+			</h4>
+			<div style="width:100%;" class="how_did_we_do_buttons">									
+				<div class="button_wrapper">
+					<input type="radio"
+						   class="radio"
+						   id="how_did_we_do_needs_improvement"
+						   ng-model="howDidWeDo.improvement"
+							value="needs"
+					/>
+					<label for="how_did_we_do_needs_improvement">
+						Needs Improvement
+					</label>
+				</div>
+				<div class="button_wrapper">
+					<input type="radio"
+						   class="radio"
+						   id="how_did_we_do_looks_perfect"
+						   ng-model="howDidWeDo.improvement"
+						   ng-click="clearHowDidWeDoOptions()"
+							value="perfect" 
+					/>
+					<label for="how_did_we_do_looks_perfect">
+						Looks Perfect For Us
+					</label>
+				</div>
+				<div class="clearfix">
+				</div>
+			</div>
+			
+			<div class="animate-show" style="padding:0px;" ng-show="howDidWeDo.improvement == 'needs'">
+				<h4>What Can We Improve For You?</h4>
+				<div style="width:100%; margin-bottom: 10px;" class="how_did_we_do_buttons">
+
+					<div class="button_wrapper">
+						<input type="radio"
+							   class="radio"
+							   id="how_did_we_do_price_expensive"
+							   ng-model="howDidWeDo.price"
+								value="expensive"
+						/>
+						<label for="how_did_we_do_price_expensive">
+							Copier Is Too Expensive
+						</label>
+					</div>
+					<div class="button_wrapper">
+						<input type="radio"
+							   class="radio"
+							   id="how_did_we_do_price_cheap"
+							   ng-model="howDidWeDo.price"
+								value="cheap" 
+						/>
+						<label for="how_did_we_do_price_cheap">
+							Copier Is Too Cheap
+						</label>
+					</div>
+					<div class="clearfix">
+					</div>
+				</div>
+				<br>
+				<div style="width:100%; margin-bottom: 0px;" class="how_did_we_do_buttons">
+					<input type="checkbox"
+						   class="accessories_for_devices checkbox"
+						   id="how_did_we_do_speed_slow"
+						   ng-model="howDidWeDo.slow_speed"
+					/>
+					<label for="how_did_we_do_speed_slow">
+						Copier Is Too Slow
+					</label>
+					<div class="clearfix">
+					</div>
+				</div>
+				<br>
+				<div style="width:100%; margin-bottom: 0px;" class="how_did_we_do_buttons">
+					<input type="checkbox"
+						   class="accessories_for_devices checkbox"
+						   id="how_did_we_do_key_features"
+						   ng-model="howDidWeDo.missing_key_features"
+					/>
+					<label for="how_did_we_do_key_features">
+						Copier Is Missing Key Features
+					</label>
+					<div class="clearfix">
+					</div>
+				</div>
+				<br>
+				<div style="width:100%; margin-bottom: 0px;" class="how_did_we_do_buttons">
+					<input type="checkbox"
+						   class="accessories_for_devices checkbox"
+						   id="how_did_we_do_other_concerns"
+						   ng-model="howDidWeDo.other_concerns"
+					/>
+					<label for="how_did_we_do_other_concerns">
+						Have Other Concerns:
+					</label>
+					<textarea class="form-control animate-show" rows="5"
+						  ng-model="howDidWeDo.other_concerns_text"
+						 ng-show="howDidWeDo.other_concerns == true"
+						 style="margin-top: 10px; margin-bottom: 10px; resize: none;"
+						  maxlength="250"
+					 ></textarea>
+					<div class="clearfix">
+					</div>
+				</div>
+			</div>
+
+			<div class="submit_buttons animate-show" style="padding:0px; margin-top:10px;" ng-show="howDidWeDo.improvement == 'needs'">
+				<div class="button" ng-click="saveCalculation(quote.guid, howDidWeDo.improvement)" style="width: auto; padding: 0px 10px;">
+					Please Revise and Improve Our Quote!
+				</div>
+			</div>
+			 
+			<div class="submit_buttons animate-show" style="padding:0px;" ng-show="howDidWeDo.improvement == 'perfect'">
+				<div class="button" ng-click="saveCalculation(quote.guid, howDidWeDo.improvement)">
+					Accept Proposal
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

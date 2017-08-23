@@ -5,7 +5,8 @@
 <meta name="csrf-token" content="{{ csrf_token() }}">
 
 <title>Pahoda Image Products</title>
-
-<link rel="stylesheet" href="//code.jquery.com/ui/1.12.0/themes/smoothness/jquery-ui.css">
-<link href="{{asset('public/css/custom.css')}}" rel="stylesheet">
+ 
+<link href="{{asset('public/css/jquery-ui.css')}}" rel="stylesheet">
+<link href="{{asset('public/css/custom_style66.css')}}" rel="stylesheet">
 <link href="{{asset('public/css/bootstrap-3.3.7.min.css')}}" rel="stylesheet">
+<link href="{{asset('public/css/font-awesome.min.css')}}" rel="stylesheet">

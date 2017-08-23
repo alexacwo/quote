@@ -1,0 +1,108 @@
+[01-Feb-2017 21:55:04 UTC] PHP Parse error:  syntax error, unexpected end of file in /home/perfectcopier/public_html/index.php on line 62
+[01-Feb-2017 21:55:26 UTC] PHP Parse error:  syntax error, unexpected '<' in /home/perfectcopier/public_html/index.php on line 62
+[27-Feb-2017 11:31:13 UTC] PHP Parse error:  syntax error, unexpected 'public' (T_PUBLIC) in /home/perfectcopier/public_html/storage/framework/views/647ccf24ee6f3226603a2109bdbf5ffdaa1123b4.php on line 40
+[27-Feb-2017 11:31:53 UTC] PHP Parse error:  syntax error, unexpected ';' in /home/perfectcopier/public_html/storage/framework/views/647ccf24ee6f3226603a2109bdbf5ffdaa1123b4.php on line 39
+[27-Feb-2017 11:32:19 UTC] PHP Parse error:  syntax error, unexpected ';' in /home/perfectcopier/public_html/storage/framework/views/647ccf24ee6f3226603a2109bdbf5ffdaa1123b4.php on line 39
+[01-Mar-2017 14:09:27 UTC] PHP Warning:  require_once(/home/perfectcopier/public_html/public/index.php): failed to open stream: No such file or directory in /home/perfectcopier/public_html/server.php on line 21
+[01-Mar-2017 14:09:27 UTC] PHP Fatal error:  require_once(): Failed opening required '/home/perfectcopier/public_html/public/index.php' (include_path='.:/usr/lib/php:/usr/local/lib/php') in /home/perfectcopier/public_html/server.php on line 21
+[04-Mar-2017 14:45:46 UTC] PHP Warning:  Uncaught exception 'ErrorException' with message 'require_once(/home/perfectcopier/public_html/app\lib\fpdi\fpdi.php): failed to open stream: No such file or directory' in /home/perfectcopier/public_html/app/Http/Controllers/Api/Client/ViewQuoteApiController.php:136
+Stack trace:
+#0 /home/perfectcopier/public_html/app/Http/Controllers/Api/Client/ViewQuoteApiController.php(136): Illuminate\Foundation\Bootstrap\HandleExceptions->handleError(2, 'require_once(/h...', '/home/perfectco...', 136, Array)
+#1 /home/perfectcopier/public_html/app/Http/Controllers/Api/Client/ViewQuoteApiController.php(136): App\Http\Controllers\Api\Client\ViewQuoteApiController::generate_pdf()
+#2 [internal function]: App\Http\Controllers\Api\Client\ViewQuoteApiController->generate_pdf(Object(Illuminate\Http\Request))
+#3 /home/perfectcopier/public_html/vendor/laravel/framework/src/Illuminate/Routing/Controller.php(55): call_user_func_array(Array, Array)
+#4 /home/perfectcopier/public_html/vendor/laravel/framework/src/Illuminate/Routing/Contr in /home/perfectcopier/public_html/app/Http/Controllers/Api/Client/ViewQuoteApiController.php on line 136
+[04-Mar-2017 14:45:46 UTC] PHP Fatal error:  App\Http\Controllers\Api\Client\ViewQuoteApiController::generate_pdf(): Failed opening required '/home/perfectcopier/public_html/app\lib\fpdi\fpdi.php' (include_path='.:/usr/lib/php:/usr/local/lib/php') in /home/perfectcopier/public_html/app/Http/Controllers/Api/Client/ViewQuoteApiController.php on line 136
+[04-Mar-2017 14:51:04 UTC] PHP Warning:  Uncaught exception 'ErrorException' with message 'require_once(/home/perfectcopier/public_html/app\lib\fpdi\fpdi.php): failed to open stream: No such file or directory' in /home/perfectcopier/public_html/app/Http/Controllers/Api/Client/ViewQuoteApiController.php:136
+Stack trace:
+#0 /home/perfectcopier/public_html/app/Http/Controllers/Api/Client/ViewQuoteApiController.php(136): Illuminate\Foundation\Bootstrap\HandleExceptions->handleError(2, 'require_once(/h...', '/home/perfectco...', 136, Array)
+#1 /home/perfectcopier/public_html/app/Http/Controllers/Api/Client/ViewQuoteApiController.php(136): App\Http\Controllers\Api\Client\ViewQuoteApiController::generate_pdf()
+#2 [internal function]: App\Http\Controllers\Api\Client\ViewQuoteApiController->generate_pdf(Object(Illuminate\Http\Request))
+#3 /home/perfectcopier/public_html/vendor/laravel/framework/src/Illuminate/Routing/Controller.php(55): call_user_func_array(Array, Array)
+#4 /home/perfectcopier/public_html/vendor/laravel/framework/src/Illuminate/Routing/Contr in /home/perfectcopier/public_html/app/Http/Controllers/Api/Client/ViewQuoteApiController.php on line 136
+[04-Mar-2017 14:51:04 UTC] PHP Fatal error:  App\Http\Controllers\Api\Client\ViewQuoteApiController::generate_pdf(): Failed opening required '/home/perfectcopier/public_html/app\lib\fpdi\fpdi.php' (include_path='.:/usr/lib/php:/usr/local/lib/php') in /home/perfectcopier/public_html/app/Http/Controllers/Api/Client/ViewQuoteApiController.php on line 136
+[04-Mar-2017 14:51:42 UTC] PHP Warning:  Uncaught exception 'ErrorException' with message 'require_once(/home/perfectcopier/public_html/app\lib\fpdi\fpdi.php): failed to open stream: No such file or directory' in /home/perfectcopier/public_html/app/Http/Controllers/Api/Client/ViewQuoteApiController.php:136
+Stack trace:
+#0 /home/perfectcopier/public_html/app/Http/Controllers/Api/Client/ViewQuoteApiController.php(136): Illuminate\Foundation\Bootstrap\HandleExceptions->handleError(2, 'require_once(/h...', '/home/perfectco...', 136, Array)
+#1 /home/perfectcopier/public_html/app/Http/Controllers/Api/Client/ViewQuoteApiController.php(136): App\Http\Controllers\Api\Client\ViewQuoteApiController::generate_pdf()
+#2 [internal function]: App\Http\Controllers\Api\Client\ViewQuoteApiController->generate_pdf(Object(Illuminate\Http\Request))
+#3 /home/perfectcopier/public_html/vendor/laravel/framework/src/Illuminate/Routing/Controller.php(55): call_user_func_array(Array, Array)
+#4 /home/perfectcopier/public_html/vendor/laravel/framework/src/Illuminate/Routing/Contr in /home/perfectcopier/public_html/app/Http/Controllers/Api/Client/ViewQuoteApiController.php on line 136
+[04-Mar-2017 14:51:42 UTC] PHP Fatal error:  App\Http\Controllers\Api\Client\ViewQuoteApiController::generate_pdf(): Failed opening required '/home/perfectcopier/public_html/app\lib\fpdi\fpdi.php' (include_path='.:/usr/lib/php:/usr/local/lib/php') in /home/perfectcopier/public_html/app/Http/Controllers/Api/Client/ViewQuoteApiController.php on line 136
+[04-Mar-2017 14:53:30 UTC] PHP Warning:  Uncaught exception 'ErrorException' with message 'require_once(/app/lib/fpdi/fpdi.php): failed to open stream: No such file or directory' in /home/perfectcopier/public_html/app/Http/Controllers/Api/Client/ViewQuoteApiController.php:136
+Stack trace:
+#0 /home/perfectcopier/public_html/app/Http/Controllers/Api/Client/ViewQuoteApiController.php(136): Illuminate\Foundation\Bootstrap\HandleExceptions->handleError(2, 'require_once(/a...', '/home/perfectco...', 136, Array)
+#1 /home/perfectcopier/public_html/app/Http/Controllers/Api/Client/ViewQuoteApiController.php(136): App\Http\Controllers\Api\Client\ViewQuoteApiController::generate_pdf()
+#2 [internal function]: App\Http\Controllers\Api\Client\ViewQuoteApiController->generate_pdf(Object(Illuminate\Http\Request))
+#3 /home/perfectcopier/public_html/vendor/laravel/framework/src/Illuminate/Routing/Controller.php(55): call_user_func_array(Array, Array)
+#4 /home/perfectcopier/public_html/vendor/laravel/framework/src/Illuminate/Routing/ControllerDispatcher.php(44): Illumi in /home/perfectcopier/public_html/app/Http/Controllers/Api/Client/ViewQuoteApiController.php on line 136
+[04-Mar-2017 14:53:30 UTC] PHP Fatal error:  App\Http\Controllers\Api\Client\ViewQuoteApiController::generate_pdf(): Failed opening required '/app/lib/fpdi/fpdi.php' (include_path='.:/usr/lib/php:/usr/local/lib/php') in /home/perfectcopier/public_html/app/Http/Controllers/Api/Client/ViewQuoteApiController.php on line 136
+[04-Mar-2017 14:53:56 UTC] PHP Warning:  Uncaught exception 'ErrorException' with message 'require_once(/app/lib/fpdi/fpdi.php): failed to open stream: No such file or directory' in /home/perfectcopier/public_html/app/Http/Controllers/Api/Client/ViewQuoteApiController.php:136
+Stack trace:
+#0 /home/perfectcopier/public_html/app/Http/Controllers/Api/Client/ViewQuoteApiController.php(136): Illuminate\Foundation\Bootstrap\HandleExceptions->handleError(2, 'require_once(/a...', '/home/perfectco...', 136, Array)
+#1 /home/perfectcopier/public_html/app/Http/Controllers/Api/Client/ViewQuoteApiController.php(136): App\Http\Controllers\Api\Client\ViewQuoteApiController::generate_pdf()
+#2 [internal function]: App\Http\Controllers\Api\Client\ViewQuoteApiController->generate_pdf(Object(Illuminate\Http\Request))
+#3 /home/perfectcopier/public_html/vendor/laravel/framework/src/Illuminate/Routing/Controller.php(55): call_user_func_array(Array, Array)
+#4 /home/perfectcopier/public_html/vendor/laravel/framework/src/Illuminate/Routing/ControllerDispatcher.php(44): Illumi in /home/perfectcopier/public_html/app/Http/Controllers/Api/Client/ViewQuoteApiController.php on line 136
+[04-Mar-2017 14:53:56 UTC] PHP Fatal error:  App\Http\Controllers\Api\Client\ViewQuoteApiController::generate_pdf(): Failed opening required '/app/lib/fpdi/fpdi.php' (include_path='.:/usr/lib/php:/usr/local/lib/php') in /home/perfectcopier/public_html/app/Http/Controllers/Api/Client/ViewQuoteApiController.php on line 136
+[04-Mar-2017 14:54:38 UTC] PHP Warning:  Uncaught exception 'ErrorException' with message 'require_once(/app/lib/fpdi/fpdi.php): failed to open stream: No such file or directory' in /home/perfectcopier/public_html/app/Http/Controllers/Api/Client/ViewQuoteApiController.php:136
+Stack trace:
+#0 /home/perfectcopier/public_html/app/Http/Controllers/Api/Client/ViewQuoteApiController.php(136): Illuminate\Foundation\Bootstrap\HandleExceptions->handleError(2, 'require_once(/a...', '/home/perfectco...', 136, Array)
+#1 /home/perfectcopier/public_html/app/Http/Controllers/Api/Client/ViewQuoteApiController.php(136): App\Http\Controllers\Api\Client\ViewQuoteApiController::generate_pdf()
+#2 [internal function]: App\Http\Controllers\Api\Client\ViewQuoteApiController->generate_pdf(Object(Illuminate\Http\Request))
+#3 /home/perfectcopier/public_html/vendor/laravel/framework/src/Illuminate/Routing/Controller.php(55): call_user_func_array(Array, Array)
+#4 /home/perfectcopier/public_html/vendor/laravel/framework/src/Illuminate/Routing/ControllerDispatcher.php(44): Illumi in /home/perfectcopier/public_html/app/Http/Controllers/Api/Client/ViewQuoteApiController.php on line 136
+[04-Mar-2017 14:54:38 UTC] PHP Fatal error:  App\Http\Controllers\Api\Client\ViewQuoteApiController::generate_pdf(): Failed opening required '/app/lib/fpdi/fpdi.php' (include_path='.:/usr/lib/php:/usr/local/lib/php') in /home/perfectcopier/public_html/app/Http/Controllers/Api/Client/ViewQuoteApiController.php on line 136
+[04-Mar-2017 14:55:18 UTC] PHP Warning:  Uncaught exception 'ErrorException' with message 'require_once(): http:// wrapper is disabled in the server configuration by allow_url_include=0' in /home/perfectcopier/public_html/app/Http/Controllers/Api/Client/ViewQuoteApiController.php:136
+Stack trace:
+#0 /home/perfectcopier/public_html/app/Http/Controllers/Api/Client/ViewQuoteApiController.php(136): Illuminate\Foundation\Bootstrap\HandleExceptions->handleError(2, 'require_once():...', '/home/perfectco...', 136, Array)
+#1 /home/perfectcopier/public_html/app/Http/Controllers/Api/Client/ViewQuoteApiController.php(136): App\Http\Controllers\Api\Client\ViewQuoteApiController::generate_pdf()
+#2 [internal function]: App\Http\Controllers\Api\Client\ViewQuoteApiController->generate_pdf(Object(Illuminate\Http\Request))
+#3 /home/perfectcopier/public_html/vendor/laravel/framework/src/Illuminate/Routing/Controller.php(55): call_user_func_array(Array, Array)
+#4 /home/perfectcopier/public_html/vendor/laravel/framework/src/Illuminate/Routing/ControllerDispatcher.php(44) in /home/perfectcopier/public_html/app/Http/Controllers/Api/Client/ViewQuoteApiController.php on line 136
+[04-Mar-2017 14:55:18 UTC] PHP Fatal error:  App\Http\Controllers\Api\Client\ViewQuoteApiController::generate_pdf(): Failed opening required 'http://perfectcopier.com/app/lib/fpdi/fpdi.php' (include_path='.:/usr/lib/php:/usr/local/lib/php') in /home/perfectcopier/public_html/app/Http/Controllers/Api/Client/ViewQuoteApiController.php on line 136
+[04-Mar-2017 14:57:58 UTC] PHP Warning:  Uncaught exception 'ErrorException' with message 'require_once(): http:// wrapper is disabled in the server configuration by allow_url_include=0' in /home/perfectcopier/public_html/app/Http/Controllers/Api/Client/ViewQuoteApiController.php:136
+Stack trace:
+#0 /home/perfectcopier/public_html/app/Http/Controllers/Api/Client/ViewQuoteApiController.php(136): Illuminate\Foundation\Bootstrap\HandleExceptions->handleError(2, 'require_once():...', '/home/perfectco...', 136, Array)
+#1 /home/perfectcopier/public_html/app/Http/Controllers/Api/Client/ViewQuoteApiController.php(136): App\Http\Controllers\Api\Client\ViewQuoteApiController::generate_pdf()
+#2 [internal function]: App\Http\Controllers\Api\Client\ViewQuoteApiController->generate_pdf(Object(Illuminate\Http\Request))
+#3 /home/perfectcopier/public_html/vendor/laravel/framework/src/Illuminate/Routing/Controller.php(55): call_user_func_array(Array, Array)
+#4 /home/perfectcopier/public_html/vendor/laravel/framework/src/Illuminate/Routing/ControllerDispatcher.php(44) in /home/perfectcopier/public_html/app/Http/Controllers/Api/Client/ViewQuoteApiController.php on line 136
+[04-Mar-2017 14:57:58 UTC] PHP Fatal error:  App\Http\Controllers\Api\Client\ViewQuoteApiController::generate_pdf(): Failed opening required 'http://perfectcopier.com/app/lib/fpdi/fpdi.php' (include_path='.:/usr/lib/php:/usr/local/lib/php') in /home/perfectcopier/public_html/app/Http/Controllers/Api/Client/ViewQuoteApiController.php on line 136
+[04-Mar-2017 14:58:31 UTC] PHP Warning:  Uncaught exception 'ErrorException' with message 'require_once(): http:// wrapper is disabled in the server configuration by allow_url_include=0' in /home/perfectcopier/public_html/app/Http/Controllers/Api/Client/ViewQuoteApiController.php:136
+Stack trace:
+#0 /home/perfectcopier/public_html/app/Http/Controllers/Api/Client/ViewQuoteApiController.php(136): Illuminate\Foundation\Bootstrap\HandleExceptions->handleError(2, 'require_once():...', '/home/perfectco...', 136, Array)
+#1 /home/perfectcopier/public_html/app/Http/Controllers/Api/Client/ViewQuoteApiController.php(136): App\Http\Controllers\Api\Client\ViewQuoteApiController::generate_pdf()
+#2 [internal function]: App\Http\Controllers\Api\Client\ViewQuoteApiController->generate_pdf(Object(Illuminate\Http\Request))
+#3 /home/perfectcopier/public_html/vendor/laravel/framework/src/Illuminate/Routing/Controller.php(55): call_user_func_array(Array, Array)
+#4 /home/perfectcopier/public_html/vendor/laravel/framework/src/Illuminate/Routing/ControllerDispatcher.php(44) in /home/perfectcopier/public_html/app/Http/Controllers/Api/Client/ViewQuoteApiController.php on line 136
+[04-Mar-2017 14:58:31 UTC] PHP Fatal error:  App\Http\Controllers\Api\Client\ViewQuoteApiController::generate_pdf(): Failed opening required 'http://perfectcopier.com/app/lib/fpdi/fpdi.php' (include_path='.:/usr/lib/php:/usr/local/lib/php') in /home/perfectcopier/public_html/app/Http/Controllers/Api/Client/ViewQuoteApiController.php on line 136
+[04-Mar-2017 14:59:14 UTC] PHP Warning:  Uncaught exception 'ErrorException' with message 'require_once(/home/perfectcopier/public_html/app/Http/Controllers/Api/Client/app/lib/fpdi/fpdi.php): failed to open stream: No such file or directory' in /home/perfectcopier/public_html/app/Http/Controllers/Api/Client/ViewQuoteApiController.php:136
+Stack trace:
+#0 /home/perfectcopier/public_html/app/Http/Controllers/Api/Client/ViewQuoteApiController.php(136): Illuminate\Foundation\Bootstrap\HandleExceptions->handleError(2, 'require_once(/h...', '/home/perfectco...', 136, Array)
+#1 /home/perfectcopier/public_html/app/Http/Controllers/Api/Client/ViewQuoteApiController.php(136): App\Http\Controllers\Api\Client\ViewQuoteApiController::generate_pdf()
+#2 [internal function]: App\Http\Controllers\Api\Client\ViewQuoteApiController->generate_pdf(Object(Illuminate\Http\Request))
+#3 /home/perfectcopier/public_html/vendor/laravel/framework/src/Illuminate/Routing/Controller.php(55): call_user_func_array(Array, Array)
+#4 /home/perfectcopier/public_html/vendor/laravel/framew in /home/perfectcopier/public_html/app/Http/Controllers/Api/Client/ViewQuoteApiController.php on line 136
+[04-Mar-2017 14:59:14 UTC] PHP Fatal error:  App\Http\Controllers\Api\Client\ViewQuoteApiController::generate_pdf(): Failed opening required '/home/perfectcopier/public_html/app/Http/Controllers/Api/Client/app/lib/fpdi/fpdi.php' (include_path='.:/usr/lib/php:/usr/local/lib/php') in /home/perfectcopier/public_html/app/Http/Controllers/Api/Client/ViewQuoteApiController.php on line 136
+[04-Mar-2017 15:03:29 UTC] PHP Warning:  Uncaught exception 'ErrorException' with message 'require_once(fpdf\fpdf.php): failed to open stream: No such file or directory' in /home/perfectcopier/public_html/app/Http/Controllers/Api/Client/fpdi.php:11
+Stack trace:
+#0 /home/perfectcopier/public_html/app/Http/Controllers/Api/Client/fpdi.php(11): Illuminate\Foundation\Bootstrap\HandleExceptions->handleError(2, 'require_once(fp...', '/home/perfectco...', 11, Array)
+#1 /home/perfectcopier/public_html/app/Http/Controllers/Api/Client/fpdi.php(11): require_once()
+#2 /home/perfectcopier/public_html/app/Http/Controllers/Api/Client/ViewQuoteApiController.php(136): require_once('/home/perfectco...')
+#3 [internal function]: App\Http\Controllers\Api\Client\ViewQuoteApiController->generate_pdf(Object(Illuminate\Http\Request))
+#4 /home/perfectcopier/public_html/vendor/laravel/framework/src/Illuminate/Routing/Controller.php(55): call_user_func_array(Array, Array)
+#5 /home/perfectcopier/public_html/vendor/laravel/framework/src/Illuminate/Routing/ControllerDispatcher.php in /home/perfectcopier/public_html/app/Http/Controllers/Api/Client/fpdi.php on line 11
+[04-Mar-2017 15:03:29 UTC] PHP Fatal error:  main(): Failed opening required 'fpdf\fpdf.php' (include_path='.:/usr/lib/php:/usr/local/lib/php') in /home/perfectcopier/public_html/app/Http/Controllers/Api/Client/fpdi.php on line 11
+[04-Mar-2017 15:04:16 UTC] PHP Warning:  Uncaught exception 'ErrorException' with message 'require_once(fpdf\fpdf.php): failed to open stream: No such file or directory' in /home/perfectcopier/public_html/app/Http/Controllers/Api/Client/fpdi.php:11
+Stack trace:
+#0 /home/perfectcopier/public_html/app/Http/Controllers/Api/Client/fpdi.php(11): Illuminate\Foundation\Bootstrap\HandleExceptions->handleError(2, 'require_once(fp...', '/home/perfectco...', 11, Array)
+#1 /home/perfectcopier/public_html/app/Http/Controllers/Api/Client/fpdi.php(11): require_once()
+#2 /home/perfectcopier/public_html/app/Http/Controllers/Api/Client/ViewQuoteApiController.php(136): require_once('/home/perfectco...')
+#3 [internal function]: App\Http\Controllers\Api\Client\ViewQuoteApiController->generate_pdf(Object(Illuminate\Http\Request))
+#4 /home/perfectcopier/public_html/vendor/laravel/framework/src/Illuminate/Routing/Controller.php(55): call_user_func_array(Array, Array)
+#5 /home/perfectcopier/public_html/vendor/laravel/framework/src/Illuminate/Routing/ControllerDispatcher.php in /home/perfectcopier/public_html/app/Http/Controllers/Api/Client/fpdi.php on line 11
+[04-Mar-2017 15:04:16 UTC] PHP Fatal error:  main(): Failed opening required 'fpdf\fpdf.php' (include_path='.:/usr/lib/php:/usr/local/lib/php') in /home/perfectcopier/public_html/app/Http/Controllers/Api/Client/fpdi.php on line 11
+[05-Mar-2017 09:50:04 UTC] PHP Parse error:  syntax error, unexpected ']' in /home/perfectcopier/public_html/app/Http/Controllers/Api/Client/ViewQuoteApiController.php on line 258
+[07-Mar-2017 19:15:55 UTC] PHP Parse error:  syntax error, unexpected ';' in /home/perfectcopier/public_html/app/Http/Controllers/Api/Admin/QuoteApiController.php on line 100
+[07-Mar-2017 19:16:05 UTC] PHP Parse error:  syntax error, unexpected end of file in /home/perfectcopier/public_html/app/Http/Controllers/Api/Admin/QuoteApiController.php on line 100

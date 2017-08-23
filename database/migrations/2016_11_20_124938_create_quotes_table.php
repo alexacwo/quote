@@ -17,6 +17,8 @@ class CreateQuotesTable extends Migration
             $table->increments('id');
             $table->string('guid', 20);
             $table->string('editor', 30);
+            $table->string('cover_letter_position', 10)->default('bottom');
+            $table->text('sales_rep_notes');
             $table->string('status', 20);
             $table->integer('user_id')->nullable();
             $table->string('quoted_devices')->nullable();

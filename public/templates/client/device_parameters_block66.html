@@ -1,0 +1,189 @@
+<div class="basic_specs">
+	<div class="main_title">
+		Basic Specifications:
+	</div>
+	<div class="parameters" ng-switch on="quote.displayed_price">
+		<div 	ng-switch-when="fmv1|fmv2|fmv3|fmv4|fmv5"
+				ng-switch-when-separator="|"
+		>
+			<div class="param_title" ng-init="fmvIndex = quote.displayed_price.substr(quote.displayed_price.length - 1)">
+				<strong>{{ fmvIndex }} Year Lease (Return) Price:</strong>
+			</div>
+			<div class="param_value">
+				${{ outrightPricesWithRates[deviceId][$index].fmv[ fmvIndex ] }}
+				<input type="checkbox"
+					   class="see_all_rates_checkbox"
+					   style="display:none;"
+					   id="see_all_rates_{{ deviceId }}_{{$index}}"
+					   ng-model="seeAllRates[deviceId][$index]"
+				/>
+				<label for="see_all_rates_{{ deviceId }}_{{$index}}" slide-toggle="#slideable_{{ deviceId }}_{{$index}}">
+					<span class="show_rates">
+						({{ seeAllRates[deviceId][$index] == true ? 'Hide' : 'Show' }}  All Rates)
+					</span>
+				</label>
+			</div>
+		</div>
+		<div	ng-switch-when="oneout1|oneout2|oneout3|oneout4|oneout5"
+				ng-switch-when-separator="|"
+		>
+			<div class="param_title" ng-init="oneOutIndex = quote.displayed_price.substr(quote.displayed_price.length - 1)">
+				<strong>{{ oneOutIndex }} Year Lease to Own Price:</strong>
+			</div>
+			<div class="param_value">
+				${{ outrightPricesWithRates[deviceId][$index].oneOut[ oneOutIndex ] }}
+				<input type="checkbox"
+					   class="see_all_rates_checkbox"
+					   style="display:none;"
+					   id="see_all_rates_{{ deviceId }}_{{$index}}"
+					   ng-model="seeAllRates[deviceId][$index]"
+				/>
+				<label for="see_all_rates_{{ deviceId }}_{{$index}}" slide-toggle="#slideable_{{ deviceId }}_{{$index}}">
+					<span class="show_rates">
+						({{ seeAllRates[deviceId][$index] == true ? 'Hide' : 'Show' }}  All Rates)
+					</span>
+				</label>
+			</div>
+		</div>
+		<div class="clearfix"></div>
+	</div>
+	<div class="device_content_block">
+		<div class="slideable_wrapper" id="slideable_{{ deviceId }}_{{$index}}">
+			<div class="slideable_content">
+				<div class="device_parameter_block"> 
+					<div class="all_rates_header">
+						FMV (Lease to Return Rates)
+					</div>
+					<div class="all_rates_titles">
+						<div ng-repeat="(i, n) in rates.fmv[3000]">
+							{{ i }} Year<span ng-if="i > 1">s</span>
+						</div>
+					</div>
+					<div class="all_rates_values">
+						<div ng-repeat="(i, n) in rates.fmv[3000]">
+							${{ outrightPricesWithRates[deviceId][$parent.$index].fmv[i] }}
+						</div>
+					</div> 
+					<div class="clearfix"></div>
+				</div>
+				<div class="device_parameter_block"> 
+					<div class="all_rates_header">
+						$1 Out Lease (Lease to Own)
+					</div>
+					<div class="all_rates_titles">
+						<div ng-repeat="(i, n) in rates.oneOut[3000]">
+							{{ i }} Year<span ng-if="i > 1">s</span>
+						</div>
+					</div>
+					<div class="all_rates_values">
+						<div ng-repeat="(i, n) in rates.oneOut[3000]">
+							${{ outrightPricesWithRates[deviceId][$parent.$index].oneOut[i] }}
+						</div>
+					</div> 
+					<div class="clearfix">
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="parameters">
+		<div class="param_title">
+			Supplies base price
+		</div>
+		<div class="param_value">
+			${{ quote.prices[deviceId][$index].maintenance_price > 0 ? quote.prices[deviceId][$index].maintenance_price : 0 }}
+		</div>
+		<div class="clearfix"></div>
+	</div>
+	<div class="parameters">
+		<div class="param_title">
+			Included color prints (overage price)
+		</div>
+		<div class="param_value">
+			{{ quote.included_pages[deviceId][$index].color > 0 ? quote.included_pages[deviceId][$index].color : 0 }}
+			( {{ quote.prices[deviceId][$index].cost_per_color_page * 100 | number:1 }} cents)
+		</div>
+		<div class="clearfix"></div>
+	</div>
+	<div class="parameters">
+		<div class="param_title">
+			Included B&W prints (overage price)
+		</div>
+		<div class="param_value">
+			{{ quote.included_pages[deviceId][$index].mono > 0 ? quote.included_pages[deviceId][$index].mono : 0 }}		
+			({{ quote.prices[deviceId][$index].cost_per_mono_page * 100 | number:1   }} cents)
+		</div>
+		<div class="clearfix"></div>
+	</div>
+	<div class="parameters" ng-if="quote.devices_desc[deviceId][$index].max_monthly_duty_cycle != null && quote.devices_desc[deviceId][$index].max_monthly_duty_cycle != ''">
+		<div class="param_title">
+			Max Monthly Duty Cycle
+		</div>
+		<div class="param_value">
+			{{ quote.devices_desc[deviceId][$index].max_monthly_duty_cycle }}
+		</div>
+		<div class="clearfix"></div>
+	</div>
+	<div class="parameters" ng-if="quote.devices_desc[deviceId][$index].monthly_volume != null && quote.devices_desc[deviceId][$index].monthly_volume != ''">
+		<div class="param_title">
+			Recommended Monthly Volume
+		</div>
+		<div class="param_value">
+			{{ quote.devices_desc[deviceId][$index].monthly_volume }}
+		</div>
+		<div class="clearfix"></div>
+	</div>
+	<div ng-repeat="(deviceDescriptionName, deviceDescriptionValue) in quote.devices_desc[deviceId][$index]"
+	 ng-if="deviceDescriptionValue != null && (deviceDescriptionName == 'color_or_mono' || deviceDescriptionName == 'paper_size' || deviceDescriptionName == 'speed')">
+		<div class="parameters" ng-if="deviceDescriptionName == 'color_or_mono'">
+			<div class="param_title">
+				Type
+			</div>
+			<div class="param_value">							
+				<span ng-if="deviceDescriptionValue == 'color'">Color/B&W</span>
+				<span ng-if="deviceDescriptionValue == 'mono'">B&W</span>
+			</div>
+			<div class="clearfix"></div>
+		</div> 
+		<div class="parameters" ng-if="deviceDescriptionName == 'paper_size'">	
+			<div class="param_title">
+				Max Paper Size
+			</div>
+			<div class="param_value">
+				<span ng-if="deviceDescriptionValue == 'letter/legal'">Letter/Legal</span>
+				<span ng-if="deviceDescriptionValue == 'letter/legal/11x17'">Letter/Legal/11x17</span>
+			</div>
+			<div class="clearfix"></div>
+		</div>
+		<div class="parameters" ng-if="deviceDescriptionName == 'speed'">	
+			<div class="param_title">
+				Speed
+			</div>
+			<div class="param_value">
+				{{ deviceDescriptionValue }} Pages per Minute
+			</div>
+			<div class="clearfix"></div>
+		</div>
+	</div>
+	<div ng-repeat="(deviceCustomDescriptionId, deviceCustomDescriptionOptions) in quote.custom_descriptions[deviceId][$index]"
+		class="parameters"
+	>
+		<div ng-if="deviceCustomDescriptionOptions.value != ''">
+			<div class="param_title">
+				{{ deviceCustomDescriptionOptions.name }}
+			</div>
+			<div class="param_value">
+				{{ deviceCustomDescriptionOptions.value }}
+			</div>
+		</div>
+	</div>
+</div>
+<div class="default_price" ng-if="quote.displayed_price == 'outright'">
+	<div class="default_price_title">
+		Default price:
+	</div>
+	<div class="default_price_value">
+		${{ outrightPrices[deviceId][$index] }}
+	</div>
+	<div class="clearfix"></div>
+</div> 

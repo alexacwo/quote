@@ -27,6 +27,7 @@ class Device extends Model
         'image',
         'pdf',
         'ced',
+        'video',
         'created_by'
     ];
 

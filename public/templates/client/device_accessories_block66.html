@@ -1,0 +1,52 @@
+<div class="accessories_specs">
+	<div class="main_title">
+		Accessories:
+	</div>
+	<div ng-repeat="accessory in quote.devices[$parent.$parent.$index].accessories | filterOnlyAddedAccessories: quote.added_accessories[deviceId][$index]" >
+		<div class="accessory"
+			ng-class="{
+				accessory_accept: selectedAccessoriesWithPrices[deviceId][$parent.$index][accessory.id].status == 2
+			}"
+		>	
+			<div for="accessory_{{deviceId}}_{{$parent.$index}}_{{accessory.id}}"
+						style="font-weight:normal;cursor:pointer;margin-bottom:10px;"
+						ng-click="toggleAccessoryStatus(deviceId, $parent.$index, accessory.id, status)"
+					>		
+				<div class="accessory_title strike" ng-init="$parent.accessoriesCount = $index + 1">
+					{{ $index + 1 }}. {{ accessory.description }} ({{ accessory.part_number }}) - ${{ selectedAccessoriesWithPrices[deviceId][$parent.$index][accessory.id].price * rateForCalculation[deviceId][$parent.$index] | number:1 }}  
+				</div>												
+				<div class="accessory_title_label_block">	
+					<input id="accessory_{{deviceId}}_{{$parent.$index}}_{{accessory.id}}" type="checkbox"
+						ng-checked="selectedAccessoriesWithPrices[deviceId][$parent.$index][accessory.id].status == 2"
+					/>
+					<div class="add_accessory_label">
+					</div>
+				</div>	 
+				<div class="clearfix"></div>	
+			</div>				 
+		</div>
+	</div>
+	<div ng-repeat="custom_accessory in quote.custom_accessories[deviceId][$index]"> 
+		<div class="accessory"
+			ng-class="{
+				accessory_accept: selectedCustomAccessoriesWithPrices[deviceId][$parent.$index][custom_accessory.id] != null
+			}"
+		>
+			<div for="custom_accessory_{{deviceId}}_{{$parent.$index}}_{{custom_accessory.id}}" style="font-weight:normal;cursor:pointer;"
+				ng-click="toggleCustomAccessoryStatus(deviceId, $parent.$index, custom_accessory.id, custom_accessory.price)"
+			>
+				<div class="accessory_title">
+					{{ $index + 1 + $parent.accessoriesCount }} . {{ custom_accessory.description }} ({{ custom_accessory.part_number }}) - ${{ custom_accessory.price * rateForCalculation[deviceId][$parent.$index] | number:1 }}
+				</div>												
+				<div class="accessory_title_label_block">
+					<input id="custom_accessory_{{deviceId}}_{{$parent.$index}}_{{custom_accessory.id}}" type="checkbox"
+						ng-checked="selectedCustomAccessoriesWithPrices[deviceId][$parent.$index][custom_accessory.id] != null"
+					/>
+					<div class="add_accessory_label">								
+					</div>
+				</div>
+				<div class="clearfix"></div>							
+			</div>
+		</div>  
+	</div>  
+</div>

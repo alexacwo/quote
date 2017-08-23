@@ -32,7 +32,7 @@
 						
 						<div class="col-md-6 animate-show" ng-show="showDeviceSaveErrorMessage" style="padding-top:0px;">					
 							<div class="alert alert-danger" style="margin-bottom:0px;">
-								<strong>Some error occured! Please try again.</strong>
+								<strong>Some error occured! Please refresh the page and try again.</strong>
 							</div>
 						</div>	
 						
@@ -86,16 +86,22 @@
 									</div>
 									
 									<div style="width:100%; float:left;">
-										<div class="col-md-3 form-group">
+										<div class="col-md-2 form-group">
 											<label for="device_cost">Cost:</label>
 											<input type="number" class="form-control" id="device_cost"
 												ng-model="device.cost"
 											/>
 										</div>
-										<div class="col-md-3 form-group">
+										<div class="col-md-2 form-group">
 											<label for="device_price">Price:</label>
 											<input type="number" class="form-control" id="device_price"
 												ng-model="device.price"
+											/>
+										</div>
+										<div class="col-md-2 form-group">
+											<label for="device_video">Video link:</label>
+											<input type="text" class="form-control" id="device_video"
+												ng-model="device.video"
 											/>
 										</div>
 										<div class="col-md-2 form-group">
@@ -241,6 +247,22 @@
 											</label>
 											<input type="number" class="form-control" id="cost_per_mono_page"
 												ng-model="device.cost_per_mono_page"
+											/>
+										</div>
+										<div class="col-md-3 form-group">
+											<label for="max_monthly_duty_cycle">
+												Max Monthly Duty Cycle:
+											</label>
+											<input type="text" class="form-control" id="max_monthly_duty_cycle"
+												ng-model="device.max_monthly_duty_cycle"
+											/>
+										</div>
+										<div class="col-md-3 form-group">
+											<label for="monthly_volume">
+												Recommended Monthly Volume:
+											</label>
+											<input type="text" class="form-control" id="monthly_volume"
+												ng-model="device.monthly_volume"
 											/>
 										</div>
 									</div>

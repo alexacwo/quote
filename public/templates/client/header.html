@@ -1,0 +1,43 @@
+<div class="container">
+	<div class="row">
+		<div class="col-md-6 pahoda_header left">
+			<div class="pahoda_logo">
+			</div>
+		</div>
+
+		<div class="col-md-6 pahoda_header right">
+			<div style="width:100%;">
+				<div class="col-md-4 contacts">
+					<strong style="margin-bottom: 10px; display: block; font-weight: bold; color: #fff; letter-spacing: 0.75px;">Prepared by:</strong>
+					<div class="quote_editor">
+						<i class="fa fa-user" aria-hidden="true"></i>
+						<span ng-if="quote.editor == 'jesse'">Jesse Harwell</span>
+						<span ng-if="quote.editor == 'laine'">Laine Dobson</span>
+						<span ng-if="quote.editor == 'greg'">Greg Bentz</span>
+					</div>
+					<div class="quote_contact_email">
+						<i class="fa fa-envelope" aria-hidden="true"></i>
+						<span>
+							<a href="mailto:jesse@pahoda.com" ng-if="quote.editor == 'jesse'">jesse@pahoda.com</a>
+							<a href="mailto:laine@pahoda.com" ng-if="quote.editor == 'laine'">laine@pahoda.com</a>
+							<a href="mailto:greg@pahoda.com" ng-if="quote.editor == 'greg'">greg@pahoda.com</a>
+						</span>
+					</div>
+					<div class="quote_contact_phone">
+						<i class="fa fa-phone" aria-hidden="true"></i>
+						<a href="tel:720-598-8082" ng-if="quote.editor == 'jesse'">(720) 598-8082 Ext #6</a>
+						<a href="tel:720-598-8082" ng-if="quote.editor == 'laine'">(720) 598-8082 Ext #4</a>
+						<a href="tel:720-598-8082" ng-if="quote.editor == 'greg'">(720) 598-8082 Ext #5</a>
+					</div>
+				</div>
+				<div class="col-md-8">
+					<div class="quote_photo {{quote.editor}}">
+					</div>
+				</div>
+			</div>					
+			<div class="official_quote" style="float: left; margin-top: 20px;">
+				Official Quote for {{ quote.user.company }}
+			</div>
+		</div>
+	</div>
+</div>

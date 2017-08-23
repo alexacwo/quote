@@ -1,0 +1,208 @@
+<div class="panel panel-warning add_devices_outright_price_wrapper">
+	<div class="panel-heading">
+		Options
+	</div>
+
+	<div class="panel-body">
+		<div class="col-md-12" style="margin-bottom: 20px;">										
+			<input type="checkbox"
+					class="checkbox"
+					id="add_devices_outright_price_slider"
+					ng-model="quoteData[quote.id].sum_up"
+					ng-checked="quoteData[quote.id].sum_up"
+				   ng-true-value="1"
+				   ng-false-value="0"
+				/>
+			<label for="add_devices_outright_price_slider">
+				Sum up devices total prices in the client view
+			</label>
+		</div>
+		<div class="col-md-12" style="margin-bottom: 20px;">
+			<strong style="display: block;">
+				Which type of purchase is this?
+			</strong>
+			<br>
+			<div class="form-group">														
+				<input type="checkbox" class="checkbox"
+						id="allowed_prices_purchase"
+						ng-model="quoteData[quote.id].allowed_prices.purchase"
+				/>
+				<label for="allowed_prices_purchase">
+					Allow Purchase Price
+				</label>
+			</div>
+			<div class="form-group">														
+				<input type="checkbox" class="checkbox"
+						id="allowed_prices_fmv"
+						ng-model="quoteData[quote.id].allowed_prices.fmv"
+				/>
+				<label for="allowed_prices_fmv">
+					Allow FMV Lease Rates
+				</label>
+			</div>
+			<div class="form-group">														
+				<input type="checkbox" class="checkbox"
+						id="allowed_prices_one_out"
+						ng-model="quoteData[quote.id].allowed_prices.one_out"
+				/>
+				<label for="allowed_prices_one_out">
+					Allow $1 Out Lease Rates
+				</label>
+			</div>
+		</div>
+		<div class="col-md-12" style="margin-bottom: 20px;">
+			<strong style="display: block;">
+				Choose which rates to use for calculating the FMV and $1-Out costs:
+			</strong>
+			<br>
+			<div class="form-group">
+				<select class="form-control" id="rates_options"
+						ng-model="quoteData[quote.id].rates_options" 
+				>
+					<option value="basic" ng-selected="quoteData[quote.id].rates_options == 'basic' || quoteData[quote.id].rates_options == ''">Basic rates (from Copierleasecenter.com)</option>
+					<option value="marlin" ng-selected="quoteData[quote.id].rates_options == 'marlin'">Marlin sheet rates</option>
+					<option value="either" ng-selected="quoteData[quote.id].rates_options == 'either'">Either (Let the client choose)</option>
+				</select>
+			</div>
+		</div>
+		<div class="col-md-12" style="margin-bottom: 20px;">
+			<strong style="display: block;">
+				Default pricing:
+			</strong>
+			<br>
+			<div style="width:100%; margin-bottom: 10px;">											
+				<div class="edit_quote_pricing_option">	
+					<input type="radio"
+						   class="radio"
+						   id="display_price_outright"
+						   ng-model="quoteData[quote.id].displayed_price"
+							value="outright" 
+					/>
+					<label for="display_price_outright">
+						Outright Purchase
+					</label>
+				</div>
+			</div>
+			<div style="width:100%; margin-bottom: 10px;">	
+				<strong class="edit_quote_pricing_option_header">
+					FMV:<br>
+				</strong>
+				<div class="edit_quote_pricing_option">											
+					<input type="radio"
+						   class="radio"
+						   id="display_price_fmv_1"
+						   ng-model="quoteData[quote.id].displayed_price"
+							value="fmv1" 
+					/>
+					<label for="display_price_fmv_1">
+						1 Year
+					</label>
+				</div>
+				<div class="edit_quote_pricing_option">												
+					<input type="radio"
+						   class="radio"
+						   id="display_price_fmv_2"
+						   ng-model="quoteData[quote.id].displayed_price"
+							value="fmv2" 
+					/>
+					<label for="display_price_fmv_2">
+						2 Year
+					</label>
+				</div>
+				<div class="edit_quote_pricing_option">										
+					<input type="radio"
+						   class="radio"
+						   id="display_price_fmv_3"
+						   ng-model="quoteData[quote.id].displayed_price"
+							value="fmv3" 
+					/>
+					<label for="display_price_fmv_3">
+						3 Year
+					</label>
+				</div>
+				<div class="edit_quote_pricing_option">										
+					<input type="radio"
+						   class="radio"
+						   id="display_price_fmv_4"
+						   ng-model="quoteData[quote.id].displayed_price"
+							value="fmv4" 
+					/>
+					<label for="display_price_fmv_4">
+						4 Year
+					</label>
+				</div>
+				<div class="edit_quote_pricing_option">									
+					<input type="radio"
+						   class="radio"
+						   id="display_price_fmv_5"
+						   ng-model="quoteData[quote.id].displayed_price"
+							value="fmv5" 
+					/>
+					<label for="display_price_fmv_5">
+						5 Year
+					</label>
+				</div>	
+			</div>
+			<div style="width:100%; margin-bottom: 10px;">	
+				<strong class="edit_quote_pricing_option_header">
+					$1 Out Lease:<br>
+				</strong>
+				<div class="edit_quote_pricing_option">							
+					<input type="radio"
+						   class="radio"
+						   id="display_price_one_out_1"
+						   ng-model="quoteData[quote.id].displayed_price"
+							value="oneout1" 
+					/>
+					<label for="display_price_one_out_1">
+						1 Year
+					</label>
+				</div>
+				<div class="edit_quote_pricing_option">							
+					<input type="radio"
+						   class="radio"
+						   id="display_price_one_out_2"
+						   ng-model="quoteData[quote.id].displayed_price"
+							value="oneout2" 
+					/>
+					<label for="display_price_one_out_2">
+						2 Year
+					</label>
+				</div>
+				<div class="edit_quote_pricing_option">							
+					<input type="radio"
+						   class="radio"
+						   id="display_price_one_out_3"
+						   ng-model="quoteData[quote.id].displayed_price"
+							value="oneout3" 
+					/>
+					<label for="display_price_one_out_3">
+						3 Year
+					</label>
+				</div>	
+				<div class="edit_quote_pricing_option">							
+					<input type="radio"
+						   class="radio"
+						   id="display_price_one_out_4"
+						   ng-model="quoteData[quote.id].displayed_price"
+							value="oneout4" 
+					/>
+					<label for="display_price_one_out_4">
+						4 Year
+					</label>
+				</div>	
+				<div class="edit_quote_pricing_option">							
+					<input type="radio"
+						   class="radio"
+						   id="display_price_one_out_5"
+						   ng-model="quoteData[quote.id].displayed_price"
+							value="oneout5" 
+					/>
+					<label for="display_price_one_out_5">
+						5 Year
+					</label>
+				</div>		
+			</div>
+		</div>
+	</div>
+</div> 	

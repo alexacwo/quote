@@ -1,0 +1,30 @@
+<div class="callback_form">
+	<div class="col-xs-12 col-md-2">
+	</div>
+	<div class="col-xs-12 col-md-8 center_block">
+		<span class="title">Want something revised or a call back to discuss your copier quote?<br>We will call you back!</span>
+		<br><span class="phone_title">Phone number</span>
+		<div class="input_wrapper">
+			<form name="myForm">
+				<input id="phone_number" type="text"
+					name="clientPhoneNumber"
+					ng-model="clientPhoneNumber"
+					ui-mask="(999) 999-9999"
+					ui-mask-placeholder
+					ui-options="{'clearOnBlur' : false}"
+					ui-mask-placeholder-char="_"
+				/>
+				<label for="phone_number">
+					<i class="fa fa-phone" aria-hidden="true"></i>
+				</label>
+			</form>
+		</div>
+		<div class="callback_error animate-show" ng-show="!myForm.clientPhoneNumber.$valid">Please enter a valid phone number!</div>		
+		<div class="callback_success animate-show" ng-show="showPhoneCallbackSuccessMessage">Thank you! We will call you shortly!</div>		
+		<button class="callback_submit_button" ng-click="sendMail(quote.editor)">
+			Submit
+		</button>
+	</div>
+	<div class="col-xs-12 col-md-2">
+	</div>
+</div>

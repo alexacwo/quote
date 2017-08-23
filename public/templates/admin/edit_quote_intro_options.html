@@ -1,0 +1,26 @@
+<div class="col-sm-2">
+	<div class="form-group" style="float:right;">
+		<label for="cover_letter_position">Cover letter position:</label>
+		<select class="form-control" id="cover_letter_position" ng-model="quoteData[quote.id].cover_letter_position">
+			<option value="top">Top</option>
+			<option value="bottom">Bottom</option>
+		</select>
+	</div>
+	<div class="clearfix"></div>
+</div>
+<div class="col-sm-2">
+	<div class="form-group" style="float:right;">
+		<label for="editor">Select quote editor:</label>
+		<select class="form-control" id="editor" ng-model="quoteData[quote.id].editor">
+			<option value="jesse">Jesse Harwell</option>
+			<option value="laine">Laine Dobson</option>
+			<option value="greg">Greg Bentz</option>
+		</select>
+	</div>
+	<div class="clearfix"></div>
+</div>
+<div class="col-md-12" style="margin-bottom:20px;">
+	<strong>Sales Rep Notes for the cover sheet:</strong>
+	<br>"- With this quote you will see ..."
+	<textarea class="form-control" rows="5" ng-model="quoteData[quote.id].sales_rep_notes" style="resize:none;"></textarea>
+</div>

@@ -56,8 +56,8 @@
 			
 			$accessory->part_number = $request->part_number;
 			$accessory->description = $request->description;
-			$accessory->cost = $request->cost;
-			$accessory->price = $request->price;
+			$accessory->cost = ($request->cost != '' && is_numeric($request->cost))? $request->cost : 0;
+			$accessory->price = ($request->price != '' && is_numeric($request->price))? $request->price : 0;
 			
 			$accessory->save();
 			$accessory->devices()->attach($request->device_id);
@@ -78,8 +78,8 @@
 			
 			$accessory->part_number = $request->part_number;
 			$accessory->description = $request->description;
-			$accessory->cost = $request->cost;
-			$accessory->price = $request->price;
+			$accessory->cost = ($request->cost != '' && is_numeric($request->cost))? $request->cost : 0;
+			$accessory->price = ($request->price != '' && is_numeric($request->price))? $request->price : 0;
 			
 			$accessory->save();
 			
@@ -123,8 +123,8 @@
 					$price = str_replace(",", "", $price);
 					
 					$accessory->description = $data[1];
-					$accessory->cost = $cost;
-					$accessory->price = $price;
+					$accessory->cost = ($cost != '' && is_numeric($cost))? $cost : 0;
+					$accessory->price = ($price != '' && is_numeric($price))? $price : 0;
 					//$accessory->save();
 				}
 				$i++;

@@ -1,7 +1,11 @@
+/_files
 /node_modules
 /bootstrap
 /public/storage
 /storage/*.key
+/storage/copier_files
+/storage/files
+/storage/logs
 /tests
 /vendor
 /.idea

@@ -14,9 +14,12 @@ class Quote extends Model
     protected $fillable = [
         'guid',
         'editor',
+        'cover_letter_position',
+        'sales_rep_notes',
         'status',
         'user_id',
         'devices',
+		'quoted_devices',
         'devices_desc',
         'prices',
         'custom_accessories',
@@ -41,6 +44,7 @@ class Quote extends Model
         'selected_accessories' => 'array',
         'prices' => 'array',
 		
+		'quoted_devices' => 'array',
         'devices_desc' => 'array',
         'custom_accessories' => 'array',
         'custom_descriptions' => 'array',
@@ -65,7 +69,7 @@ class Quote extends Model
      */
     public function devices()
     {
-        return $this->belongsToMany('App\Device');
+        return $this->belongsToMany('App\Device')->orderBy('device_id', 'asc');
     }
 }
 

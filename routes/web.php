@@ -10,39 +10,16 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
-
-/*
-
-//OLD ROUTES
-Route::get('/', 'Client\ClientController@index');
-
-Route::post('/save-calculation/{quote_id}', 'Client\ClientController@save_calculation');
-
-Route::get('/quote/{quote_guid}', 'Client\ClientController@view_quote');
  
-Route::group(['middleware' =>  'auth' ], function () {
-    Route::group(['middleware' =>  'roles:admin' ], function () {
-        Route::get('/admin', 'Admin\AdminController@index');
- 
-
-        Route::get('/admin/users', 'Admin\AdminController@users');
-
-        Route::get('/admin/quotes', 'Admin\AdminController@quotes');
-
-        Route::get('/admin/quote/{quote_guid}', 'Admin\AdminController@edit_quote');
-
-        Route::get('/admin/get-devices', 'Admin\AdminController@get_devices');
-
-        Route::post('/admin/create-quote', 'Admin\AdminController@create_quote');
-
-        Route::post('/admin/save-quote', 'Admin\AdminController@save_quote');
-
-    });
-}); 
-*/
 Route::group(array('prefix' => 'api'), function() {
 	
+	Route::post('confirm_saving', 'Api\Client\ViewQuoteApiController@confirm_saving');
+	
+	Route::post('generate_pdf', 'Api\Client\ViewQuoteApiController@generate_pdf');
+	
 	Route::post('send_mail', 'Api\Client\ViewQuoteApiController@send_mail');
+	
+	Route::post('send_notification', 'Api\Client\ViewQuoteApiController@send_notification');
 	
 	Route::post('quotes/update_views_counter/{quote_guid}', 'Api\Client\ViewQuoteApiController@update_views_counter');
 	

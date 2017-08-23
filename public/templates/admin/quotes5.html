@@ -79,8 +79,12 @@
 											</td>
 											<td class="table-text email">
 												<div>
-													<label for="radio_{{ quote.id }}">													 
-														<div ng-repeat="device in quote.devices">{{ device.model }}<br></div>
+													<label for="radio_{{ quote.id }}">		
+														<div ng-repeat="(deviceId, quotedDevice) in quote.quoted_devices">
+															<div ng-repeat="deviceVariation in quotedDevice">
+																{{ quote.devices[$parent.$index].model }}	
+															</div>
+														</div>
 													</label>
 												</div>
 											</td>

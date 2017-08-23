@@ -1,0 +1,152 @@
+<div ng-controller="ClientController" ng-cloak style="position:relative;">
+
+	<div class="detailed_device_page_header" ng-show="showQuotedDeviceBlock">
+	
+		<div ng-include src="'public/templates/client/popup.html'"></div>
+		
+	</div>
+	
+	<div class="detailed_device_page_header" ng-show="!showQuotedDeviceBlock">
+	
+		<div ng-include src="'public/templates/client/header.html'"></div>
+		
+	</div>
+	
+	<div ng-include src="'public/templates/client/device_photo_popup66.html'"></div>
+	
+	<div ng-include ng-if="quote.cover_letter_position == 'top'" src="'public/templates/client/intro_letter111.html'"></div>	
+		
+	<div class="main_content animate-show" ng-show="showMainContent" ng-init="addDeviceToTotals = {}">
+						
+		<div class="device_copier_options_title">
+			<h2>
+				Copier/Printer Options
+			</h2>
+			<h4>
+				Check Box by Model Number to Add to Quote
+			</h4>
+		</div>
+		
+		<!-- 
+		<div class="container">
+			<div class="row">
+				<div class="col-sm-12 filters_wrapper">
+								
+					<div ng-include src="'public/templates/client/device_filters.html'"></div>
+					
+				</div>				
+			</div>
+		</div>
+		-->
+		<div class="container">
+			<div class="row device_block">
+				<div
+					ng-repeat="(deviceId, quotedDevice) in quote.quoted_devices"
+					ng-init="addDeviceToTotals[deviceId] = {}"
+				>
+					<div class="col-xs-12 col-sm-6 col-md-4" ng-repeat="deviceVariation in quotedDevice" style="float:left; margin-bottom:40px;">
+						<div class="device_info_wrapper"
+							ng-class="{
+								device_accept: deviceAdded[deviceId][$index] == 1
+							}"
+							ng-init="deviceAdded[deviceId][$index] = 0"
+						>
+							<div class="top_block_with_photo">
+								<div class="device_title_block">
+									<div class="device_title">
+										<label for="addDeviceToTotals_{{deviceId}}_{{$index}}" style="font-weight:normal;cursor:pointer;">
+											{{ quote.devices[$parent.$index].model }}				
+										</label>
+									</div>						
+									<div class="device_title_label_block">
+										<input id="addDeviceToTotals_{{deviceId}}_{{$index}}" type="checkbox"
+											ng-init="addDeviceToTotals[deviceId][$index] = false"
+											ng-model="addDeviceToTotals[deviceId][$index]"
+											ng-click="countDisplayedPrice(); countMaintenancePrice(); toggleAddedDevice(deviceId, $index, deviceAdded[deviceId][$index]);"
+										/>
+										<label for="addDeviceToTotals_{{deviceId}}_{{$index}}"
+											class="add_device_to_totals_label">								
+										</label>
+									</div>
+									<div class="clearfix">
+									</div>
+								</div>
+								<div class="device_photo" ng-click="toggleDevicePhotoPopup($parent.$index)">
+								
+									<div ng-include src="'public/templates/client/device_photo_block66.html'"></div>
+									
+								</div>
+							</div>
+							
+							<div ng-include src="'public/templates/client/device_parameters_block66.html'"></div>
+							
+							<div ng-include src="'public/templates/client/device_accessories_block66.html'"></div> 
+							
+						</div>
+						<div class="device_accept_revise_buttons">
+							<div class="accept_button"
+								ng-click="acceptDevice(deviceId, $index, quote.devices[$parent.$parent.$index].model)"
+							>
+								ACCEPT
+							</div>
+							<div class="revise_button"
+								ng-click="reviseDevice(deviceId, $index)"
+							>
+								REVISE
+							</div>
+							<div class="clearfix"></div>
+						</div>
+						<div class="attached_docs_block" style="float:left; width:100%;">
+							<div class="basic_specs_docs"
+								ng-if="quote.devices_desc[deviceId][$index].pdf != null && quote.devices_desc[deviceId][$index].pdf != ''"
+							>
+								<a href="{{quote.devices_desc[deviceId][$index].pdf}}">
+									<i class="fa fa-info" aria-hidden="true"></i>
+									<span>Basic Specs</span>
+								</a>
+							</div>
+							<div class="videos"
+								ng-if="quote.devices_desc[deviceId][$index].video != null && quote.devices_desc[deviceId][$index].video != ''"
+							>
+								<a href="{{quote.devices_desc[deviceId][$index].video}}">
+									<i class="fa fa-play" aria-hidden="true"></i>
+									<span>Videos</span>
+								</a>
+							</div>
+							<div class="detailed_specs_docs"
+								ng-if="quote.devices_desc[deviceId][$index].ced != null && quote.devices_desc[deviceId][$index].ced != ''"
+							>
+								<a href="{{quote.devices_desc[deviceId][$index].ced}}">
+									<i class="fa fa-eye" aria-hidden="true"></i>
+									<span>Detailed Specs</span>
+								</a>
+							</div>
+							<div class="clearfix"></div>
+						</div>
+						<div class="clearfix"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<div class="container">
+			<div class="row download_total_costs_block">
+			
+				<div ng-include src="'public/templates/client/total_download_block66.html'"></div>
+				
+			</div>
+		</div>
+		
+		<div ng-include ng-if="quote.cover_letter_position == 'bottom'" src="'public/templates/client/intro_letter111.html'"></div>	
+		
+	</div>
+	
+	<div class="main_content animate-show" ng-show="showLeaseForm">
+		
+		<div ng-include src="'public/templates/client/lease_form.html'"></div>	
+		
+	</div>
+		
+	<div ng-include src="'public/templates/client/callback_form66.html'"></div>
+			
+</div>

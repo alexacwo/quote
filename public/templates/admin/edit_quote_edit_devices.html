@@ -1,0 +1,379 @@
+<uib-accordion close-others="oneAtATime">
+	<div ng-repeat="addedDevice in quote.devices">
+		<div class="device_accordion_wrapper 1" ng-repeat="deviceVariations in addedDevices[addedDevice.id]"> 
+			<div uib-accordion-group
+				 class="panel-info"
+				 heading="{{ quote.devices[$parent.$index].model }}"
+				 is-open="1"
+				 ng-init="deviceIndex = $parent.$index; variationIndex = $index">
+				<div class="col-md-12 accessories_block quoted_devices_form" style="margin-bottom: 20px;">											
+					<div class="col-md-12">
+						<div class="col-md-9">
+							<div class="well well-sm">
+								<h4>Add basic accessories:</h4> 
+								<div ng-if="quote.devices[deviceIndex].accessories.length">
+									Slider in the left position: don't display in the client view;
+									<br>Slider in the middle position: display, don't select by default;
+									<br>Slider in the right position: display, select by default.
+								</div>
+								<div ng-if="!quote.devices[deviceIndex].accessories.length">
+									No accessories added in 'Device' edit form
+								</div>
+								<div>	
+									<table class="table table-bordered basic_accessories" ng-if="quote.devices[deviceIndex].accessories.length">
+										<thead>
+											<tr>
+												<th style="width:15%;">&nbsp;</th>
+												<th>Part number</th>
+												<th style="width:40%;">Description</th>
+												<th>Cost</th>
+												<th>Price</th>
+											</tr>
+										</thead>
+										<tbody> 
+											<tr ng-repeat="accessory in quote.devices[deviceIndex].accessories">
+												<td>																		
+													<md-content style=" width:60px;">
+														<md-slider-container>
+															<md-slider
+																flex=""
+																min="0"
+																max="2"
+																step="1"
+																ng-model="quoteData[quote.id].added_accessories[addedDevice.id][$parent.$index][accessory.id].status"
+																 class="md-primary"
+																 aria-label="blue"
+															>
+															</md-slider>
+														</md-slider-container>
+													</md-content>
+												</td>
+												<td>
+													<label for="accessory_{{addedDevice.id}}_{{$parent.$index}}_{{accessory.id}}">
+														{{ accessory.part_number }} 
+													</label>
+												</td>
+												<td>																			
+													<label for="accessory_{{addedDevice.id}}_{{$parent.$index}}_{{accessory.id}}">
+														{{ accessory.description }}
+													</label>
+												</td>
+												<td> 
+													<input type="text" class="form-control" ng-model="quoteData[quote.id].prices[addedDevice.id][$parent.$index].accessories_prices[accessory.id].cost">
+												</td>
+												<td>		
+													<input type="text" class="form-control"
+														ng-model="quoteData[quote.id].prices[addedDevice.id][$parent.$index].accessories_prices[accessory.id].price"
+														ng-change="quoteData[quote.id].added_accessories[addedDevice.id][$parent.$index][accessory.id].price = quoteData[quote.id].prices[addedDevice.id][$parent.$index].accessories_prices[accessory.id].price"
+													>
+												</td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+									
+							</div>
+						</div>												
+						<div class="col-md-3">
+							<div style="float: right; text-align: right;">
+								<strong>
+									Remove this device:
+								</strong>
+							</div>
+							<br>
+							<div class="btn btn-danger"
+								 ng-click="removeDeviceFromQuote(addedDevice.id, $index)"
+								 style="float: right; margin-bottom: 20px;">
+								Remove
+							</div>													
+						</div>
+					</div>
+					<br> 
+					<div class="col-md-12"> 
+						<div class="well well-sm" style="min-height:250px;">
+							<div style="width:50%; float:left;">
+								<h4>Display basic descriptions:</h4> 
+								<div style="display:none;">
+									{{ quoteData[quote.id].devices_desc[addedDevice.id][$index] }}
+									<br>
+									
+									{{quote.devices[deviceIndex] }}
+								</div>
+								<div ng-if="quote.devices[deviceIndex].pdf != null && quote.devices[deviceIndex].pdf != ''">
+									<input type="checkbox" class="checkbox"
+											id="description_{{addedDevice.id}}_{{$index}}_pdf"
+											ng-model="quoteData[quote.id].devices_desc[addedDevice.id][$index].pdf"
+											ng-true-value="'{{quote.devices[deviceIndex].pdf}}'"
+											ng-false-value="null"
+											ng-checked="quote.devices[deviceIndex].pdf != null && quote.devices[deviceIndex].pdf != ''"
+									/>
+									<label for="description_{{addedDevice.id}}_{{$index}}_pdf">
+										Display PDF?
+									</label>
+									<a ng-if="quote.devices[deviceIndex].created_by == 'user'" target="_self" href="../{{quote.devices[deviceIndex].pdf}}">
+										PDF link
+									</a>
+									<a ng-if="quote.devices[deviceIndex].created_by == 'csv_upload'" target="_self" href="{{quote.devices[deviceIndex].pdf}}">
+										PDF link
+									</a>
+								</div>
+								<div style="display:none;">
+									{{ quoteData[quote.id].devices_desc[addedDevice.id] }}
+								</div>
+								<div ng-if="quote.devices[deviceIndex].ced != null && quote.devices[deviceIndex].ced != ''">
+									<input type="checkbox" class="checkbox"
+											id="description_{{addedDevice.id}}_{{$index}}_ced"
+											ng-model="quoteData[quote.id].devices_desc[addedDevice.id][$index].ced"
+											ng-true-value="'{{quote.devices[deviceIndex].ced}}'"
+											ng-false-value="null"
+											ng-checked="quote.devices[deviceIndex].ced != null && quote.devices[deviceIndex].ced != ''"
+									/>
+									<label for="description_{{addedDevice.id}}_{{$index}}_ced">
+										Display CED?
+									</label>
+									<a target="_self" href="{{quote.devices[deviceIndex].ced}}">
+										CED link
+									</a>
+								</div>
+								<div ng-if="quote.devices[deviceIndex].video != null && quote.devices[deviceIndex].video != ''">
+									<input type="checkbox" class="checkbox"
+											id="description_{{addedDevice.id}}_{{$index}}_video"
+											ng-model="quoteData[quote.id].devices_desc[addedDevice.id][$index].video"
+											ng-true-value="'{{quote.devices[deviceIndex].video}}'"
+											ng-false-value="null"
+											ng-checked="quote.devices[deviceIndex].video != null && quote.devices[deviceIndex].video != ''"
+									/>
+									<label for="description_{{addedDevice.id}}_{{$index}}_video">
+										Display Video Link?
+									</label>
+									<a target="_self" href="{{quote.devices[deviceIndex].video}}">
+										Link
+									</a>
+								</div>
+								<div>
+									<input type="checkbox" class="checkbox"
+											id="description_{{addedDevice.id}}_{{$index}}_color_or_mono"
+										ng-model="quoteData[quote.id].devices_desc[addedDevice.id][$index].color_or_mono"
+										ng-true-value="'{{quote.devices[deviceIndex].color_or_mono}}'"
+										ng-false-value="null"
+										ng-checked="quoteData[quote.id].devices_desc[addedDevice.id][$index].color_or_mono !== null"
+									/>
+									<label for="description_{{addedDevice.id}}_{{$index}}_color_or_mono">
+										Color/mono:
+									</label> {{ quote.devices[deviceIndex].color_or_mono }}
+								</div>
+								<div>
+									<input type="checkbox" class="checkbox"
+											id="description_{{addedDevice.id}}_{{$index}}_paper_size"
+										ng-model="quoteData[quote.id].devices_desc[addedDevice.id][$index].paper_size"
+										ng-true-value="'{{quote.devices[deviceIndex].paper_size}}'"
+										ng-false-value="null"
+										ng-checked="quoteData[quote.id].devices_desc[addedDevice.id][$index].paper_size !== null"
+									/>
+									<label for="description_{{addedDevice.id}}_{{$index}}_paper_size">
+										Paper size:
+									</label> {{ quote.devices[deviceIndex].paper_size }}
+								</div>
+								<div> 
+									<input type="checkbox" class="checkbox"
+											id="description_{{addedDevice.id}}_{{$index}}_speed"
+										ng-model="quoteData[quote.id].devices_desc[addedDevice.id][$index].speed"
+										ng-true-value="{{quote.devices[deviceIndex].speed}}"
+										ng-false-value="null"
+										ng-checked="quoteData[quote.id].devices_desc[addedDevice.id][$index].speed !== null"
+									/>
+									<label for="description_{{addedDevice.id}}_{{$index}}_speed">
+										Speed:
+									</label> {{ quote.devices[deviceIndex].speed }}
+								</div>
+							</div>
+							<div style="width:50%; float:left; margin-top:25px;"> 
+								<input type="checkbox" class="checkbox"
+										id="description_{{addedDevice.id}}_{{$index}}_best_choice"
+										ng-model="quoteData[quote.id].devices_desc[addedDevice.id][$index].best_choice"
+										ng-true-value="true"
+										ng-false-value="false" 
+								/>
+								<label for="description_{{addedDevice.id}}_{{$index}}_best_choice">
+									Make 'Best choice'
+								</label> 
+							</div>
+						</div>
+					</div> 
+					
+					<div class="col-md-12">
+						<div class="col-md-9">
+							<div class="well well-sm">
+								<h4>Add custom accessories:</h4> 
+								<div style="min-height:40px;">
+									<div class="btn btn-warning"
+										 ng-click="addCustomAccessory(addedDevice.id, $index)"
+										 style="float: right; margin-bottom: 20px;">
+										Add Accessory
+									</div>
+								</div> 
+								<div class="form-group" ng-repeat="custom_accessory in quoteData[quote.id].custom_accessories[addedDevice.id][$index]">
+								<!--quote.custom_accessories[addedDevice.id][$index]"> -->
+									<strong>Accessory # {{ $index + 1 }}</strong>
+									<div class="col-md-12">
+										<div class="col-md-6" style="padding-left: 0px;">
+											Part number:
+											<input type="text" class="form-control"
+												ng-model="quoteData[quote.id].custom_accessories[addedDevice.id][$parent.$index][$index].part_number">
+										</div>
+										<div class="col-md-6" style="padding-left: 0px;">
+											Price:
+											<input type="text" class="form-control"
+												ng-model="quoteData[quote.id].custom_accessories[addedDevice.id][$parent.$index][$index].price">
+										</div>
+										<div class="clearfix"></div>
+									</div>
+									<div class="col-md-12">	
+										<div class="form-group">
+											Description:
+											<textarea class="form-control" rows="5"
+												ng-model="quoteData[quote.id].custom_accessories[addedDevice.id][$parent.$index][$index].description"></textarea>
+										</div>
+									</div>
+									<div class="col-md-12">
+										<div class="form-group">
+											Delete this accessory:																	
+											<br>
+											<div class="btn btn-danger"
+												 ng-click="deleteCustomAccessory(quote.id, addedDevice.id, $parent.$index, $index)"
+												 style="margin-bottom: 20px;">
+												Delete
+											</div>
+										</div>
+									</div>
+									<div class="clearfix"></div>																
+									<input type="hidden"
+										ng-model="quoteData[quote.id].custom_accessories[addedDevice.id][$parent.$index][$index].id"
+										ng-value="{{custom_accessory.id}}"
+									> 																
+									 
+								</div>
+							</div>
+							
+						</div>
+						<div class="col-md-3">
+						</div>
+					</div>	 
+					
+					<div class="col-md-12">
+						<div class="col-md-9">
+							<div class="well well-sm">
+								<h4>Add custom descriptions:</h4>  
+								<div style="min-height:40px;">
+									<div class="btn btn-warning"
+										 ng-click="addCustomDescription(addedDevice.id, $index)"
+										 style="float: right; margin-bottom: 20px;">
+										Add Description
+									</div>
+								</div> 
+								<div class="form-group" ng-repeat="custom_description in quoteData[quote.id].custom_descriptions[addedDevice.id][$index]">														
+								 
+									<div class="col-md-12">
+										Description # {{ $index + 1 }} 
+										<br>
+										<div class="col-md-3" style="padding-left: 0px;">
+											Name:
+											<input type="text" class="form-control"
+												ng-model="quoteData[quote.id].custom_descriptions[addedDevice.id][$parent.$index][custom_description.id].name">
+										</div>
+										<div class="col-md-12" style="padding-left: 0px;">
+											Value:
+											<input type="text" class="form-control"
+												ng-model="quoteData[quote.id].custom_descriptions[addedDevice.id][$parent.$index][custom_description.id].value">
+										</div>
+										<div class="clearfix"></div>
+									</div>
+									<div class="col-md-12">
+										<div class="form-group">
+											Delete this description:																	
+											<br>
+											<div class="btn btn-danger"
+												 ng-click="deleteCustomDescription(quote.id, addedDevice.id, $parent.$index, custom_description.id)"
+												 style="margin-bottom: 20px;">
+												Delete
+											</div>
+										</div>
+									</div>
+									<div class="clearfix"></div>																
+									<input type="hidden"
+										ng-model="quoteData[quote.id].custom_descriptions[addedDevice.id][$parent.$index][custom_description.id].id"
+										ng-value="{{custom_description.id}}"
+									> 
+								</div>
+							</div>
+							
+						</div>
+						<div class="col-md-3">
+						</div>
+					</div>	
+
+					<div class="col-md-12 number_of_incl_pages">
+						<div class="col-md-6">
+							<h4>Device cost/price:</h4>
+							<div class="form-group">
+								<div class="col-md-6">
+									<label>Cost:</label>	
+									<input type="text" class="form-control" disabled value="{{ quote.devices[deviceIndex].cost }}">
+								</div>
+								<div class="col-md-6">
+									<label>Price:</label>
+									<input type="text" class="form-control" ng-model="quoteData[quote.id].prices[addedDevice.id][$index].price">
+								</div>
+							</div>
+						</div>
+						<div class="col-md-6">
+							<h4>Maintenance (service base):</h4>
+							<div class="form-group">
+								<div class="col-md-6">
+									<label>Cost:</label>
+									<input type="text" class="form-control" ng-model="quoteData[quote.id].prices[addedDevice.id][$index].maintenance_cost">
+								</div>
+								<div class="col-md-6">
+									<label>Price:</label>
+									<input type="text" class="form-control" ng-model="quoteData[quote.id].prices[addedDevice.id][$index].maintenance_price">
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="col-md-12">
+						<div class="col-md-6">
+							<h4>Enter a number of included pages:</h4>
+							<h5>(if left blank, no field with number of included pages will be displayed)</h5>
+							<div class="form-group">
+								<div class="col-md-6">
+									<label>Color:</label>	 
+									<input type="text" class="form-control" ng-model="quoteData[quote.id].included_pages[addedDevice.id][$index].color">
+								</div>
+								<div class="col-md-6">
+									<label>B&W:</label>
+									<input type="text" class="form-control" ng-model="quoteData[quote.id].included_pages[addedDevice.id][$index].mono">
+								</div>
+							</div>
+						</div>
+						<div class="col-md-6">
+							<h4>Additional printed pages cost/price ($):</h4>
+							<div class="form-group">
+								<div class="col-md-6">
+									<label>Color:</label>
+									<input type="text" class="form-control" disabled value="{{ quote.devices[deviceIndex].cost_per_color_page }}">
+									<br><input type="text" class="form-control" ng-model="quoteData[quote.id].prices[addedDevice.id][$index].cost_per_color_page">
+								</div>
+								<div class="col-md-6">
+									<label>B&W:</label>
+									<input type="text" class="form-control" disabled value="{{ quote.devices[deviceIndex].cost_per_mono_page }}">
+									<br><input type="text" class="form-control" ng-model="quoteData[quote.id].prices[addedDevice.id][$index].cost_per_mono_page">
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</uib-accordion>

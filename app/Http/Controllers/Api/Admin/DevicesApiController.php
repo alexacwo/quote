@@ -106,8 +106,8 @@
 				}
 				$accessory_model->description = $accessory['description'];				
 				$accessory_model->part_number = $accessory['part_number'];
-				$accessory_model->cost = $accessory['cost'];
-				$accessory_model->price = $accessory['price'];
+				$accessory_model->cost = ($accessory['cost'] != '' && is_numeric($accessory['cost']))? $accessory['cost'] : 0;
+				$accessory_model->price = ($accessory['price'] != '' && is_numeric($accessory['price']))? $accessory['price'] : 0;
 				
 				$accessory_model->save();				
 				
@@ -123,21 +123,31 @@
 			$device = Device::find($device_id);
 			$device->model = $request->device_data['model'];
 			$device->make = $request->device_data['make'];
-			$device->cost = $request->device_data['cost'];
-			$device->price = $request->device_data['price'];
+			$device->cost = ($request->device_data['cost'] != '' && is_numeric($request->device_data['cost'])) ? $request->device_data['cost'] : 0;
+			$device->price = ($request->device_data['price'] != '' && is_numeric($request->device_data['price']))? $request->device_data['price'] : 0;
 						
 			$device->speed = $request->device_data['speed'];
 			$device->paper_size = $request->device_data['paper_size'];
 			$device->color_or_mono = $request->device_data['color_or_mono'];
 			$device->device_type = $request->device_data['device_type'];
-			$device->maintenance_cost = $request->device_data['maintenance_cost'];
-			$device->maintenance_price = $request->device_data['maintenance_price'];
-			$device->cost_per_color_page = $request->device_data['cost_per_color_page'];
-			$device->cost_per_mono_page = $request->device_data['cost_per_mono_page'];
-			$device->rebates = $request->device_data['rebates'];
+			
+			$device->maintenance_cost =
+			($request->device_data['maintenance_cost'] != '' && is_numeric($request->device_data['maintenance_cost'])) ? $request->device_data['maintenance_cost'] : 0;
+			$device->maintenance_price =
+			($request->device_data['maintenance_price'] != '' && is_numeric($request->device_data['maintenance_price'])) ? $request->device_data['maintenance_price'] : 0;
+			$device->cost_per_color_page =
+			($request->device_data['cost_per_color_page'] != '' && is_numeric($request->device_data['cost_per_color_page'])) ? $request->device_data['cost_per_color_page'] : 0;
+			$device->cost_per_mono_page =
+			($request->device_data['cost_per_mono_page'] != '' && is_numeric($request->device_data['cost_per_mono_page'])) ? $request->device_data['cost_per_mono_page'] : 0;
+			$device->rebates =
+			($request->device_data['rebates'] != '' && is_numeric($request->device_data['rebates'])) ? $request->device_data['rebates'] : 0;
+						
+			$device->max_monthly_duty_cycle = $request->device_data['max_monthly_duty_cycle'];			
+			$device->monthly_volume = $request->device_data['monthly_volume'];
 			
 			$device->pdf = $request->device_data['pdf'];
 			$device->ced = $request->device_data['ced'];
+			$device->video = $request->device_data['video'];
 			$device->image = $request->device_data['image'];
 			
 			$device->accessories()->sync($accessories_models);
@@ -178,18 +188,23 @@
 					}
 					
 					$device->make = $data[1];
-					$device->cost = $data[3];
+					
+					$device->cost = ($data[3] != '' && is_numeric($data[3])) ? $data[3] : 0;					
+					$device->maintenance_price = ($data[9] != '' && is_numeric($data[9])) ? $data[9] : 0;
+					$cost_per_color_page = str_replace(",",".",$data[10]);
+					$cost_per_mono_page = str_replace(",",".",$data[11]);
+					$device->cost_per_color_page = ($cost_per_color_page != '' && is_numeric($cost_per_color_page)) ? $cost_per_color_page : 0; 
+					$device->cost_per_mono_page = ($cost_per_mono_page != '' && is_numeric($cost_per_mono_page)) ? $cost_per_mono_page : 0;
+					$device->rebates =  ($data[12] != '' && is_numeric($data[12])) ? $data[12] : 0;
+					
 					$device->price = $data[4];
 					$device->speed = $data[5];
 					$device->paper_size = $data[6];
 					$device->color_or_mono = $data[7];
 					$device->device_type = $data[8];
-					$device->maintenance_price = $data[9];
-					$device->cost_per_color_page = str_replace(",",".",$data[10]);
-					$device->cost_per_mono_page = str_replace(",",".",$data[11]);
-					$device->rebates = $data[12];
 					$device->image = $data[13];
 					$device->pdf = $data[14];
+					$device->video = '';
 					
 					$device->created_by = 'csv_upload';
 					
